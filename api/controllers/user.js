@@ -100,10 +100,8 @@ function loginUser(req, res) {
         // comprobar la passw con la bcrypt
         bcrypt.compare(password, user.password, (err, check) => {
           if(check){
-            // eliminar la propiedad del password para no devolverla y evitar que la reciba el frontend
-            user.password = undefined;
             // dependiendo de si se requiere token o no 
-            if(params.getToken) {
+            if(params.gettoken) {
               // devuelve token con los datos del usuario encryptados
               // generar token
               return res.status(200).send({
@@ -111,6 +109,8 @@ function loginUser(req, res) {
               });
             } else {
               // devolver datos de usuario
+              // eliminar la propiedad del password para no devolverla y evitar que la reciba el frontend
+              user.password = undefined;
               return res.status(200).send({user});  
             }
           }else {

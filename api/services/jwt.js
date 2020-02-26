@@ -13,7 +13,7 @@ exports.createToken = function(user) {
     role: user.role,
     image: user.image,
     iat: moment().unix(), // fecha en la que se crea formato unix
-    exp: moment.add(30, "days").unix() //expiración de la fecha en 30 días
+    exp: moment(moment.unix()).add(30, "days").unix()//expiración de la fecha en 30 días
 
     //.startOf('month');
   };

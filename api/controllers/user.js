@@ -1,6 +1,7 @@
 "use strict";
 var User = require("../models/User");
 const bcrypt = require("bcrypt-nodejs");
+const jwt = require("../services/jwt");
 
 // rutas
 
@@ -82,10 +83,50 @@ function saveUser(req, res) {
     });
   }
 }
-
+function loginUser(req, res) {
+  //recoger los parámetros que llegan en el body
+  var params = req.body;
+  var email = params.email;
+  var password = params.password;
+  //  sería como en sql un ...where email = 'email'
+  User.findOne(
+    {
+      email: email
+    },
+    (err, user) => {
+      // si ha habido error
+      if (err) return res.status(500).send({ message: "Error en la petición" });
+      if (user) {
+        // comprobar la passw con la bcrypt
+        bcrypt.compare(password, user.password, (err, check) => {
+          if(check){
+            // eliminar la propiedad del password para no devolverla y evitar que la reciba el frontend
+            user.password = undefined;
+            // dependiendo de si se requiere token o no 
+            if(params.getToken) {
+              // devuelve token con los datos del usuario encryptados
+              // generar token
+              return res.status(200).send({
+                token: jwt.createToken(user)
+              });
+            } else {
+              // devolver datos de usuario
+              return res.status(200).send({user});  
+            }
+          }else {
+            return res.status(404).send({ message: "El usuario no se ha podido idientificar" });
+          }
+        });
+      } else{  // si el usuario no existe
+        return res.status(404).send({ message: "El usuario no se ha podido encontrar¡¡" });
+      }
+    }
+  );
+}
 //exportarla en modo de objeto
 module.exports = {
   home,
   pruebas,
-  saveUser
+  saveUser,
+  loginUser
 };

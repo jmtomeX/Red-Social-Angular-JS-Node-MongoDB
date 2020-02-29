@@ -22,6 +22,7 @@ mongoose
     });
   })
   .catch(err => console.log(err));
+  mongoose.set('useFindAndModify', false);
 // Hasta aquí ya se puede trabajar con lo base de datos
 
 //arrancar --> cd api/ --> npm start

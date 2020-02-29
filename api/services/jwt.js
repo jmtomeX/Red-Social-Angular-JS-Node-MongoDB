@@ -1,4 +1,5 @@
 "use strict";
+// crear el token
 const jwt = require("jwt-simple");
 var moment = require("moment");
 const secret = "clave_secreta_cualquira_6gsdfgl45C344_%ldsnalfkm";

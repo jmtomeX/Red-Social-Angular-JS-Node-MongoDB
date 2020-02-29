@@ -2,9 +2,10 @@
 var User = require("../models/User");
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require("../services/jwt");
+const pagination = require("mongoose-pagination");
 
 // rutas
-
+// métodos de pruebas
 function home(req, res) {
   res.status(200).send({
     message: "Hola mundo desde la ráiz de NodeJS"
@@ -16,7 +17,7 @@ function pruebas(req, res) {
     message: "Acción en pruebas en el servidor"
   });
 }
-
+// registro
 function saveUser(req, res) {
   // todos los campos que llegan por post los recogemos en params
   var params = req.body;
@@ -83,6 +84,7 @@ function saveUser(req, res) {
     });
   }
 }
+// login
 function loginUser(req, res) {
   //recoger los parámetros que llegan en el body
   var params = req.body;
@@ -99,9 +101,9 @@ function loginUser(req, res) {
       if (user) {
         // comprobar la passw con la bcrypt
         bcrypt.compare(password, user.password, (err, check) => {
-          if(check){
-            // dependiendo de si se requiere token o no 
-            if(params.gettoken) {
+          if (check) {
+            // dependiendo de si se requiere token o no
+            if (params.gettoken) {
               // devuelve token con los datos del usuario encryptados
               // generar token
               return res.status(200).send({
@@ -111,22 +113,108 @@ function loginUser(req, res) {
               // devolver datos de usuario
               // eliminar la propiedad del password para no devolverla y evitar que la reciba el frontend
               user.password = undefined;
-              return res.status(200).send({user});  
+              return res.status(200).send({ user });
             }
-          }else {
-            return res.status(404).send({ message: "El usuario no se ha podido idientificar" });
+          } else {
+            return res
+              .status(404)
+              .send({ message: "El usuario no se ha podido idientificar" });
           }
         });
-      } else{  // si el usuario no existe
-        return res.status(404).send({ message: "El usuario no se ha podido encontrar¡¡" });
+      } else {
+        // si el usuario no existe
+        return res
+          .status(404)
+          .send({ message: "El usuario no se ha podido encontrar¡¡" });
       }
     }
   );
 }
+
+// devolver datos de un usuario
+function getUser(req, res) {
+  // cuando recogemos datos por la url se recoge de params y cuando llegan por post o put se usa body.
+  var userId = req.params.id;
+  User.findById(userId, (err, user) => {
+    if (err) return res.status(500).send({ message: "Error en la petición" });
+    if (!user)
+      return res.status(404).send({ message: "El usuario no existe." });
+
+    return res.status(200).send({ user });
+  });
+}
+
+// Devovlver un listado de usuarios paginado
+function getUsers(req, res) {
+  // id del usuario logueado
+  var identity_user_id = req.user.sub;
+  let page = 1;
+  if (req.params.page) {
+    // página que estamos recogiendo
+    page = req.params.page;
+  }
+  // número de usuario por página
+  const ITEMS_PER_PAGE = 5;
+
+  // lista todos los usuarios con  paginación.
+  User.find()
+    .sort("_id") // ordenados por _id
+    .paginate(page, ITEMS_PER_PAGE, (err, users, total) => {
+      // pagina actual, users por página, (error, todos los usuarios, total de usuarios)
+      if (err) return res.status(500).send({ message: "Error en la petición" });
+      if (!users)
+        return res
+          .status(404)
+          .send({ message: "No hay usuarios disponibles." });
+      return res.status(200).send({
+        // esto sería redundante
+        users: users,
+        total,
+        pages: Math.ceil(total / ITEMS_PER_PAGE) // número de páginas que va a haber
+      });
+    });
+}
+
+//Edición de datos de usuario
+function updateUser(req, res) {
+  var userId = req.params.id;
+  // recoger el body de la request, para actualizar
+  var update = req.body;
+  console.log({ update });
+  console.log("userid " + userId + " id: " + req.user.sub);
+  // borrar la propiedad password
+  delete update.password;
+
+  // compobar que son sus propios datos comprobando los ids
+  if (userId != req.user.sub) {
+    return res
+      .status(500)
+      .send({ message: "No tienes permiso para actualizar esta cuenta." });
+  }
+  // Para que devuelva el objeto acualizado se le pasa como 3º parámetro {new:true}
+  User.findOneAndUpdate(userId, update, { new: true }, (err, userUpdate) => {
+    if (err) return res.status(500).send({ message: "Error en la petición" });
+    if (!userUpdate) {
+      return res
+      .status(404)
+      .send({ message: "No se ha podido actualizar el usuario" });
+    }
+
+    return res.status(200).send({
+      // si todo fue bien
+      // devolvemos el usuario actualizado
+      user: userUpdate
+    });
+  });
+}
+
 //exportarla en modo de objeto
 module.exports = {
   home,
   pruebas,
   saveUser,
-  loginUser
+  loginUser,
+  getUser,
+  getUsers,
+  updateUser
 };

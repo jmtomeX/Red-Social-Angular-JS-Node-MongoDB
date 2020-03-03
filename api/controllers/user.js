@@ -3,6 +3,8 @@ var User = require("../models/User");
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require("../services/jwt");
 const pagination = require("mongoose-pagination");
+var fs = require("fs");
+var path = require("path");
 
 // rutas
 // métodos de pruebas
@@ -192,9 +194,9 @@ function updateUser(req, res) {
       .send({ message: "No tienes permiso para actualizar esta cuenta." });
   }
   // Para que devuelva el objeto acualizado se le pasa como 3º parámetro {new:true}
-  User.findByIdAndUpdate(userId, update, { new: true }, (err, userUpdate) => {
+  User.findByIdAndUpdate(userId, update, { new: true }, (err, userUpdated) => {
     if (err) return res.status(500).send({ message: "Error en la petición" });
-    if (!userUpdate) {
+    if (!userUpdated) {
       return res
         .status(404)
         .send({ message: "No se ha podido actualizar el usuario" });
@@ -203,25 +205,31 @@ function updateUser(req, res) {
     return res.status(200).send({
       // si todo fue bien
       // devolvemos el usuario actualizado
-      user: userUpdate
+      user: userUpdated
     });
   });
 }
+
+//
 function upLoadImage(req, res) {
   var userId = req.params.id;
 
   if (userId != req.user.sub) {
-    removeFilesOfUploads(res, file_path, "No tienes permiso para actualizar esta cuenta." );
+    return removeFilesOfUploads(
+      res,
+      file_path,
+      "No tienes permiso para actualizar esta cuenta."
+    );
   }
 
   if (req.files) {
     var file_path = req.files.image.path;
-    var file_split = file_path.split('\\');
+    var file_split = file_path.split("\\");
 
     // nombre imagen
-    var file_name =file_split[file_split.length - 1];
+    var file_name = file_split[file_split.length - 1];
     //
-    var ext_split = file_name.split('\.');
+    var ext_split = file_name.split(".");
     var file_ext = ext_split[1];
     console.log(file_name + " " + file_ext);
 
@@ -232,12 +240,28 @@ function upLoadImage(req, res) {
       file_ext == "gif"
     ) {
       // actualizar documento de usuario
-      return res.status(200).send({
-        message: "OK"
-      });
+      User.findByIdAndUpdate(
+        userId,
+        { image: file_name },
+        { new: true },
+        (err, userUpdated) => {
+          if (err)
+            return res.status(500).send({ message: "Error en la petición" });
+          if (!userUpdated) {
+            return res
+              .status(404)
+              .send({ message: "No se ha podido actualizar el usuario" });
+          }
+          return res.status(200).send({
+            // si todo fue bien
+            // devolvemos el usuario actualizado
+            user: userUpdated
+          });
+        }
+      );
     } else {
       // borrar archivo si ha habido error
-      removeFilesOfUploads(res,file_path, "La extensión no es válida." );
+      return removeFilesOfUploads(res, file_path, "La extensión no es válida.");
     }
   } else {
     return res.status(200).send({
@@ -246,7 +270,22 @@ function upLoadImage(req, res) {
   }
 }
 
-function getImageFile(req, res) {}
+// devolver imagen usuario
+function getImageFile(req, res) {
+  // parámetro que recibe por la url
+  var image_file = req.params.imageFile;
+  var path_file = "./uploads/users/" + image_file;
+
+  fs.exists(path_file, (exists) => {
+    if (exists) {
+      res.sendFile(path.resolve, (path_file));
+    } else {
+      return res.status(200).send({
+        message: "No existe la imagen..."
+      });
+    }
+  });
+}
 
 function removeFilesOfUploads(res, file_path, message) {
   fs.unlink(file_path, err => {
@@ -263,5 +302,6 @@ module.exports = {
   getUser,
   getUsers,
   updateUser,
-  upLoadImage
+  upLoadImage,
+  getImageFile
 };

@@ -192,12 +192,12 @@ function updateUser(req, res) {
       .send({ message: "No tienes permiso para actualizar esta cuenta." });
   }
   // Para que devuelva el objeto acualizado se le pasa como 3º parámetro {new:true}
-  User.findOneAndUpdate(userId, update, { new: true }, (err, userUpdate) => {
+  User.findByIdAndUpdate(userId, update, { new: true }, (err, userUpdate) => {
     if (err) return res.status(500).send({ message: "Error en la petición" });
     if (!userUpdate) {
       return res
-      .status(404)
-      .send({ message: "No se ha podido actualizar el usuario" });
+        .status(404)
+        .send({ message: "No se ha podido actualizar el usuario" });
     }
 
     return res.status(200).send({
@@ -205,6 +205,52 @@ function updateUser(req, res) {
       // devolvemos el usuario actualizado
       user: userUpdate
     });
+  });
+}
+function upLoadImage(req, res) {
+  var userId = req.params.id;
+
+  if (userId != req.user.sub) {
+    removeFilesOfUploads(res, file_path, "No tienes permiso para actualizar esta cuenta." );
+  }
+
+  if (req.files) {
+    var file_path = req.files.image.path;
+    var file_split = file_path.split('\\');
+
+    // nombre imagen
+    var file_name =file_split[file_split.length - 1];
+    //
+    var ext_split = file_name.split('\.');
+    var file_ext = ext_split[1];
+    console.log(file_name + " " + file_ext);
+
+    if (
+      file_ext == "png" ||
+      file_ext == "jpg" ||
+      file_ext == "jpeg" ||
+      file_ext == "gif"
+    ) {
+      // actualizar documento de usuario
+      return res.status(200).send({
+        message: "OK"
+      });
+    } else {
+      // borrar archivo si ha habido error
+      removeFilesOfUploads(res,file_path, "La extensión no es válida." );
+    }
+  } else {
+    return res.status(200).send({
+      message: "No de han subido imagenes"
+    });
+  }
+}
+
+function getImageFile(req, res) {}
+
+function removeFilesOfUploads(res, file_path, message) {
+  fs.unlink(file_path, err => {
+    return res.status(200).send({ message: message });
   });
 }
 
@@ -216,5 +262,6 @@ module.exports = {
   loginUser,
   getUser,
   getUsers,
-  updateUser
+  updateUser,
+  upLoadImage
 };

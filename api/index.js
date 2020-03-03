@@ -5,6 +5,7 @@ const app = require("./app");
 const port = 3000;
 // utizamos las promesas para conectarnos mediante promesas
 mongoose.Promise = global.Promise;
+mongoose.set('useFindAndModify', false);
 // para conectar a mongoose
 mongoose
   .connect("mongodb://localhost:27017/curso_mean_social", {
@@ -22,7 +23,7 @@ mongoose
     });
   })
   .catch(err => console.log(err));
-  mongoose.set('useFindAndModify', false);
+
 // Hasta aquí ya se puede trabajar con lo base de datos
 
 //arrancar --> cd api/ --> npm start

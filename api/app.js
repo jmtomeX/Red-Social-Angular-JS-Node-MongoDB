@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 
 //rutas
 // sobreiscribe la url 
-app.use('/api', user_routes)
+app.use('/api', user_routes);
 
 //exportar
 module.exports = app;

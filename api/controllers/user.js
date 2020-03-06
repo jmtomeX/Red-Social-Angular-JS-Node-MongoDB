@@ -3,8 +3,8 @@ var User = require("../models/User");
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require("../services/jwt");
 const pagination = require("mongoose-pagination");
-var fs = require("fs");
 var path = require("path");
+var fs = require("fs");
 
 // rutas
 // métodos de pruebas
@@ -210,39 +210,35 @@ function updateUser(req, res) {
   });
 }
 
-//
 function upLoadImage(req, res) {
   var userId = req.params.id;
-
-  if (userId != req.user.sub) {
-    return removeFilesOfUploads(
-      res,
-      file_path,
-      "No tienes permiso para actualizar esta cuenta."
-    );
-  }
-
+  
   if (req.files) {
     var file_path = req.files.image.path;
-    var file_split = file_path.split("\\");
-
     // nombre imagen
-    var file_name = file_split[file_split.length - 1];
-    //
-    var ext_split = file_name.split(".");
+    var filename = path.basename(file_path);
+    var ext_split = filename.split(".");
     var file_ext = ext_split[1];
-    console.log(file_name + " " + file_ext);
-
+      // compobar que son sus propios datos comprobando los ids
+  if (userId != req.user.sub) {
+    return res
+      .status(500)
+      .send({ message: "No tienes permiso para actualizar esta cuenta." });
+  }     
+  
     if (
       file_ext == "png" ||
       file_ext == "jpg" ||
       file_ext == "jpeg" ||
       file_ext == "gif"
     ) {
-      // actualizar documento de usuario
+      // comprobar si existe la imagen
+      fs.exists(file_path,function(exists){  
+        if(exists){
+               // actualizar documento de usuario
       User.findByIdAndUpdate(
         userId,
-        { image: file_name },
+        { image: filename },
         { new: true },
         (err, userUpdated) => {
           if (err)
@@ -259,6 +255,14 @@ function upLoadImage(req, res) {
           });
         }
       );
+        }else{
+          return res
+          .status(500)
+          .send({ message: "La imagen no existe." });
+        }
+      }); 
+
+ 
     } else {
       // borrar archivo si ha habido error
       return removeFilesOfUploads(res, file_path, "La extensión no es válida.");
@@ -274,11 +278,12 @@ function upLoadImage(req, res) {
 function getImageFile(req, res) {
   // parámetro que recibe por la url
   var image_file = req.params.imageFile;
-  var path_file = "./uploads/users/" + image_file;
+  var path_file = './uploads/users/' + image_file;
 
+  console.log(path_file);
   fs.exists(path_file, (exists) => {
     if (exists) {
-      res.sendFile(path.resolve, (path_file));
+      res.sendFile(path.resolve(path_file));
     } else {
       return res.status(200).send({
         message: "No existe la imagen..."

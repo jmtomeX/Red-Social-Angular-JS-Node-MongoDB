@@ -20,7 +20,7 @@ module.exports = {
 function saveFollow(req, res) {
   var params = req.body;
   var follow = new Follow();
-console.log( req.user.sub);
+  console.log(req.user.sub);
   // usuario que sigue, el identificado
   follow.user = req.user.sub;
   // el usuario seguido se le pasa por post
@@ -42,44 +42,54 @@ console.log( req.user.sub);
     });
   });
 }
-function deleteFollow(res, req) {
+
+function deleteFollow(req, res) {
   var userId = req.user.sub; // registrado
   var followId = req.params.id; // seguido
-  console.log("usuarioId: " + usuarioId + " seguidorId:" + seguidorId);
-  Follow.find({
+  console.log("Seguidor " + userId + " Seguido " + followId);
+  
+ Follow.findOne({
     user: userId,
     followed: followId
-  }).remove((err, seguimientoEliminado) => {
+  }).deleteOne((err, followDelete) => {
     if (err)
       return res.status(500).send({
-        message: "Error al dejar de seguir."
+        message: "Error al dejar de seguir." + err
       });
     return res.status(200).send({
-      follow: followStored,
+      follow: followDelete,
       message: "El follow se ha eliminado."
     });
   });
 }
+
 // function deleteFollow(req, res) {
-//     var params = req.body;
-//     // var usuarioId = req.usuario.sub;
-//     var usuarioId = '5e5abe93194fa6240413e55d';
-//     var seguidorId = params.seguidor;
-//     console.log("usuarioId::" + usuarioId + "     seguidorId" + seguidorId);
-//     Seguidor.findOneAndDelete({
-//         'user': usuarioId,
-//         'followed': seguidorId
-//     }, (err, seguimientoEliminado) => {
-//         if (err) {
-//             return res.status(500).send({
-//                 message: 'Error al eliminar el seguimiento'+err
-//             });
-//         }
-//         return res.status(200).send({
-//             message: 'Se ha elimindo el seguimiento'
+//   var params = req.body;
+//   var userId = req.user.sub; // registrado
+//   //var usuarioId = '5e5abe93194fa6240413e55d';
+//   var followId = req.params.id; // seguido
+//   Follow.findOneAndRemove (
+//     {
+//       user: userId,
+//       followed: followId
+//     },
+//     (err, followDelete) => {
+//       if (err) {
+//         return res.status(500).send({
+//           message: "Error al eliminar el seguimiento. ERROR " + err
 //         });
-//     });
-//}
+//       }
+//       return res.status(200).send({
+//         followedDeleted: followDelete,
+//         message: "Se ha elimindo el seguimiento"
+//       });
+//     }
+//   );
+// }
+
+function getFollowingUsers(req, res) {
+
+}
 
 module.exports = {
   prueba,

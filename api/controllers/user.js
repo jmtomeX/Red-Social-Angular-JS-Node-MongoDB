@@ -269,7 +269,7 @@ function upLoadImage(req, res) {
     }
   } else {
     return res.status(200).send({
-      message: "No de han subido imagenes"
+      message: "No se han subido imagenes"
     });
   }
 }
@@ -297,6 +297,7 @@ function removeFilesOfUploads(res, file_path, message) {
     return res.status(200).send({ message: message });
   });
 }
+
 
 //exportarla en modo de objeto
 module.exports = {

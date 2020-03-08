@@ -64,15 +64,17 @@ function deleteFollow(req, res) {
 
 function getFollowingUsers(req, res) {
   var userId = req.user.sub;
- 
+
   // en el caso de que llegue uen la  url el usuario y la página se listan los usuarios
   if (req.params.id && req.params.page) {
-     userId = req.params.id;
+    userId = req.params.id;
   }
   var page = 1;
-  if (req.params.page) { // en el caso de que llegue solo la página
+  if (req.params.page) {
+    // en el caso de que llegue solo la página
     page = req.params.page;
-  } else { // si no hay páginas, para evitar errores se le pasa el id
+  } else {
+    // si no hay páginas, para evitar errores se le pasa el id
     page = req.params.id;
   }
   var itemsPerPage = 4;
@@ -90,22 +92,81 @@ function getFollowingUsers(req, res) {
         });
       if (!follows)
         return res.status(404).send({
-          message: "No estás siguiendo a ningun usuario." + err
+          message: "No estás siguiendo a ningún usuario."
         });
-        return res.status(200).send({
-          total: totalDoc,
-          pages: Math.ceil(totalDoc/itemsPerPage),
-           follows           
-        });
-
+      return res.status(200).send({
+        total: totalDoc,
+        pages: Math.ceil(totalDoc / itemsPerPage),
+        follows
+      });
     });
-
-  // en el caso de que no llegue se usa el user._id del usuario identificado
 }
+
+function getFollowedUsers(req, res) {
+  var userId = req.user.sub;
+
+  // en el caso de que llegue en la  url el usuario y la página se listan los usuarios
+  if (req.params.id && req.params.page) {
+    userId = req.params.id;
+  }
+  var page = 1;
+  if (req.params.page) {
+    // en el caso de que llegue solo la página, la cargamos
+    page = req.params.page;
+  } else {
+    // si no hay páginas, para evitar errores se le pasa el id
+    page = req.params.id;
+  }
+  var itemsPerPage = 4;
+  Follow.find({
+    // Comprobamos quien nos sigue
+    followed: userId
+  })
+    .populate(
+      "user" // devuelve el objeto user en formato json
+    )
+    .paginate(page, itemsPerPage, (err, follows, totalDoc) => {
+      if (err)
+        return res.status(500).send({
+          message: "Error en el servidor." + err
+        });
+      if (!follows)
+        return res.status(404).send({
+          message: "No te sigue ningún usuario."
+        });
+      return res.status(200).send({
+        total: totalDoc,
+        pages: Math.ceil(totalDoc / itemsPerPage),
+        follows
+      });
+    });
+}
+
+// devolver listados de usuarios que me siguen  o usuarios que sigo, sin paginar
+function getTheFollows(req, res) {
+  var userId = req.user.sub;
+  
+  var find = Follow.find({ user: userId }); // saca los usuarios que sigo
+  
+  if(req.params.followed) {
+    find = Follow.find({ followed: userId }); // saca los usuarios que me siguen
+  }
+  find.populate("user followed") 
+    .exec((err, follows) => {// con exec ejecutamos la consulta
+      if (!follows)
+        return res.status(404).send({
+          message: "No sigues a ningún usuario."
+        });
+      return res.status(200).send({ follows });
+    });
+}
+
 
 module.exports = {
   prueba,
   saveFollow,
   deleteFollow,
-  getFollowingUsers
+  getFollowingUsers,
+  getFollowedUsers,
+  getTheFollows
 };

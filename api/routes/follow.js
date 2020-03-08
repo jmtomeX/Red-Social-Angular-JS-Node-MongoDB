@@ -9,5 +9,6 @@ var middleware_auth = require('../middlewares/authenticated');
 api.get('/prueba-follow', middleware_auth.ensureAuth, FollowController.prueba);
 api.post('/follow', middleware_auth.ensureAuth, FollowController.saveFollow);
 api.delete('/follow/:id', middleware_auth.ensureAuth, FollowController.deleteFollow);
+api.get('/following/:id?/:page?', middleware_auth.ensureAuth, FollowController.getFollowingUsers);
 
 module.exports = api;

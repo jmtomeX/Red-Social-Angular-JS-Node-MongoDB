@@ -47,8 +47,7 @@ function deleteFollow(req, res) {
   var userId = req.user.sub; // registrado
   var followId = req.params.id; // seguido
   console.log("Seguidor " + userId + " Seguido " + followId);
-  
- Follow.findOne({
+  Follow.findOne({
     user: userId,
     followed: followId
   }).deleteOne((err, followDelete) => {
@@ -63,36 +62,50 @@ function deleteFollow(req, res) {
   });
 }
 
-// function deleteFollow(req, res) {
-//   var params = req.body;
-//   var userId = req.user.sub; // registrado
-//   //var usuarioId = '5e5abe93194fa6240413e55d';
-//   var followId = req.params.id; // seguido
-//   Follow.findOneAndRemove (
-//     {
-//       user: userId,
-//       followed: followId
-//     },
-//     (err, followDelete) => {
-//       if (err) {
-//         return res.status(500).send({
-//           message: "Error al eliminar el seguimiento. ERROR " + err
-//         });
-//       }
-//       return res.status(200).send({
-//         followedDeleted: followDelete,
-//         message: "Se ha elimindo el seguimiento"
-//       });
-//     }
-//   );
-// }
-
 function getFollowingUsers(req, res) {
+  var userId = req.user.sub;
+ 
+  // en el caso de que llegue uen la  url el usuario y la página se listan los usuarios
+  if (req.params.id && req.params.page) {
+     userId = req.params.id;
+  }
+  var page = 1;
+  if (req.params.page) { // en el caso de que llegue solo la página
+    page = req.params.page;
+  } else { // si no hay páginas, para evitar errores se le pasa el id
+    page = req.params.id;
+  }
+  var itemsPerPage = 4;
+  Follow.find({
+    user: userId
+  })
+    .populate({
+      // sustituir el campo followed por el objeto entero
+      path: "followed"
+    })
+    .paginate(page, itemsPerPage, (err, follows, totalDoc) => {
+      if (err)
+        return res.status(500).send({
+          message: "Error en el servidor." + err
+        });
+      if (!follows)
+        return res.status(404).send({
+          message: "No estás siguiendo a ningun usuario." + err
+        });
+        return res.status(200).send({
+          total: totalDoc,
+          pages: Math.ceil(totalDoc/itemsPerPage),
+           follows           
+        });
 
+    });
+
+  // en el caso de que no llegue se usa el user._id del usuario identificado
 }
 
 module.exports = {
   prueba,
   saveFollow,
-  deleteFollow
+  deleteFollow,
+  getFollowingUsers
 };

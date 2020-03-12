@@ -17,6 +17,7 @@ api.post('/login', UserController.loginUser);
 api.get('/pruebas', middleware_auth.ensureAuth, UserController.pruebas);
 api.get('/user/:id', middleware_auth.ensureAuth, UserController.getUser);
 api.get('/users/:page?', middleware_auth.ensureAuth, UserController.getUsers);
+api.get('/counters/:id?', middleware_auth.ensureAuth, UserController.getCounters);
 api.put('/updateUser/:id', middleware_auth.ensureAuth, UserController.updateUser);
 // cuando se pasan varios middelwares se pasa un array como 2º parámetro
 api.post('/upload-image-user/:id', [middleware_auth.ensureAuth, md_upload], UserController.upLoadImage);

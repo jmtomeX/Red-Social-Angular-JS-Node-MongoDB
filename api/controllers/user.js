@@ -160,9 +160,9 @@ function getUser(req, res) {
 // función asincrona para ver quién nos sigue o quién seguimos
 async function followThisUser(identity_user_id, user_id) {
   try {
-    // si le sigo a un  usuario me sigue
-    // await hace que se convierta en una llamada sincrona, espera a que le llegue un resultado
-    // si me sigue un  usuario
+    // si le sigo a un  usuario me sigue.
+    // await hace que se convierta en una llamada sincrona, espera a que le llegue un resultado.
+    // si me sigue un  usuario.
     var following = await Follow.findOne({
       user: identity_user_id,
       followed: user_id
@@ -230,10 +230,10 @@ function getUsers(req, res) {
     });
 }
 
-// función sincrona para devolver los ids de usuarios en un array: seguidores y seguidos.
+// función sincrona para devolver los ids de usuarios en un array: seguidores, seguidos y todos los usuarios como objetos
 async function followUsersIds(user_id) {
   var following = await Follow.find({ user: user_id })
-  //quitar campos no requeridos
+    //quitar campos no requeridos
     .select({ _id: 0, __uv: 0, user: 0 })
     .exec()
     .then(follows => {
@@ -250,7 +250,7 @@ async function followUsersIds(user_id) {
     .catch(err => {
       return handleerror(err);
     });
-     // a quien seguimos
+  // a quien seguimos
   var followed = await Follow.find({ followed: user_id })
     .select({ _id: 0, __uv: 0, followed: 0 })
     .exec()
@@ -271,58 +271,30 @@ async function followUsersIds(user_id) {
     followed: followed
   };
 }
-// // función sincrona para devolver los ids de usuarios en un array: seguidores y seguidos.
-// async function followUsersIds(user_id) {
-//   try {
 
-//     var following = await Follow.find({
-//       user: user_id
-//     })
-//       .select({
-//         //quitar campos no requeridos
-//         _id: 0,
-//         __v: 0,
-//         user: 0
-//       })
-//       .exec((err, follows) => {
-//         var follows_clean = [];
-//         follows.forEach(follow => {
-//           follows_clean.push(follow.followed);
-//         });
-//         return follows_clean;
-//       })
-//       .catch(err => {
-//         return handleerror(err);
-//       });
-//     // a quien seguimos
-//     var followed = await Follow.find({
-//       user: user_id
-//     })
-//       .select({
-//         //quitar campos no requeridos
-//         _id: 0,
-//         __v: 0,
-//         followed: 0
-//       })
-//       .exec((err, follows) => {
-//         var follows_clean = [];
-//         follows.forEach(follow => {
-//           follows_clean.push(follow.user);
-//         });
-//         return follows_clean;
-//       })
-//       .catch(err => {
-//         return handleerror(err);
-//       });
+// contador de usuarios
+const getCounters = (req, res) => {
+  let userId = req.user.sub;
+  if(req.params.id){
+      userId = req.params.id;      
+  }
+  getCountFollow(userId).then((value) => {
+      return res.status(200).send(value);
+  })
+}
 
-//     return {
-//       following: following,
-//       followed: followed
-//     }
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
+const getCountFollow = async (user_id) => {
+  try{
+      // Lo hice de dos formas. "following" con callback de countDocuments y "followed" con una promesa
+      let following = await Follow.countDocuments({"user": user_id},(err, count) => { return count });
+      let followed = await Follow.countDocuments({"followed": user_id}).then(count => count);
+
+      return { following, followed }
+      
+  } catch(e){
+      console.log(e);
+  }
+}
 
 //Edición de datos de usuario
 function updateUser(req, res) {
@@ -451,7 +423,8 @@ module.exports = {
   loginUser,
   getUser,
   getUsers,
+  getCounters,
   updateUser,
   upLoadImage,
-  getImageFile
+  getImageFile,
 };

@@ -147,7 +147,7 @@ function getTheFollows(req, res) {
   var userId = req.user.sub;
   
   var find = Follow.find({ user: userId }); // saca los usuarios que sigo
-  
+  // si vienen paámetros en la url
   if(req.params.followed) {
     find = Follow.find({ followed: userId }); // saca los usuarios que me siguen
   }

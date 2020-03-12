@@ -1,5 +1,6 @@
 "use strict";
 var User = require("../models/User");
+var Follow = require("../models/Follow");
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require("../services/jwt");
 const pagination = require("mongoose-pagination");
@@ -139,11 +140,59 @@ function getUser(req, res) {
   var userId = req.params.id;
   User.findById(userId, (err, user) => {
     if (err) return res.status(500).send({ message: "Error en la petición" });
+
     if (!user)
       return res.status(404).send({ message: "El usuario no existe." });
-
-    return res.status(200).send({ user });
+    // Comprobar seguimiento de usuarios si seguimos o nos siguen.
+    // comprobamos que el usuario actual sigue al usuario que llega por la url
+    // al ser una promesa lo que devuelve usamos then
+    followThisUser(req.user.sub, userId).then(value => {
+      user.password = undefined;
+      return res.status(200).send({
+        user,
+        following: value.following,
+        followed: value.followed
+      }); // si follow devuleve null no le sigo
+    });
   });
+}
+
+// función asincrona para ver quién nos sigue o quién seguimos
+async function followThisUser(identity_user_id, user_id) {
+  try {
+    // si le sigo a un  usuario me sigue
+    // await hace que se convierta en una llamada sincrona, espera a que le llegue un resultado
+    // si me sigue un  usuario
+    var following = await Follow.findOne({
+      user: identity_user_id,
+      followed: user_id
+    })
+      .exec()
+      .then(following => {
+        return following;
+      })
+      .catch(err => {
+        return handleerror(err);
+      });
+    var followed = await Follow.findOne({
+      user: user_id,
+      followed: identity_user_id
+    })
+      .exec()
+      .then(followed => {
+        return followed;
+      })
+      .catch(err => {
+        return handleerror(err);
+      });
+    //devolvemos una promesa al ser async, con un objeto
+    return {
+      following: following,
+      followed: followed
+    };
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 // Devovlver un listado de usuarios paginado
@@ -168,14 +217,112 @@ function getUsers(req, res) {
         return res
           .status(404)
           .send({ message: "No hay usuarios disponibles." });
-      return res.status(200).send({
-        // esto sería redundante
-        users: users,
-        total,
-        pages: Math.ceil(total / ITEMS_PER_PAGE) // número de páginas que va a haber
+      followUsersIds(identity_user_id).then(value => {
+        return res.status(200).send({
+          // esto sería redundante
+          users: users,
+          users_following: value.following,
+          users_followed: value.followed,
+          total,
+          pages: Math.ceil(total / ITEMS_PER_PAGE) // número de páginas que va a haber
+        });
       });
     });
 }
+
+// función sincrona para devolver los ids de usuarios en un array: seguidores y seguidos.
+async function followUsersIds(user_id) {
+  var following = await Follow.find({ user: user_id })
+  //quitar campos no requeridos
+    .select({ _id: 0, __uv: 0, user: 0 })
+    .exec()
+    .then(follows => {
+      var follows_clean = [];
+
+      follows.forEach(follow => {
+        follows_clean.push(follow.followed);
+      });
+
+      console.log(follows_clean);
+
+      return follows_clean;
+    })
+    .catch(err => {
+      return handleerror(err);
+    });
+     // a quien seguimos
+  var followed = await Follow.find({ followed: user_id })
+    .select({ _id: 0, __uv: 0, followed: 0 })
+    .exec()
+    .then(follows => {
+      var follows_clean = [];
+      follows.forEach(follow => {
+        follows_clean.push(follow.user);
+      });
+
+      return follows_clean;
+    })
+    .catch(err => {
+      return handleerror(err);
+    });
+  console.log(following);
+  return {
+    following: following,
+    followed: followed
+  };
+}
+// // función sincrona para devolver los ids de usuarios en un array: seguidores y seguidos.
+// async function followUsersIds(user_id) {
+//   try {
+
+//     var following = await Follow.find({
+//       user: user_id
+//     })
+//       .select({
+//         //quitar campos no requeridos
+//         _id: 0,
+//         __v: 0,
+//         user: 0
+//       })
+//       .exec((err, follows) => {
+//         var follows_clean = [];
+//         follows.forEach(follow => {
+//           follows_clean.push(follow.followed);
+//         });
+//         return follows_clean;
+//       })
+//       .catch(err => {
+//         return handleerror(err);
+//       });
+//     // a quien seguimos
+//     var followed = await Follow.find({
+//       user: user_id
+//     })
+//       .select({
+//         //quitar campos no requeridos
+//         _id: 0,
+//         __v: 0,
+//         followed: 0
+//       })
+//       .exec((err, follows) => {
+//         var follows_clean = [];
+//         follows.forEach(follow => {
+//           follows_clean.push(follow.user);
+//         });
+//         return follows_clean;
+//       })
+//       .catch(err => {
+//         return handleerror(err);
+//       });
+
+//     return {
+//       following: following,
+//       followed: followed
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
 
 //Edición de datos de usuario
 function updateUser(req, res) {
@@ -212,20 +359,20 @@ function updateUser(req, res) {
 
 function upLoadImage(req, res) {
   var userId = req.params.id;
-  
+
   if (req.files) {
     var file_path = req.files.image.path;
     // nombre imagen
     var filename = path.basename(file_path);
     var ext_split = filename.split(".");
     var file_ext = ext_split[1];
-      // compobar que son sus propios datos comprobando los ids
-  if (userId != req.user.sub) {
-    return res
-      .status(500)
-      .send({ message: "No tienes permiso para actualizar esta cuenta." });
-  }     
-  
+    // compobar que son sus propios datos comprobando los ids
+    if (userId != req.user.sub) {
+      return res
+        .status(500)
+        .send({ message: "No tienes permiso para actualizar esta cuenta." });
+    }
+
     if (
       file_ext == "png" ||
       file_ext == "jpg" ||
@@ -233,36 +380,34 @@ function upLoadImage(req, res) {
       file_ext == "gif"
     ) {
       // comprobar si existe la imagen
-      fs.exists(file_path,function(exists){  
-        if(exists){
-               // actualizar documento de usuario
-      User.findByIdAndUpdate(
-        userId,
-        { image: filename },
-        { new: true },
-        (err, userUpdated) => {
-          if (err)
-            return res.status(500).send({ message: "Error en la petición" });
-          if (!userUpdated) {
-            return res
-              .status(404)
-              .send({ message: "No se ha podido actualizar el usuario" });
-          }
-          return res.status(200).send({
-            // si todo fue bien
-            // devolvemos el usuario actualizado
-            user: userUpdated
-          });
+      fs.exists(file_path, function(exists) {
+        if (exists) {
+          // actualizar documento de usuario
+          User.findByIdAndUpdate(
+            userId,
+            { image: filename },
+            { new: true },
+            (err, userUpdated) => {
+              if (err)
+                return res
+                  .status(500)
+                  .send({ message: "Error en la petición" });
+              if (!userUpdated) {
+                return res
+                  .status(404)
+                  .send({ message: "No se ha podido actualizar el usuario" });
+              }
+              return res.status(200).send({
+                // si todo fue bien
+                // devolvemos el usuario actualizado
+                user: userUpdated
+              });
+            }
+          );
+        } else {
+          return res.status(500).send({ message: "La imagen no existe." });
         }
-      );
-        }else{
-          return res
-          .status(500)
-          .send({ message: "La imagen no existe." });
-        }
-      }); 
-
- 
+      });
     } else {
       // borrar archivo si ha habido error
       return removeFilesOfUploads(res, file_path, "La extensión no es válida.");
@@ -278,10 +423,10 @@ function upLoadImage(req, res) {
 function getImageFile(req, res) {
   // parámetro que recibe por la url
   var image_file = req.params.imageFile;
-  var path_file = './uploads/users/' + image_file;
+  var path_file = "./uploads/users/" + image_file;
 
   console.log(path_file);
-  fs.exists(path_file, (exists) => {
+  fs.exists(path_file, exists => {
     if (exists) {
       res.sendFile(path.resolve(path_file));
     } else {
@@ -297,7 +442,6 @@ function removeFilesOfUploads(res, file_path, message) {
     return res.status(200).send({ message: message });
   });
 }
-
 
 //exportarla en modo de objeto
 module.exports = {

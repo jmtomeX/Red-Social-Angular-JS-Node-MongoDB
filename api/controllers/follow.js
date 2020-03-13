@@ -1,6 +1,5 @@
 "use strict";
-//var path = require('path');
-//var fs = require('fs');
+
 var mongoosePaginate = require("mongoose-pagination");
 
 // cargar modelos
@@ -12,10 +11,6 @@ function prueba(req, res) {
     message: "Desde controlador Follows"
   });
 }
-
-module.exports = {
-  prueba
-};
 
 function saveFollow(req, res) {
   var params = req.body;
@@ -152,7 +147,7 @@ function getTheFollows(req, res) {
     find = Follow.find({ followed: userId }); // saca los usuarios que me siguen
   }
   find.populate("user followed") 
-    .exec((err, follows) => {// con exec ejecutamos la consulta
+    .exec((err, follows) => { // con exec ejecutamos la consulta
       if (!follows)
         return res.status(404).send({
           message: "No sigues a ningún usuario."

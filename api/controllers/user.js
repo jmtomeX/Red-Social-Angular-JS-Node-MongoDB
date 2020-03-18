@@ -1,6 +1,6 @@
 "use strict";
-var User = require("../models/User");
-var Follow = require("../models/Follow");
+var User = require("../models/user");
+var Follow = require("../models/follow");
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require("../services/jwt");
 const pagination = require("mongoose-pagination");
@@ -285,7 +285,7 @@ const getCounters = (req, res) => {
 
 const getCountFollow = async (user_id) => {
   try{
-      // Lo hice de dos formas. "following" con callback de countDocuments y "followed" con una promesa
+     
       let following = await Follow.countDocuments({"user": user_id},(err, count) => { return count });
       let followed = await Follow.countDocuments({"followed": user_id}).then(count => count);
 

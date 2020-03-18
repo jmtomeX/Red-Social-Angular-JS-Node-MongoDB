@@ -7,11 +7,11 @@ var Schema = mongoose.Schema;
 var FollowSchema = Schema({
   user: {
     type: Schema.ObjectId,
-    ref: "User"
+    ref: 'User'
   },
   followed: {
     type: Schema.ObjectId,
-    ref: "User"
+    ref: 'User'
   }
 });
 

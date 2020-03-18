@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var UserSchema = Schema({
+  _id: Schema.ObjectId,
   name: String,
   surname: String,
   nick: String,

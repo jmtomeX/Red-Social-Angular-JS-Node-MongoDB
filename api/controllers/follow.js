@@ -3,8 +3,8 @@
 var mongoosePaginate = require("mongoose-pagination");
 
 // cargar modelos
-var User = require("../models/User");
-var Follow = require("../models/Follow");
+var User = require("../models/user");
+var Follow = require("../models/follow");
 
 function prueba(req, res) {
   res.status(200).send({
@@ -135,8 +135,7 @@ function getFollowedUsers(req, res) {
         follows
       });
     });
-}
-
+  }
 // devolver listados de usuarios que me siguen  o usuarios que sigo, sin paginar
 function getTheFollows(req, res) {
   var userId = req.user.sub;

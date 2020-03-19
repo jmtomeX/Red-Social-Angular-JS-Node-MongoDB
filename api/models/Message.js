@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var MessageSchema = Schema({
-  emmmited: {
+  emmmiter: {
     type: Schema.ObjectId,
     ref: "User"
   },
@@ -14,7 +14,8 @@ var MessageSchema = Schema({
     ref: "User"
   },
   text: String,
-  created_at: String
+  created_at: String,
+  viewed: String
 });
 
 module.exports = mongoose.model("Message", MessageSchema);

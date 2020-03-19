@@ -11,6 +11,7 @@ var app = express();
 const user_routes = require('./routes/user');
 const follow_routes = require('./routes/follow');
 const publication_routes = require('./routes/publication');
+const messages_routes = require('./routes/messages');
 //middelwares
 app.use(bodyParser.urlencoded({ extended: false }));
 // para que convierta a json cada petición a nuestro backend
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use('/api', user_routes);
 app.use('/api', follow_routes);
 app.use('/api', publication_routes);
+app.use('/api', messages_routes);
 
 //exportar
 module.exports = app;

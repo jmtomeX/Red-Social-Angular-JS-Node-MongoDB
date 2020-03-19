@@ -176,7 +176,7 @@ function getPublications(req, res) {
   Follow.find({
     user: user_id
   })
-    .populate( "followed" ) // sustituimos el id del usuario por el objeto completo. que se carguen los datos del objeto que está relacionado
+    .populate("followed") // sustituimos el id del usuario por el objeto completo. que se carguen los datos del objeto que está relacionado
     .exec((err, follows) => {
       if (err)
         return res.status(500).send({
@@ -235,8 +235,7 @@ function deletePublication(req, res) {
   Publication.find({
     user: req.user.sub,
     _id: publicationId
-  })
-  .deleteOne((err, publicationRemoved) => {
+  }).deleteOne(err => {
     if (err)
       return res.status(500).send({
         message: "Error al borrar la publicación."
@@ -246,8 +245,100 @@ function deletePublication(req, res) {
         message: "No se ha borrado la publicación."
       });
     return res.status(200).send({
-      publication: publicationRemoved
+      message: "Publicación eliminada correctamente."
     });
+  });
+}
+
+function upLoadImage(req, res) {
+  var publicationId = req.params.id;
+
+  if (req.files) {
+    var file_path = req.files.image.path;
+    // nombre imagen
+    var filename = path.basename(file_path);
+    var ext_split = filename.split(".");
+    var file_ext = ext_split[1];
+
+    if (
+      file_ext == "png" ||
+      file_ext == "jpg" ||
+      file_ext == "jpeg" ||
+      file_ext == "gif"
+    ) {
+      // comprobar si existe la imagen
+      fs.exists(file_path, function(exists) {
+        if (exists) {
+          // comprobar que el usuario es el logueado y la publicación es correcta
+          Publication.findOne({ // al no haber no ser el usuario devuelve un array vacio por lo que hay que usar findOne
+            user: req.user.sub,
+            _id: publicationId
+          }).exec((err, publication) => {
+            console.log("Desde publicación :" + publication);
+            if (publication) {
+              // actualizar documento de publicación
+              Publication.findByIdAndUpdate(
+                publicationId,
+                { file: filename },
+                { new: true },
+                (err, publicationUpdated) => {
+                  if (err)
+                    return res
+                      .status(500)
+                      .send({ message: "Error en la petición" });
+                  if (!publicationUpdated) {
+                    return res.status(404).send({
+                      message: "No se ha podido actualizar el usuario"
+                    });
+                  }
+                  return res.status(200).send({
+                    // si todo fue bien
+                    // devolvemos la publicación actualizada
+                    publication: publicationUpdated
+                  });
+                }
+              );
+            } else {
+              removeFilesOfUploads(res, file_path, "No tienes permiso para actualizar esta publicación.");
+            }
+          });
+        } else {
+          return res.status(500).send({ message: "La imagen no existe." });
+        }
+      });
+    } else {
+      // borrar archivo si ha habido error
+      return removeFilesOfUploads(res, file_path, "La extensión no es válida.");
+    }
+  } else {
+    return res.status(200).send({
+      message: "No se han subido imagenes"
+    });
+  }
+}
+
+// devolver imagen usuario
+function getImageFile(req, res) {
+  // parámetro que recibe por la url
+  var image_file = req.params.imageFile;
+  var path_file = "./uploads/publications/" + image_file;
+
+  console.log(path_file);
+  fs.exists(path_file, exists => {
+    if (exists) {
+      res.sendFile(path.resolve(path_file));
+    } else {
+      return res.status(200).send({
+        message: "No existe la imagen..."
+      });
+    }
+  });
+}
+
+function removeFilesOfUploads(res, file_path, message) {
+  fs.unlink(file_path, err => {
+    console.log("Eliminado el archivo :" + file_path)
+    return res.status(200).send({ message: message });
   });
 }
 
@@ -256,5 +347,7 @@ module.exports = {
   savePublication,
   getPublications,
   getPublication,
-  deletePublication
+  deletePublication,
+  upLoadImage,
+  getImageFile
 };

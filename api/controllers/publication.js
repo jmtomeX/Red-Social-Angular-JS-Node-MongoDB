@@ -49,7 +49,7 @@ function getPublictions(req, res) {
     // si existe un valor por la url, se lo damos a page
     page = req.params.page;
   }
-  var itemsPerPage = 4;
+  const ITEMS_PER_PAGE = 4;
   // recoger el ususario identificado
   const user_id = req.user.sub;
 
@@ -73,7 +73,7 @@ function getPublictions(req, res) {
       })
         .sort("-created_at") // ordenar en orden inverso
         .populate("user")
-        .paginate(page, itemsPerPage, (err, publications, total) => {
+        .paginate(page, ITEMS_PER_PAGE, (err, publications, total) => {
           if (err)
             return res.status(500).send({
               message: "Error al devolver las publicaciones."
@@ -84,7 +84,7 @@ function getPublictions(req, res) {
             });
           return res.status(200).send({
             total_items: total,
-            pages: Math.ceil(total / itemsPerPage),
+            pages: Math.ceil(total / ITEMS_PER_PAGE),
             page,
             publications
           });
@@ -102,7 +102,7 @@ function getPublictions(req, res) {
 //     // si existe un valor por la url, se lo damos a page
 //     page = req.params.page;
 //   }
-//   var itemsPerPage = 4;
+//   const ITEMS_PER_PAGE = 4;
 //   // recoger el ususario identificado
 //   const user_id = req.user.sub;
 
@@ -123,7 +123,7 @@ function getPublictions(req, res) {
 //       });
 //       //console.log(follows_clean);
 //       // buscar las publicaciones de los usuarios que sigo
-//       getPublicationFollowed(user_id, follows_clean, page,itemsPerPage).then((value) => {
+//       getPublicationFollowed(user_id, follows_clean, page,ITEMS_PER_PAGE).then((value) => {
 //         console.log(value);
 //         return res.status(200).send({value});
 //     })
@@ -131,14 +131,14 @@ function getPublictions(req, res) {
 //     });
 // }
 
-// const getPublicationFollowed = async (user_id, follows_clean,page,itemsPerPage) => {
+// const getPublicationFollowed = async (user_id, follows_clean,page,ITEMS_PER_PAGE) => {
 //   try {
 //     Publication.find({
 //       user: { $in: follows_clean } // busca las coincidencias dentro de un  array del usuario
 //     })
 //       .sort("-created_at") // ordenar en orden inverso
 //       .populate("user")
-//       .paginate(page, itemsPerPage, (err, publications, total) => {
+//       .paginate(page, ITEMS_PER_PAGE, (err, publications, total) => {
 //         if (err)
 //           return res.status(500).send({
 //             message: "Error al devolver las publicaciones."
@@ -149,7 +149,7 @@ function getPublictions(req, res) {
 //           });
 //         return {
 //           total_items: total,
-//           pages: Math.ceil(total / itemsPerPage),
+//           pages: Math.ceil(total / ITEMS_PER_PAGE),
 //           page,
 //           publications
 //         }
@@ -167,7 +167,7 @@ function getPublications(req, res) {
     // si existe un valor por la url, se lo damos a page
     page = req.params.page;
   }
-  var itemsPerPage = 4;
+  var ITEMS_PER_PAGE = 4;
   // recoger el ususario identificado
   const user_id = req.user.sub;
   console.log("Usuario activo: " + user_id);
@@ -193,7 +193,7 @@ function getPublications(req, res) {
       })
         .sort("-created_at") // ordenar en orden inverso
         .populate("user")
-        .paginate(page, itemsPerPage, (err, publications, total) => {
+        .paginate(page, ITEMS_PER_PAGE, (err, publications, total) => {
           if (err)
             return res.status(500).send({
               message: "Error al devolver las publicaciones."
@@ -204,7 +204,7 @@ function getPublications(req, res) {
             });
           return res.status(200).send({
             total_items: total,
-            pages: Math.ceil(total / itemsPerPage),
+            pages: Math.ceil(total / ITEMS_PER_PAGE),
             page,
             publications
           });

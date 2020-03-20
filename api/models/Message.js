@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var MessageSchema = Schema({
-  emmmiter: {
+  emitter: {
     type: Schema.ObjectId,
     ref: "User"
   },

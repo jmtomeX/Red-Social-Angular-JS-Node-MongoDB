@@ -72,7 +72,7 @@ function getFollowingUsers(req, res) {
     // si no hay páginas, para evitar errores se le pasa el id
     page = req.params.id;
   }
-  var itemsPerPage = 4;
+  const ITEMS_PER_PAGE = 4;
   Follow.find({
     user: userId
   })
@@ -80,7 +80,7 @@ function getFollowingUsers(req, res) {
       // sustituir el campo followed por el objeto entero
       path: "followed"
     })
-    .paginate(page, itemsPerPage, (err, follows, totalDoc) => {
+    .paginate(page, ITEMS_PER_PAGE, (err, follows, totalDoc) => {
       if (err)
         return res.status(500).send({
           message: "Error en el servidor." + err
@@ -91,7 +91,7 @@ function getFollowingUsers(req, res) {
         });
       return res.status(200).send({
         total: totalDoc,
-        pages: Math.ceil(totalDoc / itemsPerPage),
+        pages: Math.ceil(totalDoc / ITEMS_PER_PAGE),
         follows
       });
     });
@@ -112,7 +112,7 @@ function getFollowedUsers(req, res) {
     // si no hay páginas, para evitar errores se le pasa el id
     page = req.params.id;
   }
-  var itemsPerPage = 4;
+  const ITEMS_PER_PAGE = 4;
   Follow.find({
     // Comprobamos quien nos sigue
     followed: userId
@@ -120,7 +120,7 @@ function getFollowedUsers(req, res) {
     .populate(
       "user" // devuelve el objeto user en formato json
     )
-    .paginate(page, itemsPerPage, (err, follows, totalDoc) => {
+    .paginate(page, ITEMS_PER_PAGE, (err, follows, totalDoc) => {
       if (err)
         return res.status(500).send({
           message: "Error en el servidor." + err
@@ -131,7 +131,7 @@ function getFollowedUsers(req, res) {
         });
       return res.status(200).send({
         total: totalDoc,
-        pages: Math.ceil(totalDoc / itemsPerPage),
+        pages: Math.ceil(totalDoc / ITEMS_PER_PAGE),
         follows
       });
     });

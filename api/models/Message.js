@@ -15,7 +15,10 @@ var MessageSchema = Schema({
   },
   text: String,
   created_at: String,
-  viewed: String
+  viewed: {
+    type: Boolean,
+    default: false,
+}
 });
 
 module.exports = mongoose.model("Message", MessageSchema);

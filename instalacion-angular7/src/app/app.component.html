@@ -1,0 +1,125 @@
+
+
+  <div class="ui attached stackable menu">
+    <div class="ui container">
+      <a class="item">
+        <i class="home icon"></i> Inicio
+      </a>
+      <a class="item">
+        <i class="grid layout icon"></i> Galería
+      </a>
+      <a class="item">
+        <i class="mail icon"></i> Chat
+      </a>
+      <div class="ui simple dropdown item">
+        Más
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item"><i class="edit icon"></i> Editar perfil</a>
+          <a class="item"><i class="globe icon"></i> Opciones avanzadas</a>
+          <a class="item"><i class="settings icon"></i> Opciones de cuenta</a>
+        </div>
+      </div>
+      <div class="right item">
+        <div class="ui input"><input type="text" placeholder="Search..."></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="ui raised very padded text container segment padding-top">
+    <h1 class="ui header">{{ description }}</h1>
+    <div class="ui cards">
+      <div class="card">
+        <div class="content">
+          <img
+            class="right floated mini ui image"
+            src="https://semantic-ui.com/images/avatar/large/jenny.jpg"
+          />
+          <div class="header">Elliot Fu</div>
+          <div class="meta">Amigos de Veronika</div>
+          <div class="description">
+            Elliot requested permission to view your contact details
+          </div>
+        </div>
+        <div class="extra content">
+          <div class="ui two buttons">
+            <div class="ui basic green button">Aprobar</div>
+            <div class="ui basic red button">Rechazar</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="content">
+          <img
+            class="right floated mini ui image"
+            src="https://semantic-ui.com/images/avatar/large/steve.jpg"
+          />
+          <div class="header">Jenny Hess</div>
+          <div class="meta">Nuevo Miembro</div>
+          <div class="description">
+            Jenny wants to add you to the group <b>best friends</b>
+          </div>
+        </div>
+        <div class="extra content">
+          <div class="ui two buttons">
+            <div class="ui basic green button">Aprobar</div>
+            <div class="ui basic red button">Rechazar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="ui container">
+      <div class="ui statistics">
+        <div class="brown statistic">
+          <div class="value">
+            136
+          </div>
+          <div class="label">Café</div>
+        </div>
+        <div class="grey statistic">
+          <div class="value">
+            49
+          </div>
+          <div class="label">Horas</div>
+        </div>
+      </div>
+
+      <div class="ui grid">
+        <div class="six wide column">
+          <i class="question circle outline icon"></i>
+          <i class="sign language icon"></i>
+          <i class="tty icon"></i>
+          <i class="universal access icon"></i>
+          <i class="wheelchair icon"></i>
+        </div>
+        <div class="ten wide column">
+          <videosjuegos></videosjuegos>
+        </div>
+      </div>
+
+      <h2 class="ui icon header">
+        <i class="settings icon"></i>
+        <div class="content">
+          Configuraciones Personales
+          <div class="sub header">
+            Administra tus configuraciones personales y define tus preferencias
+            de correo.
+          </div>
+        </div>
+      </h2>
+    </footer>
+
+  </div>
+
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<router-outlet></router-outlet>

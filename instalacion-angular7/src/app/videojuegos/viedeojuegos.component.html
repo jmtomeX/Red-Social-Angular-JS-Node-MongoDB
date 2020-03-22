@@ -1,0 +1,8 @@
+<h2>Componente de pruebas</h2>
+<h3 *ngIf="show_version">Aporta ideas sobre {{tematica}}. {{version}}</h3>
+<h3 [ngStyle]="{'color': 'red'}" *ngIf="!show_version">Aporta ideas sobre {{tematica}}. v 1.1</h3>
+
+<h2>Usuarios conectados</h2>  
+  <ul>
+    <li [ngStyle]="{'list-style':'none'}" *ngFor="let user of users_connect">{{user}}</li>
+  </ul>

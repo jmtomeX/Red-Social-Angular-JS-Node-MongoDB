@@ -23,5 +23,11 @@
   color: red;
 }
 
+/*Registro*/
+h1.ui.header#titleRegister {
+  margin-top: 1em;
+  font-family:var(--font-family-prim);
+}
+
 
 /*Nav*/

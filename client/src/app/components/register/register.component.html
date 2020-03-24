@@ -1,1 +1,143 @@
-<p>{{title}} desde registro</p>
+<div class="ui container">
+  <div class="ui grid">
+    <div class="ten wide column">
+      <h1 id="titleRegister" class="ui header">{{ title }}</h1>
+
+      <form
+        #registerForm="ngForm"
+        (ngSubmit)="onSubmit(registerForm)"
+        class="ui form four wide column"
+      >
+        <div class="field">
+          <label>Nombre</label>
+          <input
+            type="text"
+            name="name"
+            #name="ngModel"
+            [(ngModel)]="user.name"
+            placeholder="Nombre"
+            required
+          />
+          <div *ngIf="!name.valid && name.touched" class="ui negative message">
+            <div class="header">
+              <i class="exclamation triangle icon"></i>
+              El nombre es obligatorio.
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Apellidos</label>
+          <input
+            type="text"
+            name="surname"
+            #surname="ngModel"
+            [(ngModel)]="user.surname"
+            placeholder="Apellidos"
+            required
+          />
+          <div
+            *ngIf="!surname.valid && surname.touched"
+            class="ui negative message"
+          >
+            <div class="header">
+              <i class="exclamation triangle icon"></i>
+              Los apellidos son obligatorios.
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Nick</label>
+          <input
+            type="text"
+            name="nickname"
+            #nickname="ngModel"
+            [(ngModel)]="user.nick"
+            placeholder="Nick"
+            required
+          />
+          <div
+            *ngIf="!nickname.valid && nickname.touched"
+            class="ui negative message"
+          >
+            <div class="header">
+              <i class="exclamation triangle icon"></i>
+              El nick es obligatorio.
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input
+            type="email"
+            name="mail"
+            #mail="ngModel"
+            [(ngModel)]="user.email"
+            placeholder="Email"
+            required
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          />
+          <div *ngIf="!mail.valid && mail.touched" class="ui negative message">
+            <div class="header">
+              <i class="exclamation triangle icon"></i>
+              El email no es correcto.
+            </div>
+          </div>
+        </div>
+        <div class="ui grid">
+          <div class="field eight wide column">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              #password="ngModel"
+              [(ngModel)]="user.password"
+              placeholder="Password"
+              required
+            />
+            <div
+              *ngIf="!password.valid && password.touched"
+              class="ui negative message"
+            >
+              <div class="header">
+                <i class="exclamation triangle icon"></i>
+                La contraseña es obligatoria.
+              </div>
+            </div>
+          </div>
+
+          <div class="field eight wide column">
+            <label>Repita password</label>
+            <input
+              type="password"
+              name="checkpassword"
+              #checkpassword="ngModel"
+              [(ngModel)]="user.checkpassword"
+              placeholder="Nombre"
+              required
+            />
+            <div
+              *ngIf="!checkpassword.valid && checkpassword.touched"
+              class="ui negative message"
+            >
+              <div class="header">
+                <i class="exclamation triangle icon"></i>
+                La contraseña es obligatoria.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" tabindex="0"/>
+            <label>Acepto los Términos y Condiciones</label>
+          </div>
+        </div>
+        <input type="submit" value="{{title}}" class="ui button"  [disabled]="!registerForm.form.valid"/>
+      </form>
+    </div>
+  </div>
+</div>

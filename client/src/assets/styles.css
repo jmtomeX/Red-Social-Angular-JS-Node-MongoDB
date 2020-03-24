@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Baloo+Da+2|Muli&display=swap');
+
+:root{
+--font-family-prim:'Baloo Da 2', cursive;
+--font-family-sec:'Muli', sans-serif;
+}
+/*Nav*/
+.font-primary{
+  font-family: var(--font-family-prim);
+  font-size: 2.5em;
+}
+.font-secundary{
+  font-family: var(--font-family-sec);
+}
+.ui.menu a.item#title span{
+  color:red;
+  font-size: .7em;
+}
+
+.ui.menu a.item#title:hover {
+  background-color:white;
+  color: red;
+}
+
+
+/*Nav*/

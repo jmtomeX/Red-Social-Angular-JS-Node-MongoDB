@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var UserSchema = Schema({
-  _id: Schema.ObjectId,
   name: String,
   surname: String,
   nick: String,
@@ -14,5 +13,13 @@ var UserSchema = Schema({
   role: String,
   image: String
 });
+
+// UserSchema.virtual("password_confirmation") // video 20
+//   .get(() => {
+//     return this.password_confirm;
+//   })
+//   .set(password => {
+//     this.password_confirm = password;
+//   });
 
 module.exports = mongoose.model("User", UserSchema);

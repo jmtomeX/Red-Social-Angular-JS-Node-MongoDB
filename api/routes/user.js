@@ -21,6 +21,7 @@ api.get('/counters/:id?', middleware_auth.ensureAuth, UserController.getCounters
 api.put('/updateUser/:id', middleware_auth.ensureAuth, UserController.updateUser);
 // cuando se pasan varios middelwares se pasa un array como 2º parámetro
 api.post('/upload-image-user/:id', [middleware_auth.ensureAuth, md_upload], UserController.upLoadImage);
+
 api.get('/get-image-user/:imageFile', UserController.getImageFile);
 
 module.exports = api;

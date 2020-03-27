@@ -1,12 +1,26 @@
-<div class="ui container">
+
+  <div class="ui middle aligned center aligned grid">
   <div class="ui grid">
-    <div class="ten wide column">
+    <div class="sixteen wide column">
       <h1 id="titleRegister" class="ui header">{{ title }}</h1>
+
+      <div *ngIf="status=='succes'" class="ui positive message">
+        <div class="header">
+          <i class="user plus icon"></i>
+          Registro completado correctamente. <a [routerLink]="['/login']">Identificate aquí.</a>
+        </div>
+      </div>
+      <div *ngIf="status=='error'" class="ui negative message">
+        <div class="header">
+          <i class="exclamation triangle icon"></i>
+          Intentalo de nuevo.
+        </div>
+      </div>
 
       <form
         #registerForm="ngForm"
         (ngSubmit)="onSubmit(registerForm)"
-        class="ui form four wide column"
+        class="ui large form"
       >
         <div class="field">
           <label>Nombre</label>
@@ -51,14 +65,14 @@
           <label>Nick</label>
           <input
             type="text"
-            name="nickname"
-            #nickname="ngModel"
+            name="nick"
+            #nick="ngModel"
             [(ngModel)]="user.nick"
             placeholder="Nick"
             required
           />
           <div
-            *ngIf="!nickname.valid && nickname.touched"
+            *ngIf="!nick.valid && nick.touched"
             class="ui negative message"
           >
             <div class="header">
@@ -72,14 +86,15 @@
           <label>Correo electrónico</label>
           <input
             type="email"
-            name="mail"
-            #mail="ngModel"
+            name="email"
+            value="angular@gmail.com"
+            #email="ngModel"
             [(ngModel)]="user.email"
             placeholder="Email"
             required
             pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
           />
-          <div *ngIf="!mail.valid && mail.touched" class="ui negative message">
+          <div *ngIf="!email.valid && email.touched" class="ui negative message">
             <div class="header">
               <i class="exclamation triangle icon"></i>
               El email no es correcto.
@@ -107,37 +122,20 @@
               </div>
             </div>
           </div>
-
           <div class="field eight wide column">
-            <label>Repita password</label>
-            <input
-              type="password"
-              name="checkpassword"
-              #checkpassword="ngModel"
-              [(ngModel)]="user.checkpassword"
-              placeholder="Nombre"
-              required
-            />
-            <div
-              *ngIf="!checkpassword.valid && checkpassword.touched"
-              class="ui negative message"
-            >
-              <div class="header">
-                <i class="exclamation triangle icon"></i>
-                La contraseña es obligatoria.
-              </div>
+            <div class="ui checkbox">
+              <input type="checkbox" tabindex="0" />
+              <label>Acepto los Términos y condiciones</label>
             </div>
           </div>
         </div>
-
-        <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" tabindex="0"/>
-            <label>Acepto los Términos y Condiciones</label>
-          </div>
-        </div>
-        <input type="submit" value="{{title}}" class="ui button"  [disabled]="!registerForm.form.valid"/>
+        <input
+          type="submit"
+          value="{{ title }}"
+          class="ui button fluid large red"
+          [disabled]="!registerForm.form.valid"
+        />
       </form>
     </div>
+    </div>
   </div>
-</div>

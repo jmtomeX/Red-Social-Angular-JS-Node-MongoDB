@@ -1,5 +1,4 @@
 "use strict";
-
 const jwt = require("jwt-simple");
 const moment = require("moment");
 const secret = "clave_secreta_cualquira_6gsdfgl45C344_%ldsnalfkm";

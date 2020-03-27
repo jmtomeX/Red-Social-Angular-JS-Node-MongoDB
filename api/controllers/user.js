@@ -32,15 +32,18 @@ function saveUser(req, res) {
     params.surname &&
     params.nick &&
     params.email &&
-    params.password
+    params.password 
   ) {
     user.name = params.name;
     user.surname = params.surname;
     user.nick = params.nick;
     user.email = params.email;
+   
+    // asignar el virtual password_confirmation
+    //user.password_confirmation = params.password_confirmation;
     user.role = "ROLE_USER";
     user.image = null;
-    user.password = params.password;
+  
     // comprobar si existe el email o el nick
     User.find({
       $or: [
@@ -62,13 +65,16 @@ function saveUser(req, res) {
         // cifrar password y guardar
         bcrypt.hash(params.password, null, null, (err, hash) => {
           user.password = hash;
+          console.log(user)
           user.save((err, userStored) => {
             if (err) {
               return res.status(500).send({
                 ok: false,
-                message: "Error al guardar el usuario."
+                message: "Error al guardar el usuario.",
+                err
               });
             }
+            
             if (userStored) {
               res.status(200).send({
                 user: userStored
@@ -84,8 +90,9 @@ function saveUser(req, res) {
       }
     });
   } else {
+    console.log(params)
     res.status(200).send({
-      message: "Envia todos los campos necesarios¡¡"
+      message: "Envia todos los campos necesarios¡¡",
     });
   }
 }

@@ -1,33 +1,55 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css?family=Baloo+Da+2|Muli&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Baloo+Da+2|Muli&display=swap");
 
-:root{
---font-family-prim:'Baloo Da 2', cursive;
---font-family-sec:'Muli', sans-serif;
+:root {
+  --font-family-prim: "Baloo Da 2", cursive;
+  --font-family-sec: "Muli", sans-serif;
+  --color-primary: rgb(#db2828);
 }
 /*Nav*/
-.font-primary{
+.font-primary {
   font-family: var(--font-family-prim);
-  font-size: 2.5em;
+  font-size: 2.5rem;
 }
-.font-secundary{
+.font-secundary {
   font-family: var(--font-family-sec);
+  font-size: 3rem;
 }
-.ui.menu a.item#title span{
-  color:red;
-  font-size: .7em;
+.ui.menu a.item#title span {
+  color: var(--color-primary);
+  font-size: 0.7em;
 }
 
 .ui.menu a.item#title:hover {
-  background-color:white;
-  color: red;
+  background-color: white;
+  color: var(--color-primary);
 }
 
 /*Registro*/
 h1.ui.header#titleRegister {
   margin-top: 1em;
-  font-family:var(--font-family-prim);
+  font-family: var(--font-family-prim);
+  color: var(--color-primary);
 }
-
-
+.primary-color {
+  color: var(--color-primary) !important;
+}
+div#nav-main.ui.secondary.menu {
+  color: aliceblue;
+  width: 100%;
+}
 /*Nav*/
+div.ui.text.menu{
+  margin-right: 2em;
+}
+/* footer*/
+img.ui.image.footer {
+  display: inline;
+  margin-left: 1em;
+}
+img.ui.image {
+  margin-left: 0;
+}
+img.ui.image.angular {
+  margin-bottom: 0.2em;
+}

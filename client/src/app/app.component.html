@@ -1,35 +1,76 @@
-<div class="ui attached stackable menu">
-  <div class="ui container">
-    <div class="ui secondary menu">
-      <a id="title" class="font-primary spacing item">
-        {{ title1 }} <span class="font-secundary">{{ title2 }}</span>
-      </a>
-      <a class="active item" routerLink="/">
-        <i class="home icon"></i>
-        Inicio
-      </a>
-      <a class="item" routerLink="/login">
-        <i class="list icon"></i>
-        Timiline
-      </a>
-      <a class="item">
-        <i class="user circle icon"></i>
-        Gente
-      </a>
-      <div class="right menu">
-        <div class="item">
-          <div class="ui icon input">
-
-            <input type="text" placeholder="Buscar..."/>
-            <i class="circular search link icon"></i>
-          </div>
-        </div>
-        <a class="ui item">
-          <i class="power off icon"></i>
-          Logout
-        </a>
+<div class="ui attached stackable menu ">
+  <div id="nav-main" class="ui secondary menu" *ngIf="identity">
+    <a id="title" class="font-primary spacing item" routerLink="/home">
+      <img
+        class="ui tiny image left floated"
+        src="../assets/images/coronavirus.png"
+      />
+      {{ title1 }}
+      <span class="font-secundary primary-color">{{ title2 }}</span>
+    </a>
+    <a class="item" routerLink="/home" [routerLinkActive]="['active']">
+      <i class="red home icon"></i>
+      Inicio
+    </a>
+    <a class="item" routerLink="/" [routerLinkActive]="['active']">
+      <i class="red list icon"></i>
+      Timiline
+    </a>
+    <a class="item" routerLink="/" [routerLinkActive]="['active']">
+      <i class="red user circle icon"></i>
+      Gente
+    </a>
+    <div class="right floated item">
+      <div class="ui icon input">
+        <input type="text" placeholder="Buscar..." />
+        <i class="red circular search link icon"></i>
       </div>
     </div>
+
+
+
+    <div class="ui right floated item">
+      <img
+        class="ui tiny avatar image"
+        src="../assets/images/franken_monster.png"
+      />
+        <!-- src="http://localhost:3000/api/uploads/users/{{identity.image}}" -->
+    </div>
+    <div class="ui text menu">
+      <div class="ui right dropdown item"> <span class="header">{{ identity.name }}</span> <i class="dropdown icon"></i> <div class="menu">
+          <div class="item"><a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
+            <i class="user icon"></i>
+            Mi perfil
+          </a></div>
+          <div class="item"><a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
+            <i class="edit icon"></i>
+            Mis datos
+          </a></div>
+          <div class="item"><a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
+            <i class="power off icon"></i>
+            Logout
+          </a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui secondary menu" *ngIf="!identity">
+    <a id="title" class="font-primary spacing item" routerLink="/login">
+      <img
+        class="ui tiny image left floated"
+        src="../assets/images/coronavirus.png"
+      />
+      {{ title1 }} <span class="font-secundary">{{ title2 }}</span>
+    </a>
+    <a class="item" routerLink="/login" [routerLinkActive]="['active']">
+      <i class="user icon"></i>
+      Login
+    </a>
+    <a class="item" routerLink="/registro" [routerLinkActive]="['active']">
+      <i class="user plus icon"></i>
+      Registro
+    </a>
   </div>
 </div>
 

@@ -1,16 +1,16 @@
-
-  <div class="ui middle aligned center aligned grid">
+<div class="ui middle aligned center aligned grid">
   <div class="ui grid">
     <div class="sixteen wide column">
       <h1 id="titleRegister" class="ui header">{{ title }}</h1>
 
-      <div *ngIf="status=='succes'" class="ui positive message">
+      <div *ngIf="status == 'succes'" class="ui positive message">
         <div class="header">
           <i class="user plus icon"></i>
-          Registro completado correctamente. <a [routerLink]="['/login']">Identificate aquí.</a>
+          Registro completado correctamente.
+          <a [routerLink]="['/login']">Identificate aquí.</a>
         </div>
       </div>
-      <div *ngIf="status=='error'" class="ui negative message">
+      <div *ngIf="status == 'error'" class="ui negative message">
         <div class="header">
           <i class="exclamation triangle icon"></i>
           Intentalo de nuevo.
@@ -71,10 +71,7 @@
             placeholder="Nick"
             required
           />
-          <div
-            *ngIf="!nick.valid && nick.touched"
-            class="ui negative message"
-          >
+          <div *ngIf="!nick.valid && nick.touched" class="ui negative message">
             <div class="header">
               <i class="exclamation triangle icon"></i>
               El nick es obligatorio.
@@ -94,7 +91,10 @@
             required
             pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
           />
-          <div *ngIf="!email.valid && email.touched" class="ui negative message">
+          <div
+            *ngIf="!email.valid && email.touched"
+            class="ui negative message"
+          >
             <div class="header">
               <i class="exclamation triangle icon"></i>
               El email no es correcto.
@@ -124,7 +124,7 @@
           </div>
           <div class="field eight wide column">
             <div class="ui checkbox">
-              <input type="checkbox" tabindex="0" />
+              <input id="item" type="checkbox" ngModel required />
               <label>Acepto los Términos y condiciones</label>
             </div>
           </div>
@@ -137,5 +137,5 @@
         />
       </form>
     </div>
-    </div>
   </div>
+</div>

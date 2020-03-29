@@ -65,7 +65,6 @@ function saveUser(req, res) {
         // cifrar password y guardar
         bcrypt.hash(params.password, null, null, (err, hash) => {
           user.password = hash;
-          console.log(user)
           user.save((err, userStored) => {
             if (err) {
               return res.status(500).send({
@@ -74,7 +73,7 @@ function saveUser(req, res) {
                 err
               });
             }
-            
+            // ok 
             if (userStored) {
               res.status(200).send({
                 user: userStored

@@ -33,16 +33,16 @@ export class LoginComponent implements OnInit {
     // loguear al usuario y conseguir los sus datos
     this._userService.signup(this.user).subscribe(
       response => {
-        console.log("Desde la res " + this.user + "respuesta " + response.user);
         this.identity = response.user;
         if(!this.identity || !this.identity._id){
           this.status = 'error'
         }
-        this.status = 'succes';
         // persistir datos del usuario.
         localStorage.setItem('identity',JSON.stringify(this.identity));
         //recoger el token
         this.getToken();
+
+        // Recoger contadores o estadisticas del usuario
 
       },
       error => {
@@ -59,19 +59,18 @@ export class LoginComponent implements OnInit {
     // le pasamos el valor true para el token
     this._userService.signup(this.user, 'true').subscribe(
       response => {
-        console.log("Desde la res " + this.user + "respuesta " + response.user);
         this.token = response.token;
         console.log(this.token);
         console.log(this.identity);
         if(this.token.length <= 0){
           this.status = 'error'
         }
-        this.status = 'succes';
+
         // persistir token del usuario.
         // localStorage no guardo objetos por lo que hay que pasarlo a json
         localStorage.setItem('token',this.token);
         //recoger contadores o estadisticas del usuario
-
+        this.getCounters();
       },
       error => {
         var errorMessage = <any>error;
@@ -83,4 +82,18 @@ export class LoginComponent implements OnInit {
     );
   }
 
+  getCounters() {
+    this._userService.getCounters().subscribe(
+      response => {
+        console.log(response);
+        localStorage.setItem('stats', JSON.stringify(response));
+        this.status ='succes';
+        this._router.navigate(['/']);
+      },
+      error => {
+        console.log("Error desde login.component getCounter " + <any>error);
+      }
+
+    )
+  }
 }

@@ -27,8 +27,6 @@
       </div>
     </div>
 
-
-
     <div class="ui right floated item">
       <img
         class="ui tiny avatar image"
@@ -36,26 +34,26 @@
       />
         <!-- src="http://localhost:3000/api/uploads/users/{{identity.image}}" -->
     </div>
-    <div class="ui text menu">
-      <div class="ui right dropdown item"> <span class="header">{{ identity.name }}</span> <i class="dropdown icon"></i> <div class="menu">
-          <div class="item"><a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
+    <div class="ui text dropdown menu">
+      <div class="ui right item"> <span class="header">{{ identity.name }}</span> <i class="dropdown icon"></i> <div class="menu">
+          <a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
             <i class="user icon"></i>
             Mi perfil
-          </a></div>
-          <div class="item"><a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
+          </a>
+          <a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
             <i class="edit icon"></i>
             Mis datos
-          </a></div>
-          <div class="item"><a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
+          </a>
+          <a class="ui right floated item" (click)="logout()">
             <i class="power off icon"></i>
             Logout
-          </a></div>
+          </a>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="ui secondary menu" *ngIf="!identity">
+  <div id="nav-main" class="ui secondary menu" *ngIf="!identity">
     <a id="title" class="font-primary spacing item" routerLink="/login">
       <img
         class="ui tiny image left floated"
@@ -63,11 +61,12 @@
       />
       {{ title1 }} <span class="font-secundary">{{ title2 }}</span>
     </a>
-    <a class="item" routerLink="/login" [routerLinkActive]="['active']">
+    <div class="spacing"></div>
+    <a class="item " routerLink="/login" [routerLinkActive]="['active']">
       <i class="user icon"></i>
       Login
     </a>
-    <a class="item" routerLink="/registro" [routerLinkActive]="['active']">
+    <a class=" item" routerLink="/registro" [routerLinkActive]="['active']">
       <i class="user plus icon"></i>
       Registro
     </a>

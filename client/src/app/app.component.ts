@@ -1,5 +1,6 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { UserService } from './services/user.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 
 declare var $: any;
@@ -18,6 +19,8 @@ export class AppComponent implements OnInit, DoCheck {
 
   constructor(
     private _userService: UserService,
+    private _router: Router,
+    private _route: ActivatedRoute
   ){
     this.title1 = 'Coronavirus';
     this.title2 = 'Metting';
@@ -39,8 +42,8 @@ export class AppComponent implements OnInit, DoCheck {
       action: 'combo'
     })
   });
-
-  // $('div').click(function(){alert('Wass up!'); });
+  // no funciona con la clase ni id
+  // $('.dropdown').click(function(){alert('Wass up!'); });
 
 
   }
@@ -49,5 +52,11 @@ export class AppComponent implements OnInit, DoCheck {
     this.identity = this._userService.getIdentity();
   }
 
+  logout(){
+    localStorage.clear();
+    this.identity = null;
+    // redireccionar
+    this._router.navigate(['/']);
+  }
 
 }

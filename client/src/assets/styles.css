@@ -1,6 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css?family=Baloo+Da+2|Muli&display=swap");
 
+@media all and (max-width: 520px) {
+
+}
+
+@media all and (max-width: 840px) {
+  .spacing {
+    width: 0;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .spacing {
+    width:50vh;
+  }
+}
+
+@media all and (max-width: 1200px) {
+  .spacing {
+    width: 100vh;
+  }
+}
+
 :root {
   --font-family-prim: "Baloo Da 2", cursive;
   --font-family-sec: "Muli", sans-serif;
@@ -24,6 +46,20 @@
   background-color: white;
   color: var(--color-primary);
 }
+div#nav-main.ui.secondary.menu {
+  color: aliceblue;
+  width: 100%;
+}
+#title.font-primary.spacing.item{
+  width: 25%;
+}
+a.ui.right.floated.item {
+  margin-left: 0;
+  padding-left: 0;
+}
+div.ui.text.dropdown.menu {
+  margin-right: 2em;
+}
 
 /*Registro*/
 h1.ui.header#titleRegister {
@@ -34,15 +70,13 @@ h1.ui.header#titleRegister {
 .primary-color {
   color: var(--color-primary) !important;
 }
-div#nav-main.ui.secondary.menu {
-  color: aliceblue;
-  width: 100%;
-}
-/*Nav*/
-div.ui.text.menu{
-  margin-right: 2em;
-}
+
 /* footer*/
+footer {
+  position: absolute;
+  margin-top: 200px;
+  bottom: 0;
+}
 img.ui.image.footer {
   display: inline;
   margin-left: 1em;
@@ -53,3 +87,13 @@ img.ui.image {
 img.ui.image.angular {
   margin-bottom: 0.2em;
 }
+img.ui.mini.image.footer{
+  padding-right: 0.4em;
+
+}
+
+/*general class*/
+.spacing {
+  width: 100vh;
+}
+/*general class*/

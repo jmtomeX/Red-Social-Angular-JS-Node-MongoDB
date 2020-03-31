@@ -1,35 +1,32 @@
-<div class="ui middle aligned center aligned grid">
-  <div class="ui grid">
-    <div class="sixteen wide column">
+<div class="ui center aligned grid">
+    <div class="ui field six wide  column">
       <h1 id="titleRegister" class="ui header">{{ title }}</h1>
 
       <div *ngIf="status == 'succes'" class="ui positive message">
         <div class="header">
           <i class="user plus icon"></i>
-          Registro completado correctamente.
-          <a [routerLink]="['/login']">Identificate aquí.</a>
+          Datos modificados correctamente.
         </div>
       </div>
       <div *ngIf="status == 'error'" class="ui negative message">
         <div class="header">
           <i class="exclamation triangle icon"></i>
-          Intentalo de nuevo.
+          Los datos no se han podido modificar.
         </div>
       </div>
 
       <form
-        #registerForm="ngForm"
-        (ngSubmit)="onSubmit(registerForm)"
+        #userEditForm="ngForm"
+        (ngSubmit)="onSubmit()"
         class="ui large form"
       >
-        <div class="field">
+        <div class="field sixteen">
           <label>Nombre</label>
           <input
             type="text"
             name="name"
             #name="ngModel"
             [(ngModel)]="user.name"
-            placeholder="Nombre"
             required
           />
           <div *ngIf="!name.valid && name.touched" class="ui negative message">
@@ -47,7 +44,6 @@
             name="surname"
             #surname="ngModel"
             [(ngModel)]="user.surname"
-            placeholder="Apellidos"
             required
           />
           <div
@@ -68,7 +64,6 @@
             name="nick"
             #nick="ngModel"
             [(ngModel)]="user.nick"
-            placeholder="Nick"
             required
           />
           <div *ngIf="!nick.valid && nick.touched" class="ui negative message">
@@ -87,7 +82,6 @@
             value="angular@gmail.com"
             #email="ngModel"
             [(ngModel)]="user.email"
-            placeholder="Email"
             required
             pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
           />
@@ -102,41 +96,22 @@
           </div>
         </div>
         <div class="ui grid">
-          <div class="field eight wide column">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              #password="ngModel"
-              [(ngModel)]="user.password"
-              placeholder="Password"
-              required
-            />
-            <div
-              *ngIf="!password.valid && password.touched"
-              class="ui negative message"
-            >
-              <div class="header">
-                <i class="exclamation triangle icon"></i>
-                La contraseña es obligatoria.
-              </div>
-            </div>
+          <div class="field sixteen wide column">
+            <label for="file" class="ui icon button">
+              <i class="file icon"></i>
+              Subir imagen de usuario</label>
+          <input type="file" id="file" style="display:none">
           </div>
-          <div class="field eight wide column">
-            <div class="ui checkbox">
-              <input id="item" type="checkbox" ngModel required />
-              <label>Acepto los Términos y condiciones</label>
-            </div>
-          </div>
+
         </div>
+        <br>
         <input
           type="submit"
           value="{{ title }}"
           class="ui button fluid large red"
-          [disabled]="!registerForm.form.valid"
+          [disabled]="!userEditForm.form.valid"
         />
       </form>
     </div>
-  </div>
 </div>
 <app-footer></app-footer>

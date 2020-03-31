@@ -70,28 +70,6 @@ h1.ui.header#titleRegister {
 .primary-color {
   color: var(--color-primary) !important;
 }
-
-/* footer*/
-footer {
-  position: absolute;
-  margin-top: 200px;
-  bottom: 0;
-}
-img.ui.image.footer {
-  display: inline;
-  margin-left: 1em;
-}
-img.ui.image {
-  margin-left: 0;
-}
-img.ui.image.angular {
-  margin-bottom: 0.2em;
-}
-img.ui.mini.image.footer{
-  padding-right: 0.4em;
-
-}
-
 /*general class*/
 .spacing {
   width: 100vh;

@@ -18,7 +18,6 @@ export class UserService {
   register(user: User): Observable<any> {
     let params = JSON.stringify(user);
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
-    // let headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 
     console.log("Desde el servicio user " + params)
     // llamada a la api
@@ -78,5 +77,12 @@ export class UserService {
       console.log(this.url + 'counters')
       return this._http.get(this.url + 'counters', { headers: headers });
     }
+  }
+
+  updateUser(user: User): Observable<any> {
+    let params = JSON.stringify(user);
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+      .set('Authorization', this.getToken());
+      return this._http.put(this.url + 'updateUser/'+ user._id, params,{ headers: headers });
   }
 }

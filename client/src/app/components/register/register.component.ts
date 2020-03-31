@@ -54,9 +54,7 @@ export class RegisterComponent implements OnInit {
 
 
   }
-
-  validate(control: AbstractControl) {
-
-  }
+  // validate(control: AbstractControl) {
+  // }
 
 }

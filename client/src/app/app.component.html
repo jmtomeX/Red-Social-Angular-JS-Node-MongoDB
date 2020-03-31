@@ -40,7 +40,7 @@
             <i class="user icon"></i>
             Mi perfil
           </a>
-          <a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
+          <a class="ui right floated item" routerLink="/actualizar-usuario" routerLinkActive="['active']">
             <i class="edit icon"></i>
             Mis datos
           </a>
@@ -54,7 +54,7 @@
   </div>
 
   <div id="nav-main" class="ui secondary menu" *ngIf="!identity">
-    <a id="title" class="font-primary spacing item" routerLink="/login">
+    <a id="title" class="font-primary spacing item" routerLink="/home">
       <img
         class="ui tiny image left floated"
         src="../assets/images/coronavirus.png"
@@ -74,3 +74,4 @@
 </div>
 
 <router-outlet></router-outlet>
+

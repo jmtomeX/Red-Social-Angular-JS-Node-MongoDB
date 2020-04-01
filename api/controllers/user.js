@@ -32,18 +32,18 @@ function saveUser(req, res) {
     params.surname &&
     params.nick &&
     params.email &&
-    params.password 
+    params.password
   ) {
     user.name = params.name;
     user.surname = params.surname;
     user.nick = params.nick;
     user.email = params.email;
-   
+
     // asignar el virtual password_confirmation
     //user.password_confirmation = params.password_confirmation;
     user.role = "ROLE_USER";
     user.image = null;
-  
+
     // comprobar si existe el email o el nick
     User.find({
       $or: [
@@ -73,7 +73,7 @@ function saveUser(req, res) {
                 err
               });
             }
-            // ok 
+            // ok
             if (userStored) {
               res.status(200).send({
                 user: userStored
@@ -89,9 +89,9 @@ function saveUser(req, res) {
       }
     });
   } else {
-    console.log(params)
+    console.log(params);
     res.status(200).send({
-      message: "Envia todos los campos necesarios¡¡",
+      message: "Envia todos los campos necesarios¡¡"
     });
   }
 }
@@ -319,8 +319,7 @@ function updateUser(req, res) {
   var userId = req.params.id;
   // recoger el body de la request, para actualizar
   var update = req.body;
-  console.log({ update });
-  console.log("userid " + userId + " id: " + req.user.sub);
+
   // borrar la propiedad password
   delete update.password;
 
@@ -330,20 +329,46 @@ function updateUser(req, res) {
       .status(500)
       .send({ message: "No tienes permiso para actualizar esta cuenta." });
   }
-  // Para que devuelva el objeto acualizado se le pasa como 3º parámetro {new:true}
-  User.findByIdAndUpdate(userId, update, { new: true }, (err, userUpdated) => {
-    if (err) return res.status(500).send({ message: "Error en la petición" });
-    if (!userUpdated) {
+  // comprobar que no exista el nick o mail
+  User.find({
+    $or: [
+      { email: update.email.toLowerCase() },
+      { nick: update.nick.toLowerCase() }
+    ]
+  }).exec((error, users) => {
+    // En el caso de que exista una coincidencia
+    var user_isset = false;
+    users.forEach(user => {
+      if (user && user._id != userId) user_isset = true;
+    });
+    // si existe
+    if (user_isset) {
       return res
         .status(404)
-        .send({ message: "No se ha podido actualizar el usuario" });
+        .send({ message: "El email o el nick ya está en uso." });
     }
 
-    return res.status(200).send({
-      // si todo fue bien
-      // devolvemos el usuario actualizado
-      user: userUpdated
-    });
+    // Para que devuelva el objeto acualizado se le pasa como 3º parámetro {new:true}
+    User.findByIdAndUpdate(
+      userId,
+      update,
+      { new: true },
+      (err, userUpdated) => {
+        if (err)
+          return res.status(500).send({ message: "Error en la petición" });
+        if (!userUpdated) {
+          return res
+            .status(404)
+            .send({ message: "No se ha podido actualizar el usuario" });
+        }
+
+        return res.status(200).send({
+          // si todo fue bien
+          // devolvemos el usuario actualizado
+          user: userUpdated
+        });
+      }
+    );
   });
 }
 

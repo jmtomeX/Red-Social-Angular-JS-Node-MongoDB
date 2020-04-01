@@ -22,7 +22,10 @@
     width: 100vh;
   }
 }
-
+html {
+  min-height: 100%;
+  position: relative;
+}
 :root {
   --font-family-prim: "Baloo Da 2", cursive;
   --font-family-sec: "Muli", sans-serif;
@@ -75,3 +78,10 @@ h1.ui.header#titleRegister {
   width: 100vh;
 }
 /*general class*/
+
+/*user-edit-component*/
+.img-circle {
+  border-radius: 50%;
+  background-color: var(--color-primary);
+}
+

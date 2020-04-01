@@ -1,8 +1,7 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { UserService } from './services/user.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-
-
+import { GLOBAL } from './services/global';
 declare var $: any;
 
 
@@ -16,6 +15,7 @@ export class AppComponent implements OnInit, DoCheck {
   public title1:string;
   public title2:string;
   public identity;
+  public url: string;
 
   constructor(
     private _userService: UserService,
@@ -24,6 +24,7 @@ export class AppComponent implements OnInit, DoCheck {
   ){
     this.title1 = 'Coronavirus';
     this.title2 = 'Metting';
+    this.url = GLOBAL.url;
   }
 
   ngOnInit() {

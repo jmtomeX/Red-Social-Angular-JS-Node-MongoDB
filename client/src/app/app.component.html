@@ -27,12 +27,11 @@
       </div>
     </div>
 
-    <div class="ui right floated item">
+    <div class="ui right floated item" *ngIf="identity && identity.image">
       <img
         class="ui tiny avatar image"
-        src="../assets/images/franken_monster.png"
+        src="{{url + 'get-image-user/' + identity.image}}"
       />
-        <!-- src="http://localhost:3000/api/uploads/users/{{identity.image}}" -->
     </div>
     <div class="ui text dropdown menu">
       <div class="ui right item"> <span class="header">{{ identity.name }}</span> <i class="dropdown icon"></i> <div class="menu">

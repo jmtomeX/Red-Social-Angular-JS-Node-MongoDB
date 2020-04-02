@@ -1,9 +1,10 @@
 
 /* footer*/
 footer {
-  position: absolute;
   bottom: 3em;
   width: 100%;
+  margin-top: 4em;
+  height: 100px;
 }
 img.ui.image.footer {
   display: inline;

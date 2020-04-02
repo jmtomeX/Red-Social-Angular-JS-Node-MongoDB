@@ -88,16 +88,19 @@
           </div>
         </div>
       </div>
-  <div class="ui relaxed items" *ngIf="user.image">
-            <div class="item">
-              <div class="ui tiny image">
-                <img class="ui medium circular image" src="{{url + 'get-image-user/' + user.image}}" />
-              </div>
-              <div class="middle aligned content">
-                <a class="header">Esta es tu imagen de usuario {{user.name}}</a>
-              </div>
+      <div class="ui relaxed items" *ngIf="user.image">
+        <div class="item">
+          <div class="middle aligned content">
+            <div class="ui tiny image">
+              <img
+                class="ui medium circular image"
+                src="{{ url + 'get-image-user/' + user.image }}"
+              />
             </div>
+            <a class="header">Esta es tu imagen de usuario {{ user.name }}</a>
           </div>
+        </div>
+      </div>
 
       <div class="ui grid">
         <div class="field sixteen wide column">
@@ -105,8 +108,6 @@
             <i class="file icon"></i>
             Subir imagen de usuario</label
           >
-
-
 
           <input
             type="file"

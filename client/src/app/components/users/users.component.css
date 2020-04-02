@@ -1,0 +1,12 @@
+.ui.relaxed.grid.container {
+  width: calc(1400px + 3rem) !important;
+}
+.ui.special.cards{
+ padding-left: 120px;
+}
+
+div.blurring.dimmable.image img.img-users{
+  height: 200px;
+  overflow: scroll;
+}
+

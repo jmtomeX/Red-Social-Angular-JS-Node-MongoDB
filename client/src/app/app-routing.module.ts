@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
+import { UsersComponent } from './components/users/users.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
@@ -13,7 +14,11 @@ const routes: Routes = [
   {path:'login', component: LoginComponent,pathMatch: 'full'},
   {path:'registro', component: RegisterComponent,pathMatch: 'full'},
   {path:'home', component: HomeComponent,pathMatch: 'full'},
-  {path:'actualizar-usuario', component: UserEditComponent,pathMatch: 'full'}
+  {path:'actualizar-usuario', component: UserEditComponent,pathMatch: 'full'},
+  {path:'usuarios/:page', component: UsersComponent,pathMatch: 'full'},
+  {path:'usuarios', component: UsersComponent,pathMatch: 'full'},
+  {path:'**', component: HomeComponent}
+
 
 ];
 

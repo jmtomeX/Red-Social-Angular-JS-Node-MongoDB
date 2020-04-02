@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { GLOBAL } from './global';
 import { User } from '../models/user';
@@ -83,6 +84,21 @@ export class UserService {
     let params = JSON.stringify(user);
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
       .set('Authorization', this.getToken());
-      return this._http.put(this.url + 'updateUser/'+ user._id, params,{ headers: headers });
+    return this._http.put(this.url + 'updateUser/' + user._id, params, { headers: headers });
   }
+
+  // recoger usuarios paginados
+  getUsers(page = null): Observable<any> {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+      .set('Authorization', this.getToken());
+    return this._http.get(this.url + 'users/' + page,{ headers: headers });
+  }
+  // recoger un usuario por id
+  getUser(id): Observable<any> {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+      .set('Authorization', this.getToken());
+    return this._http.get(this.url + 'user/' + id, { headers: headers });
+  }
+
+
 }

@@ -85,3 +85,8 @@ h1.ui.header#titleRegister {
   background-color: var(--color-primary);
 }
 
+/* Logo cabezera titulos */
+h4.ui.header.logo-txt {
+  padding-top: 10px;
+  width: 100%;
+}

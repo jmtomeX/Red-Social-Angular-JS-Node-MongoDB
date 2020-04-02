@@ -1,0 +1,51 @@
+<main class="ui four column centered relaxed grid container">
+  <div class="ui middle aligned center aligned grid">
+    <h1 id="titleRegister" class="ui header">{{ title }}</h1>
+
+      <h4 class="ui header logo-txt">
+        <span>CoronavirusMeeting </span>
+        <img
+          class="ui mini image footer"
+          src="../../../assets/images/coronavirus.png"
+        />&nbsp;&nbsp;&nbsp;
+      </h4>
+    <div class="ui special cards">
+      <!-- *************************************** -->
+      <div class="card four wide column" *ngFor="let user of users">
+        <div class="blurring dimmable image">
+          <div class="ui dimmer">
+            <div class="content users">
+              <div class="center">
+                <div class="ui inverted button">Añadir</div>
+              </div>
+            </div>
+          </div>
+          <img *ngIf="user.image"
+            class="img-users"
+            class="img-users"
+            src="{{ url + 'get-image-user/' + user.image }}"
+          />
+          <img *ngIf="!user.image"
+            class="img-users"
+            class="img-users"
+            src="../../../assets/images/coronavirus.png"
+          />
+        </div>
+        <div class="content">
+          <a class="header">{{user.name}}</a>
+          <div class="meta">
+            <span class="date">Created in Sep 2014</span>
+          </div>
+        </div>
+        <div class="extra content">
+          <a>
+            <i class="users icon"></i>
+            29 Members
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- *************************************** -->
+  </div>
+</main>
+<app-footer></app-footer>

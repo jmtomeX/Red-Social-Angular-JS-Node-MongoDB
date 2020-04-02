@@ -10,6 +10,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { UserEditComponent } from './components/user-edit/user-edit.component';
     RegisterComponent,
     HomeComponent,
     FooterComponent,
-    UserEditComponent
+    UserEditComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

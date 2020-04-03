@@ -2,21 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { FollowService } from '../../services/follow.service';
 import { GLOBAL } from '../../services/global';
-import {User } from '../../models/user';
+import { User } from '../../models/user';
+import { Follow } from '../../models/follow';
 declare var $: any;
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
-  providers: [UserService]
+  providers: [UserService, FollowService]
 })
 export class UsersComponent implements OnInit {
   public title: string;
   public token;
   public url: string;
   public identity;
+  public stats;
   public page;
   public pages;
   public next_page;
@@ -31,23 +34,25 @@ export class UsersComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     private _userService: UserService,
+    private _followService: FollowService
   ) {
     this.title = 'Usuarios';
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
+    this.stats = this._userService.getStats();
     this.url = GLOBAL.url;
   }
 
   ngOnInit(): void {
     console.log("Users.component ha sido cargado.");
     this.actualPage();
-
+    this.stats = this._userService.getStats();
   }
   ngDoCheck() {
     $('.special.cards .image').dimmer({
       on: 'hover'
     });
-    console.log(this.users);
+    this.stats = this._userService.getStats();
   }
 
   // recoger la página en la que estamos
@@ -57,8 +62,8 @@ export class UsersComponent implements OnInit {
       let page = +params['page'];
       this.page = page;
 
-      if(!params['page']){
-        page =1;
+      if (!params['page']) {
+        page = 1;
       }
 
       if (!page) {
@@ -78,25 +83,78 @@ export class UsersComponent implements OnInit {
   getUsers(page) {
     this._userService.getUsers(page).subscribe(
       response => {
-        if(!response.users){
+        if (!response.users) {
           this.status = 'error';
-        }else {
-         this.total = response.total;
-         this.users = response.users;
-         this.pages = response.pages;
-         if(page > this.pages){
-           // carga la página 1 de usuarios
-           this._router.navigate(['/gente/',1]);
-         }
+        } else {
+          this.total = response.total;
+          this.users = response.users;
+          this.pages = response.pages;
+          this.follows = response.users_following;
+          console.log(this.follows);
+          if (page > this.pages) {
+            // carga la página 1 de usuarios
+            this._router.navigate(['/gente/', 1]);
+          }
         }
       },
       error => {
         var errorMessage = <any>error;
         console.log(errorMessage);
-        if(errorMessage){
+        if (errorMessage) {
           this.status = 'error';
         }
       }
     );
+  }
+
+  public followUserOver;
+  mouseEnter(user_id) {
+    this.followUserOver = user_id;
+  }
+  mouseLeave(user_id) {
+    //para que no marque ningún botón
+    this.followUserOver = 0;
+  }
+
+  followUSer(followed) {
+    var follow = new Follow('',this.identity._id, followed);
+
+    this._followService.addFollow(this.token, follow).subscribe(
+      response => {
+       if(response.follow)
+       this.status = 'error';
+      },
+      error => {
+        var errorMessage = <any>error;
+        console.log(errorMessage);
+        if (errorMessage) {
+          this.status = 'error';
+        } else {}
+        this.status = 'succes';
+        this.follows.push(followed);
+      }
+    )
+  }
+
+  unfollowUSer(followed) {
+this._followService.deleteFollow(this.token, followed).subscribe(
+response => {
+  // buscar en el array
+  var search = this.follows.indexOf(followed);
+  // eliminarlo del array
+  if(search != -1) {
+    this.follows.splice(search, 1)
+  }
+},
+error => {
+  var errorMessage = <any>error;
+  console.log(errorMessage);
+  if (errorMessage) {
+    this.status = 'error';
+  } else {}
+  this.status = 'succes';
+  this.follows.push(followed);
+}
+)
   }
 }

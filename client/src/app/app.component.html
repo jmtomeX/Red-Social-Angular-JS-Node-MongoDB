@@ -28,18 +28,24 @@
     </div>
 
     <div class="ui right floated item" *ngIf="identity && identity.image">
-      <img
+      <img *ngIf="identity.image"
         class="ui tiny avatar image"
         src="{{url + 'get-image-user/' + identity.image}}"
       />
     </div>
+    <div class="ui right floated item" *ngIf="identity.image == null">
+      <img
+        class="ui tiny avatar image"
+        src="../assets/images/gender.png"
+      />
+    </div>
     <div class="ui text dropdown menu">
       <div class="ui right item"> <span class="header">{{ identity.name }}</span> <i class="dropdown icon"></i> <div class="menu">
-          <a class="ui right floated item" routerLink="/" routerLinkActive="['active']">
+          <a class="ui right floated item" routerLink="/">
             <i class="user icon"></i>
             Mi perfil
           </a>
-          <a class="ui right floated item" routerLink="/actualizar-usuario" routerLinkActive="['active']">
+          <a class="ui right floated item" routerLink="/actualizar-usuario">
             <i class="edit icon"></i>
             Mis datos
           </a>

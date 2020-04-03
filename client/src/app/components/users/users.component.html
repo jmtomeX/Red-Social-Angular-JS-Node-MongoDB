@@ -9,14 +9,48 @@
         src="../../../assets/images/coronavirus.png"
       />&nbsp;&nbsp;&nbsp;
     </h4>
-    <div class="ui special cards">
+    <div class="ui special cards clearfix">
       <!-- *************************************** -->
       <div class="card four wide column" *ngFor="let user of users">
         <div class="blurring dimmable image">
           <div class="ui dimmer" *ngIf="user.nick != identity.nick">
             <div class="content users">
               <div class="center">
-                <a class="ui inverted button">Añadir</a>
+                <a
+                  class="ui orange button"
+                  *ngIf="follows.indexOf(user._id) < 0"
+                  (click)="followUSer(user._id)"
+                  ><i class="plus square outline icon"></i>Seguir</a
+                >
+
+                <div class="ui hidden divider"></div>
+                <!-- Siguiendo usuario -->
+                <!-- si pasamos por encima del botón le pasamos el id al método-->
+                <div
+                  class="ui labeled button"
+                  tabindex="0"
+                  *ngIf="follows.indexOf(user._id) >= 0"
+                  (mouseenter)="mouseEnter(user._id)"
+                  (mouseleave)="mouseLeave(user._id)"
+                  (click)="unfollowUSer(user._id)"
+                >
+                <!-- ese método le asigna un valor a la propiedad followUserOver  -->
+                  <span
+                    *ngIf="user._id == followUserOver; else following"
+                    class="ui red button"
+                  >
+                    <i class="user times icon"></i>Dejar de seguir
+                  </span>
+                  <ng-template #following>
+                    <span class="ui blue button">
+                      <i class="user icon"></i>Siguiendo
+                    </span>
+                  </ng-template>
+                  <a class="ui basic left pointing label">
+                    {{stats.following}}
+                  </a>
+                </div>
+                <!-- Siguiendo usuario -->
               </div>
             </div>
           </div>
@@ -49,20 +83,20 @@
       </div>
     </div>
 
-<!-- ***************** Paginación ********************** -->
-<div class="ui hidden divider"></div>
-  <div class="ui pagination menu">
-    <div *ngIf="page > 1">
-      <a class="active item" [routerLink]="['/gente/', prev_page]">
-        Anterior
-      </a>
-    </div>
-    <div *ngIf="pages != page">
-      <a class="active item" [routerLink]="['/gente/', next_page]">
-        Siguiente
-      </a>
+    <!-- ***************** Paginación ********************** -->
+    <div class="ui hidden divider"></div>
+    <div class="ui pagination menu">
+      <div *ngIf="page > 1">
+        <a class="active item" [routerLink]="['/gente/', prev_page]">
+          Anterior
+        </a>
+      </div>
+      <div *ngIf="pages != page">
+        <a class="active item" [routerLink]="['/gente/', next_page]">
+          Siguiente
+        </a>
+      </div>
     </div>
   </div>
-</div>
 </main>
 <app-footer></app-footer>

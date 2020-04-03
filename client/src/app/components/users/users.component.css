@@ -2,27 +2,36 @@
   width: calc(1400px + 3rem) !important;
   clear: both;
 }
-.ui.special.cards{
- padding-left: 120px;
+.ui.special.cards {
+  padding-left: 120px;
 }
 
-div.blurring.dimmable.image img.img-users{
+div.blurring.dimmable.image img.img-users {
   height: 200px;
   overflow: scroll;
 }
 
-div.ui.pagination.menu{
+div.ui.pagination.menu {
   margin-top: 50px;
 }
 
-div.ui.pagination.menu{
+div.ui.pagination.menu {
   justify-content: center;
   margin-top: 40px;
 }
 
-div.card.four.wide.column:last-of-type{
+div.card.four.wide.column:last-of-type {
   clear: right;
-  margin-right: 400px;
+  margin-right: 600px;
 }
-
-
+.ui.special.cards.clearfix {
+  width: 100%;
+}
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}

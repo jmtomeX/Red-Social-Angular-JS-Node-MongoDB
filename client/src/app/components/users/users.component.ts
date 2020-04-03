@@ -24,6 +24,7 @@ export class UsersComponent implements OnInit {
   public total;
   public users: User[];
   public status: string;
+  public follows;
 
 
   constructor(
@@ -38,21 +39,28 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("USers.component ha sido cargado.");
-
+    console.log("Users.component ha sido cargado.");
     this.actualPage();
 
+  }
+  ngDoCheck() {
     $('.special.cards .image').dimmer({
       on: 'hover'
     });
+    console.log(this.users);
   }
 
   // recoger la página en la que estamos
   actualPage() {
     this._route.params.subscribe(params => {
-      // lo convertimos a entero, se puede convertir poniendole delante +params['page']
-      let page = parseInt(params['page']);
+      // lo convertimos a entero
+      let page = +params['page'];
       this.page = page;
+
+      if(!params['page']){
+        page =1;
+      }
+
       if (!page) {
         page = 1;
       } else {
@@ -78,7 +86,7 @@ export class UsersComponent implements OnInit {
          this.pages = response.pages;
          if(page > this.pages){
            // carga la página 1 de usuarios
-           this._router.navigate(['/usuarios',1]);
+           this._router.navigate(['/gente/',1]);
          }
         }
       },

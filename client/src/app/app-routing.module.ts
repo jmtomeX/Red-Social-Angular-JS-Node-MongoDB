@@ -15,8 +15,8 @@ const routes: Routes = [
   {path:'registro', component: RegisterComponent,pathMatch: 'full'},
   {path:'home', component: HomeComponent,pathMatch: 'full'},
   {path:'actualizar-usuario', component: UserEditComponent,pathMatch: 'full'},
-  {path:'usuarios/:page', component: UsersComponent,pathMatch: 'full'},
-  {path:'usuarios', component: UsersComponent,pathMatch: 'full'},
+  {path:'gente/:page', component: UsersComponent},
+  {path:'gente', component: UsersComponent},
   {path:'**', component: HomeComponent}
 
 

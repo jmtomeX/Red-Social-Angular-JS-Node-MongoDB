@@ -1,5 +1,6 @@
 .ui.relaxed.grid.container {
   width: calc(1400px + 3rem) !important;
+  clear: both;
 }
 .ui.special.cards{
  padding-left: 120px;
@@ -9,4 +10,19 @@ div.blurring.dimmable.image img.img-users{
   height: 200px;
   overflow: scroll;
 }
+
+div.ui.pagination.menu{
+  margin-top: 50px;
+}
+
+div.ui.pagination.menu{
+  justify-content: center;
+  margin-top: 40px;
+}
+
+div.card.four.wide.column:last-of-type{
+  clear: right;
+  margin-right: 400px;
+}
+
 

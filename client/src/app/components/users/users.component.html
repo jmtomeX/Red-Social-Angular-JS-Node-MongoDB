@@ -2,37 +2,40 @@
   <div class="ui middle aligned center aligned grid">
     <h1 id="titleRegister" class="ui header">{{ title }}</h1>
 
-      <h4 class="ui header logo-txt">
-        <span>CoronavirusMeeting </span>
-        <img
-          class="ui mini image footer"
-          src="../../../assets/images/coronavirus.png"
-        />&nbsp;&nbsp;&nbsp;
-      </h4>
+    <h4 class="ui header logo-txt">
+      <span>CoronavirusMeeting </span>
+      <img
+        class="ui mini image footer"
+        src="../../../assets/images/coronavirus.png"
+      />&nbsp;&nbsp;&nbsp;
+    </h4>
     <div class="ui special cards">
       <!-- *************************************** -->
       <div class="card four wide column" *ngFor="let user of users">
         <div class="blurring dimmable image">
-          <div class="ui dimmer">
+          <div class="ui dimmer" *ngIf="user.nick != identity.nick">
             <div class="content users">
               <div class="center">
-                <div class="ui inverted button">Añadir</div>
+                <a class="ui inverted button">Añadir</a>
               </div>
             </div>
           </div>
-          <img *ngIf="user.image"
+          <img
+            *ngIf="user.image"
             class="img-users"
             class="img-users"
             src="{{ url + 'get-image-user/' + user.image }}"
           />
-          <img *ngIf="!user.image"
+          <img
+            *ngIf="!user.image"
             class="img-users"
             class="img-users"
             src="../../../assets/images/coronavirus.png"
           />
         </div>
         <div class="content">
-          <a class="header">{{user.name}}</a>
+          <a class="header">{{ user.name + " " + user.surname }}</a>
+          <div class="left aligned ui ">{{ user.nick }}</div>
           <div class="meta">
             <span class="date">Created in Sep 2014</span>
           </div>
@@ -40,12 +43,26 @@
         <div class="extra content">
           <a>
             <i class="users icon"></i>
-            29 Members
+            Seguidores
           </a>
         </div>
       </div>
     </div>
-    <!-- *************************************** -->
+
+<!-- ***************** Paginación ********************** -->
+<div class="ui hidden divider"></div>
+  <div class="ui pagination menu">
+    <div *ngIf="page > 1">
+      <a class="active item" [routerLink]="['/gente/', prev_page]">
+        Anterior
+      </a>
+    </div>
+    <div *ngIf="pages != page">
+      <a class="active item" [routerLink]="['/gente/', next_page]">
+        Siguiente
+      </a>
+    </div>
   </div>
+</div>
 </main>
 <app-footer></app-footer>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
@@ -14,12 +14,13 @@ declare var $: any;
   styleUrls: ['./users.component.css'],
   providers: [UserService, FollowService]
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, DoCheck {
   public title: string;
   public token;
   public url: string;
   public identity;
   public stats;
+  public conters;
   public page;
   public pages;
   public next_page;
@@ -36,7 +37,7 @@ export class UsersComponent implements OnInit {
     private _userService: UserService,
     private _followService: FollowService
   ) {
-    this.title = 'Usuarios';
+    this.title = 'Listado de usuarios';
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.stats = this._userService.getStats();
@@ -46,14 +47,15 @@ export class UsersComponent implements OnInit {
   ngOnInit(): void {
     console.log("Users.component ha sido cargado.");
     this.actualPage();
-    this.stats = this._userService.getStats();
   }
   ngDoCheck() {
     $('.special.cards .image').dimmer({
       on: 'hover'
     });
     this.stats = this._userService.getStats();
+
   }
+
 
   // recoger la página en la que estamos
   actualPage() {
@@ -115,46 +117,51 @@ export class UsersComponent implements OnInit {
     //para que no marque ningún botón
     this.followUserOver = 0;
   }
+  /********************************************************************** */
+  //********** Comprobar error en response posible error **************** */
+  /********************************************************************** */
 
   followUSer(followed) {
-    var follow = new Follow('',this.identity._id, followed);
-
+    var follow = new Follow('', this.identity._id, followed);
     this._followService.addFollow(this.token, follow).subscribe(
       response => {
-       if(response.follow)
-       this.status = 'error';
+        if (!response.follow) {
+          this.status = 'error';
+        } else {
+        this.status = 'succes';
+          this.follows.push(followed);
+        }
       },
       error => {
         var errorMessage = <any>error;
         console.log(errorMessage);
         if (errorMessage) {
           this.status = 'error';
-        } else {}
-        this.status = 'succes';
-        this.follows.push(followed);
+        }
+
       }
     )
   }
 
   unfollowUSer(followed) {
-this._followService.deleteFollow(this.token, followed).subscribe(
-response => {
-  // buscar en el array
-  var search = this.follows.indexOf(followed);
-  // eliminarlo del array
-  if(search != -1) {
-    this.follows.splice(search, 1)
-  }
-},
-error => {
-  var errorMessage = <any>error;
-  console.log(errorMessage);
-  if (errorMessage) {
-    this.status = 'error';
-  } else {}
-  this.status = 'succes';
-  this.follows.push(followed);
-}
-)
+    this._followService.deleteFollow(this.token, followed).subscribe(
+      response => {
+        // buscar en el array
+        var search = this.follows.indexOf(followed);
+        // eliminarlo del array
+        if (search != -1) {
+          this.follows.splice(search, 1)
+        }
+      },
+      error => {
+        var errorMessage = <any>error;
+        console.log(errorMessage);
+        if (errorMessage) {
+          this.status = 'error';
+        } else { }
+        this.status = 'succes';
+        this.follows.push(followed);
+      }
+    )
   }
 }

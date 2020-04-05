@@ -1,0 +1,89 @@
+<h1 class="ui center aligned header">
+  <i class="id card red icon"></i>{{ title }}
+</h1>
+<div class="ui two column stackable grid container">
+
+  <div class="column">
+    <div class="ui segment">
+      <form class="ui form" #newPubForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label><i class="bullhorn icon"></i> ¿Qué estás pensando?</label>
+          <textarea
+            name="text"
+            #text="ngModel"
+            [(ngModel)]="publication.text"
+            required
+          ></textarea>
+        </div>
+        <div *ngIf="!text.valid && text.touched" class="ui negative message">
+          <div class="header">
+            <i class="exclamation triangle icon"></i>
+            El texto es obligatorio.
+          </div>
+        </div>
+        <label><i class="image outline icon"></i>Sube tu foto</label>
+        <div class="field">
+          <div class="ui action input">
+            <input type="text" placeholder="Sube un archivo" readonly />
+            <input type="file" />
+            <div class="ui icon button">
+              <i class="attach icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <button class="ui active button" type="submit" [disabled]="!newPubForm.valid">
+          <i class="send icon"></i>
+          Publicar
+          </button>
+      </form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="ui segment without-border">
+      <div class="ui link cards">
+        <div class="card">
+          <aside class="image" *ngIf="identity && identity.image">
+            <img
+              *ngIf="identity.image"
+              src="{{ url + 'get-image-user/' + identity.image }}"
+            />
+            <img
+              *ngIf="identity.image == null"
+              src="../assets/images/gender.png"
+            />
+          </aside>
+          <div class="content">
+            <div class="header">{{ identity.name }}</div>
+            <div class="meta">
+              <a>{{ identity.nick }}</a>
+            </div>
+            <div class="description"></div>
+          </div>
+          <div class="extra content">
+            <span>
+              <i class="user icon"></i>
+              {{ stats.following }} Siguiendo
+            </span>
+
+            <span class="right floated">
+              <i class="user icon"></i>
+              Seguidores {{ stats.followed }}
+            </span>
+          </div>
+          <div class="extra content">
+            <div class="ui large transparent left icon input">
+              <span>
+                <img
+                  class="ui mini image"
+                  src="../../../assets/images/coronavirus.png"
+                />
+                Publicaciones {{ stats.publications }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

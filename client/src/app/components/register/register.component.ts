@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck, NgModule } from '@angular/core';
 //import { Routes, RouterModule, Params } from '@angular/router';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
 import { HttpClient } from '@angular/common/http';
 import { AbstractControl, NG_VALIDATORS, NgControl, Validator } from '@angular/forms';
-
+declare var $: any;
 
 @Component({
   selector: 'app-register',
@@ -15,10 +14,15 @@ import { AbstractControl, NG_VALIDATORS, NgControl, Validator } from '@angular/f
   providers: [UserService]
 })
 
-export class RegisterComponent implements OnInit {
+
+export class RegisterComponent implements OnInit, DoCheck {
   public title: string;
   public user: User;
   public status: string;
+  public checked: boolean;
+
+public contact = { name: '', isVIP: false, gender: '' };
+
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
@@ -30,6 +34,17 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Componente register cargado....');
+  }
+
+  ngDoCheck() {
+    $('.ui.checkbox')
+      .checkbox({
+        onChecked: function () {
+          this.checked = true;
+          console.log(this.checked);
+        }
+      })
+      console.log(this.checked);
   }
 
   onSubmit(registerForm) {

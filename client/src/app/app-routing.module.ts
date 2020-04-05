@@ -7,6 +7,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UsersComponent } from './components/users/users.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path:'actualizar-usuario', component: UserEditComponent,pathMatch: 'full'},
   {path:'gente/:page', component: UsersComponent},
   {path:'gente', component: UsersComponent},
+  {path:'timeline', component: TimelineComponent},
   {path:'**', component: HomeComponent}
 
 

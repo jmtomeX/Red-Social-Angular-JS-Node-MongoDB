@@ -34,11 +34,11 @@ export class LoginComponent implements OnInit {
     this._userService.signup(this.user).subscribe(
       response => {
         this.identity = response.user;
-        if(!this.identity || !this.identity._id){
+        if (!this.identity || !this.identity._id) {
           this.status = 'error'
         }
         // persistir datos del usuario.
-        localStorage.setItem('identity',JSON.stringify(this.identity));
+        localStorage.setItem('identity', JSON.stringify(this.identity));
         //recoger el token
         this.getToken();
 
@@ -62,13 +62,13 @@ export class LoginComponent implements OnInit {
         this.token = response.token;
         console.log(this.token);
         console.log(this.identity);
-        if(this.token.length <= 0){
+        if (this.token.length <= 0) {
           this.status = 'error'
         }
 
         // persistir token del usuario.
         // localStorage no guardo objetos por lo que hay que pasarlo a json
-        localStorage.setItem('token',this.token);
+        localStorage.setItem('token', this.token);
         //recoger contadores o estadisticas del usuario
         this.getCounters();
       },
@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
       response => {
         console.log(response);
         localStorage.setItem('stats', JSON.stringify(response));
-        this.status ='succes';
+        this.status = 'succes';
         this._router.navigate(['/']);
       },
       error => {

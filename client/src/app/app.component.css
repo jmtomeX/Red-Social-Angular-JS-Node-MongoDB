@@ -1,3 +1,6 @@
 div.ui.right.floated.item{
   display: inline;
 }
+div.ui.attached.stackable.menu  {
+  margin-bottom: 50px;
+}

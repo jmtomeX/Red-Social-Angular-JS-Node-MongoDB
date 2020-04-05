@@ -35,3 +35,23 @@ div.card.four.wide.column:last-of-type {
   clear: both;
   height: 0;
 }
+
+/* Nuevo diseño */
+.padding-left-2em {
+  padding-left: 2em;
+}
+
+div.content, a.ui.avatar.image{
+  display: inline;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+div.ui.huge.message.img-fondo{
+  background-image: url(../../../assets/images/img-virus.png);
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+  background-color: none;
+}
+
+

@@ -1,0 +1,10 @@
+div.ui.segment.without-border{
+  border:0 !important;
+  border-color:  white;
+  -webkit-box-shadow: 0;
+-moz-box-shadow:0;
+box-shadow: 0;
+}
+.ui.action.input input[type="file"] {
+  display: none;
+}

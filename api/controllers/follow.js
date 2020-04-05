@@ -41,7 +41,6 @@ function saveFollow(req, res) {
 function deleteFollow(req, res) {
   var userId = req.user.sub; // registrado
   var followId = req.params.id; // seguido
-  console.log("Seguidor " + userId + " Seguido " + followId);
   Follow.findOne({
     user: userId,
     followed: followId

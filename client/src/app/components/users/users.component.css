@@ -53,5 +53,12 @@ div.ui.huge.message.img-fondo{
   background-position: bottom;
   background-color: none;
 }
+div.column.height-capacity{
+ height: 800px;
+}
+div.ui.middle.aligned.center.aligned.grid{
+padding-top: 20px;
+padding-bottom: 20px;
+}
 
 

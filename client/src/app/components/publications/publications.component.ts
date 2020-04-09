@@ -1,22 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { PublicationService } from '../../services/publication.service';
 import { GLOBAL } from '../../services/global';
 import { Publication } from '../../models/publication';
 import { User } from '../../models/user';
-
 declare var $: any;
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.css'],
+  selector: 'app-publications',
+  templateUrl: './publications.component.html',
+  styleUrls: ['./publications.component.css'],
   providers: [UserService, PublicationService]
 })
-
-export class TimelineComponent implements OnInit {
+export class PublicationsComponent implements OnInit, DoCheck {
   public title: string;
   public token;
   public url: string;
@@ -26,7 +23,7 @@ export class TimelineComponent implements OnInit {
   public pages;
   public total;
   public items_per_page;
-  public noMore: boolean;
+  public noMore:boolean;
   public publications: Publication[];
   constructor(
     private _userService: UserService,
@@ -34,7 +31,7 @@ export class TimelineComponent implements OnInit {
     private _router: Router,
     private _publicationService: PublicationService
   ) {
-    this.title = "TimeLine"
+    this.title = "Publicaciones"
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.url = GLOBAL.url;
@@ -43,12 +40,11 @@ export class TimelineComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("Timeline se ha cargado correctamente");
+    console.log("publications.component se ha cargado correctamente");
     this.getPublications(this.page);
+  }
 
-    $(function () {
-      $(document).tooltip();
-    });
+  ngDoCheck(): void {
   }
   getPublications(page, adding = false) {
     this._publicationService.getPublications(this.token, page).subscribe(
@@ -66,15 +62,15 @@ export class TimelineComponent implements OnInit {
             var arrayA = this.publications;
             var arrayB = response.publications;
             this.publications = arrayA.concat(arrayB);
-            // scroll automático
+               // scroll automático
             $("html, body").animate({
               scrollTop: $('body').prop("scrollHeight")
-            }, 1500)
+            },1500)
 
           }
           // evitar que el usuario acceda a un sitio inapropiado
           if (page > this.page) {
-            this._router.navigate(['/home']);
+           this._router.navigate(['/home']);
           }
 
         } else {
@@ -92,18 +88,13 @@ export class TimelineComponent implements OnInit {
     )
   }
 
-  viewMore() {
-    if (this.page == this.pages) {
+  viewMore(){
+    if(this.page == this.pages){
       this.noMore = true;
     } else {
       this.page += 1;
-    }
-    this.getPublications(this.page, true);
-  }
-
-  // devolver el listado de publicaciones al insertar una nueva. con el decorador @Ouput que lo tiene el hijo sidebarComponent
-  // se le llama desde el selector <sidebar> en el timelime html
-  refresh(event) {
-    this.getPublications(1);
+      }
+      this.getPublications(this.page, true);
   }
 }
+

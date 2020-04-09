@@ -1,0 +1,57 @@
+<div class="ui container">
+  <!-- //************************/ -->
+  <div class="ui vertically grid padding-left-2em">
+    <div class="two column row">
+      <div class="column">
+        <h1 class="ui center aligned header">
+          <i class="newspaper outline red icon"></i>{{ title }}
+        </h1>
+        <div class="two column row ">
+          <div class="column secundary">
+            <div class="ui card" *ngIf="user">
+              <div class="image">
+                <img
+                  src="{{ url + 'get-image-user/' + user.image }}"
+                  *ngIf="user.image"
+                />
+                <img
+                  src="../../../assets/images/coronavirus.png"
+                  *ngIf="!user.image"
+                />
+              </div>
+              <div class="content">
+                <h2 class="ui header">{{ user.nick }}</h2>
+
+                <div class="description">
+                  {{ user.name + " " + user.surname }}
+                </div>
+              </div>
+
+              <div class="content">
+                <span class="right floated">
+                  <i class="user outline like icon"></i>
+                  {{ stats.followed }} Seguidores
+                </span>
+                <i class="comment icon"></i>
+                {{ stats.publications }} Publicaciones
+              </div>
+              <div class="content">
+                <div class="ui small primary button">Add</div>
+                <div class="ui small button">View</div>
+              </div>
+            </div>
+          </div>
+          <div class="column secundary">
+            <div class="ui green message">Green</div>
+            <div class="ui teal message">Teal</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <app-sidebar></app-sidebar>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

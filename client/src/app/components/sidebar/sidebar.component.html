@@ -2,10 +2,25 @@
   <i class="id card red icon"></i>{{ title }}
 </h1>
 <div class="ui two column stackable grid container">
-
   <div class="column">
     <div class="ui segment">
-      <form class="ui form" #newPubForm="ngForm" (ngSubmit)="onSubmit()">
+      <div *ngIf="status == 'succes'" class="ui positive message">
+        <div class="header">
+          <i class="exclamation triangle icon"></i>
+          Publicación enviada correctamente.
+        </div>
+      </div>
+      <div *ngIf="status == 'error'" class="ui negative message">
+        <div class="header">
+          <i class="exclamation triangle icon"></i>
+          Publicación no enviada.
+        </div>
+      </div>
+      <form
+        class="ui form"
+        #newPubForm="ngForm"
+        (ngSubmit)="onSubmit(newPubForm); sendPublication($event);"
+      >
         <div class="field">
           <label><i class="bullhorn icon"></i> ¿Qué estás pensando?</label>
           <textarea
@@ -32,10 +47,14 @@
           </div>
         </div>
 
-        <button class="ui active button" type="submit" [disabled]="!newPubForm.valid">
+        <button
+          class="ui active button"
+          type="submit"
+          [disabled]="!newPubForm.valid"
+        >
           <i class="send icon"></i>
           Publicar
-          </button>
+        </button>
       </form>
     </div>
   </div>
@@ -63,7 +82,7 @@
           <div class="extra content">
             <span>
               <i class="user icon"></i>
-              {{ stats.following }} Siguiendo
+             Siguiendo {{ stats.following }}
             </span>
 
             <span class="right floated">

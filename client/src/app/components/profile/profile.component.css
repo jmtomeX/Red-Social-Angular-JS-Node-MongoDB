@@ -1,0 +1,11 @@
+div.ui.container{
+  width: 90%;
+}
+div.extra.text{
+  min-width: 90%;
+  text-align: justify;
+}
+div.column.secundary{
+  width: 50%;
+  float: left;
+}

@@ -1,36 +1,61 @@
-<main class="ui four column">
+<div class="ui container">
   <div class="ui middle aligned center aligned grid"></div>
   <!-- //************************/ -->
   <div class="ui vertically grid padding-left-2em">
-    <h1 class="ui center aligned header">
-      <i class="newspaper outline red icon"></i>{{ title }}
-    </h1>
     <div class="two column row">
       <div class="column">
-        <div class="ui large feed">
+        <h1 class="ui center aligned header">
+          <i class="newspaper outline red icon"></i>{{ title }}
+        </h1>
+        <!-- El evento no se usa pero por si se quiere usar alguna propiedad del componente -->
+        <button
+          id="showMore"
+          class="ui red icon button"
+          (click)="refresh($event)"
+          title="Actualizar publicaciones"
+        >
+          <i class="icon redo alternate"></i>
+        </button>
+        <div class="ui large feed" *ngFor="let publication of publications">
           <div class="event">
             <div class="label">
-              <img src="../../../assets/images/coronavirus.png" />
+              <img
+                *ngIf="publication.user.image"
+                class="ui small circular image"
+                src="{{ url + 'get-image-user/' + publication.user.image }}"
+              />
+              <img
+                *ngIf="!publication.user.image"
+                class="ui small circular image"
+                src="../../../assets/images/coronavirus.png"
+              />
             </div>
             <div class="content">
               <div class="summary">
                 <a class="user">
-                  Elliot Fu
+                  {{ publication.user.name + " " + publication.user.surname }}
                 </a>
-                added you as a friend
-                <div class="date">
-                  1 Hour Ago
-                </div>
               </div>
               <div class="content">
                 <div class="summary">
-                  You submitted a new post to the page
+                  <span *ngIf="publication.user.nick == identity.nick">
+                    Has
+                  </span>
+                  <span *ngIf="publication.user.nick != identity.nick">
+                    Ha
+                  </span>
+                  añadido una nueva publicación
                   <div class="date">
-                    3 days ago
+                    {{
+                      publication.created_at
+                        | amFromUnix
+                        | amLocale: "es"
+                        | amTimeAgo
+                    }}
                   </div>
                 </div>
                 <div class="extra text">
-                  I'm having a BBQ this weekend. Come by around 4pm if you can.
+                  {{ publication.text }}
                 </div>
                 <div class="meta">
                   <a class="like"> <i class="like icon"></i> 11 Likes </a>
@@ -51,13 +76,17 @@
             </div>
           </div>
         </div>
+        <div class="ui middle aligned center aligned grid" *ngIf="!noMore">
+          <div class="ui hidden divider"></div>
+          <button class="ui red basic button" (click)="viewMore()">
+            Más publicaciones
+          </button>
+        </div>
       </div>
       <div class="column">
-        <p>
-          <app-sidebar></app-sidebar>
-        </p>
+        <app-sidebar (sended)="refresh($event)"></app-sidebar>
       </div>
     </div>
   </div>
-</main>
-<app-footer></app-footer>
+  <app-footer></app-footer>
+</div>

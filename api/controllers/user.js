@@ -89,7 +89,6 @@ function saveUser(req, res) {
       }
     });
   } else {
-    console.log(params);
     res.status(200).send({
       message: "Envia todos los campos necesarios¡¡"
     });
@@ -213,7 +212,7 @@ function getUsers(req, res) {
     page = req.params.page;
   }
   // número de usuario por página
-  const ITEMS_PER_PAGE = 5;
+  const ITEMS_PER_PAGE = 4;
 
   // lista todos los usuarios con  paginación.
   User.find()
@@ -251,8 +250,6 @@ async function followUsersIds(user_id) {
         follows_clean.push(follow.followed);
       });
 
-      console.log(follows_clean);
-
       return follows_clean;
     })
     .catch(err => {
@@ -273,7 +270,6 @@ async function followUsersIds(user_id) {
     .catch(err => {
       return handleerror(err);
     });
-  console.log(following);
   return {
     following: following,
     followed: followed
@@ -440,7 +436,6 @@ function getImageFile(req, res) {
   var image_file = req.params.imageFile;
   var path_file = "./uploads/users/" + image_file;
 
-  console.log(path_file);
   fs.exists(path_file, exists => {
     if (exists) {
       res.sendFile(path.resolve(path_file));

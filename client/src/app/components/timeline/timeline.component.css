@@ -1,3 +1,22 @@
-.padding-left-2em {
-  padding-left: 2em;
+div.ui.container{
+  width: 90%;
+}
+div.extra.text{
+  min-width: 90%;
+  text-align: justify;
+}
+button.circular.ui.red.icon.button{
+  border-radius: 200px 200px 200px 200px;
+  -moz-border-radius: 200px 200px 200px 200px;
+  -webkit-border-radius: 200px 200px 200px 200px;
+  float:left;
+  line-height:8px;
+}
+button.circular.ui.red.icon.button:hover{
+  opacity: 0.50;
+  -moz-opacity: .50;
+  filter:alpha (opacity=50);
+}
+button.circular.ui.red.icon.button i {
+  padding:3px 0 9px 0;
 }

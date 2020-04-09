@@ -1,16 +1,31 @@
 <main class="ui four column">
-  <div class="ui middle aligned center aligned grid">
-  </div>
   <!-- //************************/ -->
   <div class="ui vertically grid padding-left-2em">
-    <h1 class="ui center aligned header"><i class="users red icon"></i>{{title}}</h1>
+    <h1 class="ui center aligned header">
+      <i class="users red icon"></i>{{ title }}
+    </h1>
+    <!-- ***************** Paginación ********************** -->
+    <div class="ui hidden divider"></div>
+    <div class="ui middle aligned center aligned grid">
+      <div class="ui pagination menu">
+        <div *ngIf="page > 1">
+          <a class="active item" [routerLink]="['/gente/', prev_page]">
+            Anterior
+          </a>
+        </div>
+        <div *ngIf="pages != page">
+          <a class="active item" [routerLink]="['/gente/', next_page]">
+            Siguiente
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- ***************** Fin Paginación ********************** -->
+    <div class="ui hidden divider"></div>
     <div class="two column row">
       <div class="column">
         <div class="ui very relaxed list" *ngFor="let user of users">
-          <div
-            class="ui huge message img-fondo"
-            *ngIf="user.nick != identity.nick"
-          >
+          <div class="ui huge message img-fondo">
             <div class="item">
               <div class="ui grid">
                 <div class="two wide column">
@@ -29,13 +44,15 @@
                   <div class="content">
                     <a>{{ user.name + " " + user.surname }}</a>
                     <div class="description">
-                      <a>{{ user.nick }}</a>
+                      <span class="ui ">{{ user.nick }}</span><i class="icon caret right"></i>
+                      <a routerLink="/perfil/{{user._id}}"> Visitar perfil</a>
                     </div>
                   </div>
                 </div>
                 <!-- Seguir usuario -->
-                <div class="six wide column">
-                  <a id="button-follow"
+                <div class="six wide column" *ngIf="user.nick != identity.nick">
+                  <a
+                    id="button-follow"
                     class="ui orange button"
                     *ngIf="follows.indexOf(user._id) < 0"
                     (click)="followUSer(user._id)"
@@ -73,31 +90,12 @@
               </div>
             </div>
             <!-- Siguiendo usuario -->
-
           </div>
         </div>
-            <!-- ***************** Paginación ********************** -->
-            <div class="ui hidden divider"></div>
-            <div class="ui middle aligned center aligned grid">
-          <div class="ui pagination menu">
-            <div *ngIf="page > 1">
-              <a class="active item" [routerLink]="['/gente/', prev_page]">
-                Anterior
-              </a>
-            </div>
-            <div *ngIf="pages != page">
-              <a class="active item" [routerLink]="['/gente/', next_page]">
-                Siguiente
-              </a>
-            </div>
-          </div>
-        </div>
-        <!-- ***************** Fin Paginación ********************** -->
-
       </div>
       <div class="column">
         <p>
-         <app-sidebar></app-sidebar>
+          <app-sidebar></app-sidebar>
         </p>
       </div>
     </div>

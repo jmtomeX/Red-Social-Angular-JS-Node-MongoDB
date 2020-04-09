@@ -133,7 +133,8 @@ function getPublications(req, res) {
       follows.forEach(follow => {
         follows_clean.push(follow.followed);
       });
-      console.log("Seguidos: \n" + follows_clean);
+      // Añadir nuestras propias publicaciones
+      follows_clean.push(req.user.sub);
       // buscar las publicaciones de los usuarios que sigo
       Publication.find({
         user: { $in: follows_clean } // busca las coincidencias dentro de un  array del usuario
@@ -153,6 +154,7 @@ function getPublications(req, res) {
             total_items: total,
             pages: Math.ceil(total / ITEMS_PER_PAGE),
             page,
+            items_per_page : ITEMS_PER_PAGE,
             publications
           });
         });

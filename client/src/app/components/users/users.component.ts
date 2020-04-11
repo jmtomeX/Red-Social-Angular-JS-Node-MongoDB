@@ -37,7 +37,7 @@ export class UsersComponent implements OnInit, DoCheck {
     private _userService: UserService,
     private _followService: FollowService
   ) {
-    this.title = 'Listado de usuarios';
+    this.title = 'Listado de contagiados';
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.stats = this._userService.getStats();
@@ -117,9 +117,6 @@ export class UsersComponent implements OnInit, DoCheck {
     //para que no marque ningún botón
     this.followUserOver = 0;
   }
-  /********************************************************************** */
-  //********** Comprobar error en response posible error **************** */
-  /********************************************************************** */
 
   followUSer(followed) {
     var follow = new Follow('', this.identity._id, followed);

@@ -2,10 +2,15 @@
 @import url("https://fonts.googleapis.com/css?family=Baloo+Da+2|Muli&display=swap");
 
 @media all and (max-width: 520px) {
-
+  div.column.secundary{
+    width: 100%;
+  }
 }
 
 @media all and (max-width: 840px) {
+  div.column.secundary{
+    width: 100%;
+  }
   .spacing {
     width: 0;
   }

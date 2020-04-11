@@ -46,19 +46,20 @@ div.content, a.ui.avatar.image{
   padding-left: 3px;
   padding-right: 3px;
 }
-div.ui.huge.message.img-fondo{
-  background-image: url(../../../assets/images/img-virus.png);
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-position: bottom;
-  background-color: none;
-}
 div.column.height-capacity{
  height: 800px;
 }
 div.ui.middle.aligned.center.aligned.grid{
 padding-top: 20px;
 padding-bottom: 20px;
+}
+div.content div.description a#link-visit{
+ font-size: .8em;
+ color:rgb(255, 51, 102);
+}
+div.content div.description a#link-visit:hover{
+ font-size: .8em;
+ color: rgb(33, 133, 208);
 }
 
 

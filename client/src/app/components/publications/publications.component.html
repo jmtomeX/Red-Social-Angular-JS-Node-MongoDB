@@ -1,1 +1,72 @@
 
+ <div class="column">
+  <h1 class="ui center aligned header">
+    <i class="newspaper outline red icon"></i>{{ title }}
+  </h1>
+  <div class="ui large feed" *ngFor="let publication of publications">
+    <div class="event">
+      <div class="label">
+        <img
+          *ngIf="publication.user.image"
+          class="ui small circular image"
+          src="{{ url + 'get-image-user/' + publication.user.image }}"
+        />
+        <img
+          *ngIf="!publication.user.image"
+          class="ui small circular image"
+          src="../../../assets/images/coronavirus.png"
+        />
+      </div>
+      <div class="content">
+        <div class="summary">
+          <a class="user">
+            {{ publication.user.name + " " + publication.user.surname }}
+          </a>
+        </div>
+        <div class="content">
+          <div class="summary">
+            <span *ngIf="publication.user.nick == identity.nick">
+              Has
+            </span>
+            <span *ngIf="publication.user.nick != identity.nick">
+              Ha
+            </span>
+            añadido una nueva publicación
+            <div class="date">
+              {{
+                publication.created_at
+                  | amFromUnix
+                  | amLocale: "es"
+                  | amTimeAgo
+              }}
+            </div>
+          </div>
+          <div class="extra text">
+            {{ publication.text }}
+          </div>
+         <!-- <div class="meta">
+            <a class="like"> <i class="like icon"></i> 11 Likes </a>
+          </div>
+        </div>
+         <div class="content">
+          <div class="date">
+            4 days ago
+          </div>
+          <div class="summary">
+            <a>Helen Troy</a> added <a>2 new illustrations</a>
+          </div>
+          <div class="extra images">
+            <a><img src="../../../assets/images/coronavirus.png" /></a>
+            <a><img src="../../../assets/images/coronavirus.png" /></a>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ui hidden divider"></div>
+<div class="ui middle aligned center aligned grid" *ngIf="!noMore">
+  <button class="ui red basic button" (click)="viewMore()">
+    Más publicaciones
+  </button>
+</div>

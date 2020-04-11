@@ -1,3 +1,17 @@
+@media all and (max-width: 520px) {
+
+}
+@media all and (max-width: 600px) {
+
+}
+@media all and (max-width: 840px) {
+  div.column.secundary{
+    padding-top: 25px;
+    width: 100%;
+    float: none;
+    clear: both;
+  }
+}
 div.ui.container{
   width: 90%;
 }
@@ -8,4 +22,5 @@ div.extra.text{
 div.column.secundary{
   width: 50%;
   float: left;
+  padding-left: 1em;
 }

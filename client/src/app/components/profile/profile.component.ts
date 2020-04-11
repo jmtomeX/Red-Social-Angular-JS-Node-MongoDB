@@ -30,27 +30,22 @@ export class ProfileComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     private _followService: FollowService
-
   ) {
     this.title = "Perfil"
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.url = GLOBAL.url;
-    this.followed;
-    this.following;
+        //ajuste del reuseStrategy sobre el Router. para poder
+        //recargar ngOnInit cuando se trate dela misma ruta
+        //pero con otros parametros
+        this._router.routeReuseStrategy.shouldReuseRoute = function () {
+          return false;
+        };
   }
 
   ngOnInit(): void {
     console.log('Profile.component cargado correctamente');
     this.loadPage();
-
-    $(function () {
-      $('.segment').dimmer('show');
-      // right button
-      $('.segment').dimmer('hide');
-    });
-    // left button
-
   }
 
   loadPage() {
@@ -70,7 +65,7 @@ export class ProfileComponent implements OnInit {
           console.log(response)
           this.user = response.user;
           // si le sigo
-          if (response.following != null) {
+          if (response.following != null && response.following && response.following._id) {
             this.following = true;
             console.log("Le sigo")
           } else {
@@ -78,7 +73,7 @@ export class ProfileComponent implements OnInit {
             console.log("no le sigo")
           }
           // si soy seguido por otro
-          if (response.followed != null) {
+          if (response.followed != null && response.followed && response.followed._id) {
             this.followed = true;
           } else {
             this.followed = false;
@@ -100,8 +95,46 @@ export class ProfileComponent implements OnInit {
         this.stats = response;
       }, error => {
         console.log(<any>error);
-
       }
     )
+  }
+
+  followUser(followed) {
+    var follow = new Follow('', this.identity._id, followed);
+    this._followService.addFollow(this.token, follow).subscribe(
+      response => {
+        console.log(response)
+        if (response.follow) {
+        this.following = true;
+        this._router.navigate(['/perfil/'+ followed]);
+        }
+      },
+      error => {
+        console.log(<any>error);
+      }
+    );
+  }
+
+  unFollowUser(followed){
+    this._followService.deleteFollow(this.token, followed).subscribe(
+      response => {
+        if(response){
+          this.following = false;
+          console.log('/perfil/'+ followed)
+          this._router.navigate(['/perfil/'+ followed]);
+        }
+      },
+      error => {
+        console.log(<any>error);
+      }
+    );
+  }
+  //efecto botón
+  public followUserOver;
+  mouserEnter(user_id){
+    this.followUserOver = user_id;
+  }
+  mouserLeave(){
+    this.followUserOver = 0;
   }
 }

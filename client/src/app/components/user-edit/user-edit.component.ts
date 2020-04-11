@@ -8,8 +8,6 @@ import { HttpClient } from '@angular/common/http';
 import { UploadService } from '../../services/upload.service';
 import { GLOBAL } from '../../services/global';
 
-
-
 @Component({
   selector: 'user-edit',
   templateUrl: './user-edit.component.html',
@@ -38,7 +36,6 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("edit-user se ha cargado");
-    console.log(this.user);
   }
 
   onSubmit() {

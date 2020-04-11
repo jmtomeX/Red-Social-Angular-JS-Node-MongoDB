@@ -44,8 +44,8 @@
                   <div class="content">
                     <a>{{ user.name + " " + user.surname }}</a>
                     <div class="description">
-                      <span class="ui ">{{ user.nick }}</span><i class="icon caret right"></i>
-                      <a routerLink="/perfil/{{user._id}}"> Visitar perfil</a>
+                      <span class="ui text red">{{ user.nick }}&nbsp;&nbsp;</span>
+                      <a routerLink="/perfil/{{user._id}}" id="link-visit"><i class="icon address card blue"></i> Visitar perfil</a>
                     </div>
                   </div>
                 </div>
@@ -56,7 +56,7 @@
                     class="ui orange button"
                     *ngIf="follows.indexOf(user._id) < 0"
                     (click)="followUSer(user._id)"
-                    ><i class="plus square outline icon"></i>Seguir</a
+                    ><i class="thermometer full icon"></i>Seguir</a
                   >
                   <!-- Seguir usuario -->
 
@@ -75,7 +75,7 @@
                       *ngIf="user._id == followUserOver; else following"
                       class="ui red button"
                     >
-                      <i class="user times icon"></i>Dejar de seguir
+                      <i class="thermometer empty icon"></i>Dejar de seguir
                     </span>
                     <ng-template #following>
                       <span class="ui blue button">
@@ -83,7 +83,7 @@
                       </span>
                     </ng-template>
                     <a class="ui basic left pointing label">
-                      {{ stats.following }}
+
                     </a>
                   </div>
                 </div>

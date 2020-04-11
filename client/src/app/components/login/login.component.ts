@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     private _userService: UserService,
   ) {
     this.title = 'Login';
-    this.user = new User("", "", "", "", "", "", "ROLE_USER", "");
+    this.user = new User("", "", "", "", "","", "", "ROLE_USER", "");
   }
 
   ngOnInit(): void {

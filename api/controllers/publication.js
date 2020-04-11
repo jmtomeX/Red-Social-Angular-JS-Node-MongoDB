@@ -11,7 +11,7 @@ var Follow = require("../models/follow");
 
 function prueba(req, res) {
   res.status(200).send({
-    message: "Desde controlador Publication"
+    message: "Desde controlador Publication",
   });
 }
 
@@ -19,7 +19,7 @@ function savePublication(req, res) {
   var params = req.body;
   if (!params.text) {
     res.status(200).send({
-      message: "Debes enviar un texto."
+      message: "Debes enviar un texto.",
     });
   }
   var publication = new Publication();
@@ -121,43 +121,81 @@ function getPublications(req, res) {
 
   // hacer una busqueda de todos los usuarios que sigo
   Follow.find({
-    user: user_id
+    user: user_id,
   })
     .populate("followed") // sustituimos el id del usuario por el objeto completo. que se carguen los datos del objeto que está relacionado
     .exec((err, follows) => {
       if (err)
         return res.status(500).send({
-          message: "Error al devolver el seguimiento."
+          message: "Error al devolver el seguimiento.",
         });
       var follows_clean = [];
-      follows.forEach(follow => {
+      follows.forEach((follow) => {
         follows_clean.push(follow.followed);
       });
       // Añadir nuestras propias publicaciones
       follows_clean.push(req.user.sub);
       // buscar las publicaciones de los usuarios que sigo
       Publication.find({
-        user: { $in: follows_clean } // busca las coincidencias dentro de un  array del usuario
+        user: { $in: follows_clean }, // busca las coincidencias dentro de un  array del usuario
       })
         .sort("-created_at") // ordenar en orden inverso
         .populate("user")
         .paginate(page, ITEMS_PER_PAGE, (err, publications, total) => {
           if (err)
             return res.status(500).send({
-              message: "Error al devolver las publicaciones."
+              message: "Error al devolver las publicaciones.",
             });
           if (!publications)
             return res.status(404).send({
-              message: "No hay publicaciones."
+              message: "No hay publicaciones.",
             });
           return res.status(200).send({
             total_items: total,
             pages: Math.ceil(total / ITEMS_PER_PAGE),
             page,
-            items_per_page : ITEMS_PER_PAGE,
-            publications
+            items_per_page: ITEMS_PER_PAGE,
+            publications,
           });
         });
+    });
+}
+
+// Publicaciones de un usuario
+function getPublicationsOfUser(req, res) {
+  // oaginación
+  var page = 1;
+  if (req.params.page) {
+    // si existe un valor por la url, se lo damos a page
+    page = req.params.page;
+  }
+  var ITEMS_PER_PAGE = 4;
+  // recoger el ususario identificado
+  var user = req.user.sub;
+  if (req.params.user) {
+    user = req.params.user;
+  }
+  Publication.find({
+    user: user,
+  })
+    .sort("-created_at") // ordenar en orden inverso
+    .populate("user")
+    .paginate(page, ITEMS_PER_PAGE, (err, publications, total) => {
+      if (err)
+        return res.status(500).send({
+          message: "Error al devolver las publicaciones.",
+        });
+      if (!publications)
+        return res.status(404).send({
+          message: "No hay publicaciones.",
+        });
+      return res.status(200).send({
+        total_items: total,
+        pages: Math.ceil(total / ITEMS_PER_PAGE),
+        page,
+        items_per_page: ITEMS_PER_PAGE,
+        publications,
+      });
     });
 }
 
@@ -166,14 +204,14 @@ function getPublication(req, res) {
   Publication.findById(publicationId, (err, publication) => {
     if (err)
       return res.status(500).send({
-        message: "Error al devolver las publicaciones."
+        message: "Error al devolver las publicaciones.",
       });
     if (!publication)
       return res.status(404).send({
-        message: "No existe la publicación."
+        message: "No existe la publicación.",
       });
     return res.status(200).send({
-      publication
+      publication,
     });
   });
 }
@@ -183,18 +221,18 @@ function deletePublication(req, res) {
 
   Publication.find({
     user: req.user.sub,
-    _id: publicationId
-  }).deleteOne(err => {
+    _id: publicationId,
+  }).deleteOne((err) => {
     if (err)
       return res.status(500).send({
-        message: "Error al borrar la publicación."
+        message: "Error al borrar la publicación.",
       });
     if (!publicationRemoved)
       return res.status(404).send({
-        message: "No se ha borrado la publicación."
+        message: "No se ha borrado la publicación.",
       });
     return res.status(200).send({
-      message: "Publicación eliminada correctamente."
+      message: "Publicación eliminada correctamente.",
     });
   });
 }
@@ -216,12 +254,13 @@ function upLoadImage(req, res) {
       file_ext == "gif"
     ) {
       // comprobar si existe la imagen
-      fs.exists(file_path, function(exists) {
+      fs.exists(file_path, function (exists) {
         if (exists) {
           // comprobar que el usuario es el logueado y la publicación es correcta
-          Publication.findOne({ // al no haber no ser el usuario devuelve un array vacio por lo que hay que usar findOne
+          Publication.findOne({
+            // al no haber no ser el usuario devuelve un array vacio por lo que hay que usar findOne
             user: req.user.sub,
-            _id: publicationId
+            _id: publicationId,
           }).exec((err, publication) => {
             console.log("Desde publicación :" + publication);
             if (publication) {
@@ -237,18 +276,22 @@ function upLoadImage(req, res) {
                       .send({ message: "Error en la petición" });
                   if (!publicationUpdated) {
                     return res.status(404).send({
-                      message: "No se ha podido actualizar el usuario"
+                      message: "No se ha podido actualizar el usuario",
                     });
                   }
                   return res.status(200).send({
                     // si todo fue bien
                     // devolvemos la publicación actualizada
-                    publication: publicationUpdated
+                    publication: publicationUpdated,
                   });
                 }
               );
             } else {
-              removeFilesOfUploads(res, file_path, "No tienes permiso para actualizar esta publicación.");
+              removeFilesOfUploads(
+                res,
+                file_path,
+                "No tienes permiso para actualizar esta publicación."
+              );
             }
           });
         } else {
@@ -261,7 +304,7 @@ function upLoadImage(req, res) {
     }
   } else {
     return res.status(200).send({
-      message: "No se han subido imagenes"
+      message: "No se han subido imagenes",
     });
   }
 }
@@ -273,20 +316,20 @@ function getImageFile(req, res) {
   var path_file = "./uploads/publications/" + image_file;
 
   console.log(path_file);
-  fs.exists(path_file, exists => {
+  fs.exists(path_file, (exists) => {
     if (exists) {
       res.sendFile(path.resolve(path_file));
     } else {
       return res.status(200).send({
-        message: "No existe la imagen..."
+        message: "No existe la imagen...",
       });
     }
   });
 }
 
 function removeFilesOfUploads(res, file_path, message) {
-  fs.unlink(file_path, err => {
-    console.log("Eliminado el archivo :" + file_path)
+  fs.unlink(file_path, (err) => {
+    console.log("Eliminado el archivo :" + file_path);
     return res.status(200).send({ message: message });
   });
 }
@@ -298,5 +341,6 @@ module.exports = {
   getPublication,
   deletePublication,
   upLoadImage,
-  getImageFile
+  getImageFile,
+  getPublicationsOfUser,
 };

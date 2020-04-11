@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, Input } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { PublicationService } from '../../services/publication.service';
@@ -25,6 +25,8 @@ export class PublicationsComponent implements OnInit, DoCheck {
   public items_per_page;
   public noMore:boolean;
   public publications: Publication[];
+  @Input() user:string;
+
   constructor(
     private _userService: UserService,
     private _route: ActivatedRoute,
@@ -41,13 +43,14 @@ export class PublicationsComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     console.log("publications.component se ha cargado correctamente");
-    this.getPublications(this.page);
+    this.getPublicationsOfUser(this.user, this.page);
   }
 
   ngDoCheck(): void {
   }
-  getPublications(page, adding = false) {
-    this._publicationService.getPublications(this.token, page).subscribe(
+  // publiccaciones de un usuario
+  getPublicationsOfUser(user, page, adding = false) {
+    this._publicationService.getPublicationsOfUser(this.token,user, page).subscribe(
       response => {
         if (response.publications) {
           this.total = response.total_items;
@@ -76,7 +79,6 @@ export class PublicationsComponent implements OnInit, DoCheck {
         } else {
           this.status = "error";
         }
-
       },
       error => {
         var errorMessage = <any>error;
@@ -94,7 +96,7 @@ export class PublicationsComponent implements OnInit, DoCheck {
     } else {
       this.page += 1;
       }
-      this.getPublications(this.page, true);
+      this.getPublicationsOfUser(this.user,this.page, true);
   }
 }
 

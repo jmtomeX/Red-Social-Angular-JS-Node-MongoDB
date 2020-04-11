@@ -43,6 +43,7 @@ function saveUser(req, res) {
     //user.password_confirmation = params.password_confirmation;
     user.role = "ROLE_USER";
     user.image = null;
+    user.description = null;
 
     // comprobar si existe el email o el nick
     User.find({

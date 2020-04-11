@@ -10,6 +10,7 @@ const md_upload = multipart({uploadDir: './uploads/publications'}); // middlewar
 api.get('/probando-pub', middleware_auth.ensureAuth, PublicationController.prueba);
 api.post('/publication', middleware_auth.ensureAuth, PublicationController.savePublication);
 api.get('/publications/:page?', middleware_auth.ensureAuth, PublicationController.getPublications);
+api.get('/publications-user/:user/:page?', middleware_auth.ensureAuth, PublicationController.getPublicationsOfUser);
 api.get('/publication/:id', middleware_auth.ensureAuth, PublicationController.getPublication);
 api.delete('/publication/:id', middleware_auth.ensureAuth, PublicationController.deletePublication);
 api.post('/upload-image-pub/:id', [middleware_auth.ensureAuth, md_upload], PublicationController.upLoadImage);

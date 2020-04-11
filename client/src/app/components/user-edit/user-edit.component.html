@@ -75,7 +75,6 @@
         <input
           type="email"
           name="email"
-          value="angular@gmail.com"
           #email="ngModel"
           [(ngModel)]="user.email"
           required
@@ -88,6 +87,16 @@
           </div>
         </div>
       </div>
+
+      <div class="field">
+        <label>Habla de ti</label>
+        <textarea
+        name="description"
+        #description="ngModel"
+        [(ngModel)]="user.description"
+        rows="2"></textarea>
+      </div>
+
       <div class="ui relaxed items" *ngIf="user.image">
         <div class="item">
           <div class="middle aligned content">

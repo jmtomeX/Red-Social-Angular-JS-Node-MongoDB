@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { PublicationService } from '../../services/publication.service';
 import { GLOBAL } from '../../services/global';
 import { Publication } from '../../models/publication';
-import { User } from '../../models/user';
 
 declare var $: any;
 
@@ -16,7 +15,7 @@ declare var $: any;
   providers: [UserService, PublicationService]
 })
 
-export class TimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit, DoCheck {
   public title: string;
   public token;
   public url: string;
@@ -28,6 +27,7 @@ export class TimelineComponent implements OnInit {
   public items_per_page;
   public noMore: boolean;
   public publications: Publication[];
+  public showImage;
   constructor(
     private _userService: UserService,
     private _route: ActivatedRoute,
@@ -50,6 +50,30 @@ export class TimelineComponent implements OnInit {
       $(document).tooltip();
     });
   }
+
+  ngDoCheck(): void {
+    // subir arriba
+    $('#top').click(function () {
+      $('body,html').animate({ scrollTop: 0 }, 500);
+      return true;
+    });
+
+       // lilghtbox
+       $('.image-popup-vertical-fit').magnificPopup({
+        type: 'image',
+        closeOnContentClick: true,
+        closeBtnInside: false,
+        fixedContentPos: true,
+        mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+        image: {
+          verticalFit: true
+        },
+        zoom: {
+          enabled: true,
+          duration: 300 // don't foget to change the duration also in CSS
+        }
+      });
+  }
   getPublications(page, adding = false) {
     this._publicationService.getPublications(this.token, page).subscribe(
       response => {
@@ -68,7 +92,7 @@ export class TimelineComponent implements OnInit {
             this.publications = arrayA.concat(arrayB);
             // scroll automático
             $("html, body").animate({
-              scrollTop: $('body').prop("scrollHeight")
+              scrollTop: $('html').prop("scrollHeight")
             }, 1500)
 
           }
@@ -93,10 +117,9 @@ export class TimelineComponent implements OnInit {
   }
 
   viewMore() {
+    this.page += 1;
     if (this.page == this.pages) {
       this.noMore = true;
-    } else {
-      this.page += 1;
     }
     this.getPublications(this.page, true);
   }
@@ -105,5 +128,8 @@ export class TimelineComponent implements OnInit {
   // se le llama desde el selector <sidebar> en el timelime html
   refresh(event) {
     this.getPublications(1);
+  }
+  showThisImage(id) {
+    this.showImage = id;
   }
 }

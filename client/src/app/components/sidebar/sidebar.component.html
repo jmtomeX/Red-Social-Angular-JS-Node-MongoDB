@@ -1,5 +1,5 @@
 <h1 class="ui center aligned header">
-  <i class="id card red icon"></i>{{ title }}
+  <i class="id card icon"></i>{{ title }}
 </h1>
 <div class="ui two column stackable grid container">
   <div class="column">
@@ -40,7 +40,7 @@
         <div class="field">
           <div class="ui action input">
             <input type="text" placeholder="Sube un archivo" readonly />
-            <input type="file" />
+            <input type="file" (change)="fileChangeEvent($event)"/>
             <div class="ui icon button">
               <i class="attach icon"></i>
             </div>
@@ -73,7 +73,7 @@
             />
           </aside>
           <div class="content">
-            <div class="header">{{ identity.name }}</div>
+            <a class="header" routerLink="/perfil/{{identity._id}}">{{ identity.name }}</a>
             <div class="meta">
               <a>{{ identity.nick }}</a>
             </div>
@@ -93,10 +93,7 @@
           <div class="extra content">
             <div class="ui large transparent left icon input">
               <span>
-                <img
-                  class="ui mini image"
-                  src="../../../assets/images/coronavirus.png"
-                />
+                <i class="comment icon"></i>
                 Publicaciones {{ stats.publications }}
               </span>
             </div>

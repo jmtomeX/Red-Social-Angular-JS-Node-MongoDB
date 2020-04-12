@@ -67,7 +67,7 @@ export class PublicationsComponent implements OnInit, DoCheck {
             this.publications = arrayA.concat(arrayB);
                // scroll automático
             $("html, body").animate({
-              scrollTop: $('body').prop("scrollHeight")
+              scrollTop: $('html').prop("scrollHeight")
             },1500)
 
           }
@@ -91,11 +91,10 @@ export class PublicationsComponent implements OnInit, DoCheck {
   }
 
   viewMore(){
+    this.page += 1;
     if(this.page == this.pages){
       this.noMore = true;
-    } else {
-      this.page += 1;
-      }
+    }
       this.getPublicationsOfUser(this.user,this.page, true);
   }
 }

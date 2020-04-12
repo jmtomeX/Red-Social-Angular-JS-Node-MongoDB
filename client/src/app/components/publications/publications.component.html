@@ -1,7 +1,7 @@
 
  <div class="column">
   <h1 class="ui center aligned header">
-    <i class="newspaper outline red icon"></i>{{ title }}
+    {{ title }}
   </h1>
   <div class="ui large feed" *ngFor="let publication of publications">
     <div class="event">
@@ -65,8 +65,10 @@
   </div>
 </div>
 <div class="ui hidden divider"></div>
-<div class="ui middle aligned center aligned grid" *ngIf="!noMore">
-  <button class="ui red basic button" (click)="viewMore()">
-    Más publicaciones
-  </button>
+<div class="ui" *ngIf="publications && publications.length">
+  <div class="ui middle aligned center aligned grid" *ngIf="!noMore">
+    <button class="ui red basic button" (click)="viewMore()">
+      Más publicaciones
+    </button>
+  </div>
 </div>

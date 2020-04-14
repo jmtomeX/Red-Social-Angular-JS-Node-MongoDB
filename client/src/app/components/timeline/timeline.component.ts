@@ -34,7 +34,7 @@ export class TimelineComponent implements OnInit, DoCheck {
     private _router: Router,
     private _publicationService: PublicationService
   ) {
-    this.title = "TimeLine"
+    this.title = "Día a día"
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.url = GLOBAL.url;
@@ -52,7 +52,7 @@ export class TimelineComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    // subir arriba
+    // subir
     $('#top').click(function () {
       $('body,html').animate({ scrollTop: 0 }, 500);
       return true;

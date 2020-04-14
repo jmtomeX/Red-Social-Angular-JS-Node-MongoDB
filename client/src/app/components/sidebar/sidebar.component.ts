@@ -56,25 +56,30 @@ export class SidebarComponent implements OnInit {
   }
 
   onSubmit(newPubForm) {
-    console.log(this.publication);
+
     this._publicationService.addPublication(this.token, this.publication).subscribe(
       response => {
         if (response.publication) {
 
-          // subimos el archivo
-          this._uploadService.makeFilesRequest(
-            this.url + 'upload-image-pub/' + response.publication._id,
-            [],
-            this.filesToUpload,
-            this.token,
-            'image'
-          ).then((result: any) => {
-            this.publication.file = result.image; //es lo que devuelve la api el result
+          // comprobamos que tenga imagen
+          if (this.filesToUpload && this.filesToUpload.length) {
+            // subimos el archivo
+            this._uploadService.makeFilesRequest(
+              this.url + 'upload-image-pub/' + response.publication._id,
+              [],
+              this.filesToUpload,
+              this.token,
+              'image'
+            ).then((result: any) => {
+
+            });
+          } else {
+            //this.publication.file = result.image; //es lo que devuelve la api el result
             this.status = 'succes';
             newPubForm.reset();
             // reenvio para actulizar las publicaciones.
             this._router.navigate(['/timeline']);
-          })
+          }
         } else {
           this.status = 'error';
         }

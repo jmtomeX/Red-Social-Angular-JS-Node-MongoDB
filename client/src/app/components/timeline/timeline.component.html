@@ -5,7 +5,7 @@
     <div class="two column row">
       <div class="column">
         <h1 class="ui center aligned header">
-          <i class="newspaper outline red icon"></i>{{ title }}
+          <i class="newspaper outline icon"></i>{{ title }}
         </h1>
         <!-- El evento no se usa pero por si se quiere usar alguna propiedad del componente -->
         <button
@@ -57,16 +57,12 @@
                 <div class="extra text">
                   {{ publication.text }}
                 </div>
-                <!-- <div class="meta">
-                  <a class="like"> <i class="like icon"></i> 11 Likes </a>
-                </div> -->
               </div>
+              <!-- Imagen publicación -->
               <div class="content" *ngIf="publication.file != 'null'">
                 <div class="summary">
                   <a>Momento congeledo</a>
                 </div>
-
-                <!-- <div class="extra images" *ngIf="publication.file && showImage == publication._id"> -->
                 <div class="extra images">
                   <a
                     class="test-popup-link image-popup-vertical-fit"
@@ -75,11 +71,8 @@
                     ><img src="{{ url + 'get-image-pub/' + publication.file }}"
                   /></a>
                 </div>
-
-                <!-- <a class="image-popup-vertical-fit" href="http://farm9.staticflickr.com/8241/8589392310_7b6127e243_b.jpg" title="Caption. Can be aligned to any side and contain any HTML.">
-                  <img src="http://farm9.staticflickr.com/8241/8589392310_7b6127e243_s.jpg" width="75" height="75">
-                </a> -->
               </div>
+
             </div>
           </div>
         </div>

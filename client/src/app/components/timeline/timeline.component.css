@@ -37,13 +37,9 @@ button.circular.ui.red.icon.button i {
 
 
 /*
-
 for zoom animation
 uncomment this part if you haven't added this code anywhere else
-
 */
-
-
 .mfp-with-zoom .mfp-container,
 .mfp-with-zoom.mfp-bg {
 	opacity: 0;

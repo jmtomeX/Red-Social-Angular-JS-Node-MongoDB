@@ -1,0 +1,63 @@
+.ui.relaxed.grid.container {
+  width: calc(1400px + 3rem) !important;
+  clear: both;
+}
+.ui.special.cards {
+  padding-left: 120px;
+}
+
+div.blurring.dimmable.image img.img-users {
+  height: 200px;
+  overflow: scroll;
+}
+
+div.ui.pagination.menu {
+  margin-top: 50px;
+}
+
+div.ui.pagination.menu {
+  justify-content: center;
+  margin-top: 40px;
+}
+
+div.card.four.wide.column:last-of-type {
+  clear: right;
+  margin-right: 600px;
+}
+.ui.special.cards.clearfix {
+  width: 100%;
+}
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+/* Nuevo diseño */
+.padding-left-2em {
+  padding-left: 2em;
+}
+
+div.content, a.ui.avatar.image{
+  display: inline;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+div.column.height-capacity{
+ height: 800px;
+}
+div.ui.middle.aligned.center.aligned.grid{
+padding-top: 20px;
+padding-bottom: 20px;
+}
+div.content div.description a#link-visit{
+ font-size: .8em;
+ color:rgb(255, 51, 102);
+}
+div.content div.description a#link-visit:hover{
+ font-size: .8em;
+ color: rgb(33, 133, 208);
+}

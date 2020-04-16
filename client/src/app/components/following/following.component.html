@@ -1,20 +1,20 @@
 <main class="ui four column">
   <!-- //************************/ -->
   <div class="ui vertically grid padding-left-2em">
-    <h1 class="ui center aligned font-title">
-      <i class="users  icon"></i>{{ title }}
+    <h1 class="ui center aligned  font-title ">
+      <i class="users  icon"></i>{{ title }} {{user.name}}
     </h1>
     <!-- ***************** Paginación ********************** -->
     <div class="ui hidden divider"></div>
-    <div class="ui middle aligned center aligned grid">
+    <div class="ui middle aligned center aligned grid" *ngIf="total > 4 ">
       <div class="ui pagination menu">
         <div *ngIf="page > 1">
-          <a class="active item" [routerLink]="['/gente/', prev_page]">
+          <a class="active item" routerLink="/siguiendo/{{user_page_id}}/{{prev_page}}">
             Anterior
           </a>
         </div>
         <div *ngIf="pages != page">
-          <a class="active item" [routerLink]="['/gente/', next_page]">
+          <a class="active item" routerLink="/siguiendo/{{user_page_id}}/{{next_page}}">
             Siguiente
           </a>
         </div>
@@ -25,38 +25,38 @@
     <!-- Listado de usuarios -->
     <div class="two column row">
       <div class="column">
-        <div class="ui very relaxed list" *ngFor="let user of users">
+        <div class="ui very relaxed list" *ngFor="let follow of following">
           <div class="ui huge message img-fondo">
             <div class="item">
               <div class="ui grid">
                 <div class="two wide column">
                   <img
-                    *ngIf="user.image"
+                    *ngIf="follow.followed.image"
                     class="ui small circular image"
-                    src="{{ url + 'get-image-user/' + user.image }}"
+                    src="{{ url + 'get-image-user/' + follow.followed.image }}"
                   />
                   <img
-                    *ngIf="!user.image"
+                    *ngIf="!follow.followed.image"
                     class="ui small circular image"
                     src="../../../assets/images/coronavirus.png"
                   />
                 </div>
                 <div class="eight wide column">
                   <div class="content">
-                    <a>{{ user.name + " " + user.surname }}</a>
+                    <a class="font-title">{{ follow.followed.name + " " + follow.followed.surname }}</a>
                     <div class="description">
-                      <span class="ui text red">{{ user.nick }}&nbsp;&nbsp;</span>
-                      <a routerLink="/perfil/{{user._id}}" id="link-visit"><i class="icon address card blue"></i> Visitar perfil</a>
+                      <span class="ui text red">{{ follow.followed.nick }}&nbsp;&nbsp;</span>
+                      <a routerLink="/perfil/{{follow.followed._id}}" id="link-visit"><i class="icon address card blue"></i> Visitar perfil</a>
                     </div>
                   </div>
                 </div>
                 <!-- Seguir usuario -->
-                <div class="six wide column" *ngIf="user.nick != identity.nick">
+                <div class="six wide column" *ngIf="follow.followed.nick != identity.nick">
                   <a
                     id="button-follow"
                     class="ui orange button"
-                    *ngIf="follows.indexOf(user._id) < 0"
-                    (click)="followUSer(user._id)"
+                    *ngIf="follows.indexOf(follow.followed._id) < 0"
+                    (click)="followUSer(follow.followed._id)"
                     ><i class="thermometer full icon"></i>Seguir</a
                   >
                   <!-- Seguir usuario -->
@@ -66,14 +66,14 @@
                   <div
                     class="ui labeled button"
                     tabindex="0"
-                    *ngIf="follows.indexOf(user._id) >= 0"
-                    (mouseenter)="mouseEnter(user._id)"
-                    (mouseleave)="mouseLeave(user._id)"
-                    (click)="unfollowUSer(user._id)"
+                    *ngIf="follows.indexOf(follow.followed._id) >= 0"
+                    (mouseenter)="mouseEnter(follow.followed._id)"
+                    (mouseleave)="mouseLeave(follow.followed._id)"
+                    (click)="unfollowUSer(follow.followed._id)"
                   >
-                    <!-- ese método le asigna un valor a la propiedad followUserOver  -->
+                    <!-- este método le asigna un valor a la propiedad followUserOver  -->
                     <span
-                      *ngIf="user._id == followUserOver; else following"
+                      *ngIf="follow.followed._id == followUserOver; else following"
                       class="ui red button"
                     >
                       <i class="thermometer empty icon"></i>Dejar de seguir
@@ -103,3 +103,4 @@
   </div>
 </main>
 <app-footer></app-footer>
+

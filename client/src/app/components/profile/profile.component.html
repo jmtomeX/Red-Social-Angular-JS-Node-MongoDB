@@ -3,7 +3,7 @@
   <div class="ui vertically grid padding-left-2em">
     <div class="two column row">
       <div class="column">
-        <h1 class="ui center aligned header">
+        <h1 class="ui center aligned font-title">
           <i class="address book outline icon"></i>{{ title }}
         </h1>
 
@@ -11,26 +11,40 @@
           <div class="step">
             <i class="comment icon"></i>
             <div class="content">
-              <div class="title">Publicaciones</div>
-              <div class="description">{{ stats.publications }}</div>
+              <div class="ui mini statistic">
+                <div class="value">
+                  {{ stats.publications }}
+                </div>
+                <div class="label">
+                  Publicaciones
+                </div>
+              </div>
             </div>
           </div>
           <div class="step">
-            <i class="users icon"
-            [class.red]="followed"
-            ></i>
+            <i class="users icon" [class.red]="followed"></i>
             <div class="content">
-              <div class="title">Seguidos</div>
-              <div class="description">{{ stats.following }}</div>
+              <div class="ui mini statistic">
+                <div class="value">
+                  {{ stats.following }}
+                </div>
+                <div class="label">
+                  <a routerLink="/siguiendo/{{ user._id }}/1">Seguidos</a>
+                </div>
+              </div>
             </div>
           </div>
           <div class="step">
-            <i class="user icon"
-            [class.red]="following"
-            ></i>
+            <i class="user icon" [class.red]="following"></i>
             <div class="content">
-              <div class="title">Seguidores</div>
-              <div class="description">{{ stats.followed }}</div>
+              <div class="ui mini statistic">
+                <div class="value">
+                  {{ stats.followed }}
+                </div>
+                <div class="label">
+                  Seguidores
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -58,7 +72,7 @@
               <div class="content">
                 <span class="ui header">Sobre mi</span>
                 <p class="ui description">
-                  {{user.description}}
+                  {{ user.description }}
                 </p>
               </div>
               <div class="content">
@@ -97,7 +111,7 @@
             </div>
           </div>
           <div class="column secundary" *ngIf="user">
-             <!-- le pasamos el usuario del cual queremos mostrar las publicaciones -->
+            <!-- le pasamos el usuario del cual queremos mostrar las publicaciones -->
             <app-publications [user]="user._id"></app-publications>
           </div>
         </div>

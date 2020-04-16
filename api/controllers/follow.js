@@ -8,7 +8,7 @@ var Follow = require("../models/follow");
 
 function prueba(req, res) {
   res.status(200).send({
-    message: "Desde controlador Follows"
+    message: "Desde controlador Follows",
   });
 }
 
@@ -24,16 +24,16 @@ function saveFollow(req, res) {
   follow.save((err, followStored) => {
     if (err)
       return res.status(500).send({
-        message: "Error al guardar el seguimiento"
+        message: "Error al guardar el seguimiento",
       });
 
     if (!followStored)
       return res.status(404).send({
-        message: "El seguimiento no se ha guardado."
+        message: "El seguimiento no se ha guardado.",
       });
     return res.status(200).send({
       follow: followStored,
-      message: "El seguimiento se ha guardado correctamente."
+      message: "El seguimiento se ha guardado correctamente.",
     });
   });
 }
@@ -43,19 +43,20 @@ function deleteFollow(req, res) {
   var followId = req.params.id; // seguido
   Follow.findOne({
     user: userId,
-    followed: followId
+    followed: followId,
   }).deleteOne((err, followDelete) => {
     if (err)
       return res.status(500).send({
-        message: "Error al dejar de seguir." + err
+        message: "Error al dejar de seguir." + err,
       });
     return res.status(200).send({
       follow: followDelete,
-      message: "El follow se ha eliminado."
+      message: "El follow se ha eliminado.",
     });
   });
 }
 
+// usuarios que seguimos
 function getFollowingUsers(req, res) {
   var userId = req.user.sub;
 
@@ -73,25 +74,30 @@ function getFollowingUsers(req, res) {
   }
   const ITEMS_PER_PAGE = 4;
   Follow.find({
-    user: userId
+    user: userId,
   })
     .populate({
       // sustituir el campo followed por el objeto entero
-      path: "followed"
+      path: "followed",
     })
     .paginate(page, ITEMS_PER_PAGE, (err, follows, totalDoc) => {
       if (err)
         return res.status(500).send({
-          message: "Error en el servidor." + err
+          message: "Error en el servidor." + err,
         });
       if (!follows)
         return res.status(404).send({
-          message: "No estás siguiendo a ningún usuario."
+          message: "No estás siguiendo a ningún usuario.",
         });
-      return res.status(200).send({
-        total: totalDoc,
-        pages: Math.ceil(totalDoc / ITEMS_PER_PAGE),
-        follows
+        // seguimineto del usuario logueado
+      followUsersIds(req.user.sub).then((value) => {
+        return res.status(200).send({
+          total: totalDoc,
+          pages: Math.ceil(totalDoc / ITEMS_PER_PAGE),
+          follows,
+          users_following: value.following,
+          users_followed: value.followed,
+        });
       });
     });
 }
@@ -114,7 +120,7 @@ function getFollowedUsers(req, res) {
   const ITEMS_PER_PAGE = 4;
   Follow.find({
     // Comprobamos quien nos sigue
-    followed: userId
+    followed: userId,
   })
     .populate(
       "user" // devuelve el objeto user en formato json
@@ -122,38 +128,79 @@ function getFollowedUsers(req, res) {
     .paginate(page, ITEMS_PER_PAGE, (err, follows, totalDoc) => {
       if (err)
         return res.status(500).send({
-          message: "Error en el servidor." + err
+          message: "Error en el servidor." + err,
         });
       if (!follows)
         return res.status(404).send({
-          message: "No te sigue ningún usuario."
+          message: "No te sigue ningún usuario.",
         });
       return res.status(200).send({
         total: totalDoc,
         pages: Math.ceil(totalDoc / ITEMS_PER_PAGE),
-        follows
+        follows,
       });
     });
-  }
+}
 // devolver listados de usuarios que me siguen  o usuarios que sigo, sin paginar
 function getTheFollows(req, res) {
   var userId = req.user.sub;
-  
+
   var find = Follow.find({ user: userId }); // saca los usuarios que sigo
   // si vienen paámetros en la url
-  if(req.params.followed) {
+  if (req.params.followed) {
     find = Follow.find({ followed: userId }); // saca los usuarios que me siguen
   }
-  find.populate("user followed") 
-    .exec((err, follows) => { // con exec ejecutamos la consulta
-      if (!follows)
-        return res.status(404).send({
-          message: "No sigues a ningún usuario."
-        });
-      return res.status(200).send({ follows });
-    });
+  find.populate("user followed").exec((err, follows) => {
+    // con exec ejecutamos la consulta
+    if (!follows)
+      return res.status(404).send({
+        message: "No sigues a ningún usuario.",
+      });
+    return res.status(200).send({ follows });
+  });
 }
 
+// se puede hacer un servicio porque se está usando en user.js también
+// función sincrona para devolver los ids de usuarios en un array: seguidores, seguidos y todos los usuarios como objetos
+async function followUsersIds(user_id) {
+  var following = await Follow.find({ user: user_id })
+    //quitar campos no requeridos
+    .select({ _id: 0, __uv: 0, user: 0 })
+    .exec()
+    .then((follows) => {
+      var follows_clean = [];
+
+      follows.forEach((follow) => {
+        follows_clean.push(follow.followed);
+      });
+
+      return follows_clean;
+    })
+    .catch((err) => {
+      return handleerror(err);
+    });
+  // a quien seguimos
+  var followed = await Follow.find({ followed: user_id })
+    .select({ _id: 0, __uv: 0, followed: 0 })
+    .exec()
+    .then((follows) => {
+      var follows_clean = [];
+      follows.forEach((follow) => {
+        follows_clean.push(follow.user);
+      });
+
+      return follows_clean;
+    })
+    .catch((err) => {
+      return handleerror(err);
+    });
+  return {
+    // array de seguidos
+    following: following,
+    // array de seguidores
+    followed: followed,
+  };
+}
 
 module.exports = {
   prueba,
@@ -161,5 +208,5 @@ module.exports = {
   deleteFollow,
   getFollowingUsers,
   getFollowedUsers,
-  getTheFollows
+  getTheFollows,
 };

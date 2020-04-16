@@ -55,7 +55,7 @@ export class SidebarComponent implements OnInit {
       });
   }
 
-  onSubmit(newPubForm) {
+  onSubmit(newPubForm, event) {
 
     this._publicationService.addPublication(this.token, this.publication).subscribe(
       response => {
@@ -71,14 +71,25 @@ export class SidebarComponent implements OnInit {
               this.token,
               'image'
             ).then((result: any) => {
-
-            });
-          } else {
-            //this.publication.file = result.image; //es lo que devuelve la api el result
+            this.publication.file = result.image; //es lo que devuelve la api el result
             this.status = 'succes';
             newPubForm.reset();
             // reenvio para actulizar las publicaciones.
             this._router.navigate(['/timeline']);
+            // emite el evento
+            this.sended.emit({
+              send: true
+            })
+            });
+          } else {
+            this.status = 'succes';
+            newPubForm.reset();
+            // reenvio para actulizar las publicaciones.
+            this._router.navigate(['/timeline']);
+            // emite el evento
+            this.sended.emit({
+              send: true
+            })
           }
         } else {
           this.status = 'error';

@@ -17,6 +17,7 @@ import { MomentModule } from 'angular2-moment';
 import { fromEventPattern } from 'rxjs';
 import { PublicationsComponent } from './components/publications/publications.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { FollowingComponent } from './components/following/following.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     TimelineComponent,
     PublicationsComponent,
     ProfileComponent,
+    FollowingComponent,
   ],
   imports: [
     BrowserModule,

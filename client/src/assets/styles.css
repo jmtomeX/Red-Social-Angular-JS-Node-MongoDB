@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css?family=Baloo+Da+2|Muli&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
 @media all and (max-width: 520px) {
   div.column.secundary{
     width: 100%;
@@ -34,6 +34,7 @@ html {
 :root {
   --font-family-prim: "Baloo Da 2", cursive;
   --font-family-sec: "Muli", sans-serif;
+  --font-title:'Fjalla One', sans-serif;
   --color-primary: rgb(#db2828);
 }
 /*Nav*/
@@ -49,7 +50,9 @@ html {
   color: var(--color-primary);
   font-size: 0.7em;
 }
-
+ .font-title, div.column h1.ui.center.aligned.font-title {
+  font-family: var(--font-title);
+}
 .ui.menu a.item#title:hover {
   background-color: white;
   color: var(--color-primary);

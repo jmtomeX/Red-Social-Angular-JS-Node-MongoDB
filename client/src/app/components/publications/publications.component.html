@@ -1,5 +1,5 @@
 <div class="column">
-  <h1 class="ui center aligned header">
+  <h1 class="ui center aligned font-title">
     {{ title }}
   </h1>
   <div class="ui large feed" *ngFor="let publication of publications">
@@ -18,7 +18,7 @@
       </div>
       <div class="content">
         <div class="summary">
-          <a class="user">
+          <a class="user font-title">
             {{ publication.user.name + " " + publication.user.surname }}
           </a>
         </div>

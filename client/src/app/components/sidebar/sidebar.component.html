@@ -1,4 +1,4 @@
-<h1 class="ui center aligned header">
+<h1 class="ui center aligned  font-title">
   <i class="id card icon"></i>{{ title }}
 </h1>
 <div class="ui two column stackable grid container">
@@ -19,7 +19,7 @@
       <form
         class="ui form"
         #newPubForm="ngForm"
-        (ngSubmit)="onSubmit(newPubForm); sendPublication($event);"
+        (ngSubmit)="onSubmit(newPubForm, $event);"
       >
         <div class="field">
           <label><i class="bullhorn icon"></i> ¿Qué estás pensando?</label>
@@ -81,8 +81,8 @@
           </div>
           <div class="extra content">
             <span>
-              <i class="users icon"></i>
-             Siguiendo {{ stats.following }}
+              <a class="header" routerLink="/siguiendo/{{identity._id}}/1">  <i class="users icon"></i>
+              Siguiendo {{ stats.following }}</a>
             </span>
 
             <span class="right floated">

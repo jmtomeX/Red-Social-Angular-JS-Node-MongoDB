@@ -4,7 +4,6 @@ import { UserService } from '../../services/user.service';
 import { PublicationService } from '../../services/publication.service';
 import { GLOBAL } from '../../services/global';
 import { Publication } from '../../models/publication';
-import { User } from '../../models/user';
 declare var $: any;
 
 @Component({

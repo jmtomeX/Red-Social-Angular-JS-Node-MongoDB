@@ -227,7 +227,7 @@ function deletePublication(req, res) {
       return res.status(500).send({
         message: "Error al borrar la publicación.",
       });
- 
+     // removeFilesOfUploads(res, file_path, message)
     return res.status(200).send({
       message: "Publicación eliminada correctamente.",
     });
@@ -326,7 +326,6 @@ function getImageFile(req, res) {
 
 function removeFilesOfUploads(res, file_path, message) {
   fs.unlink(file_path, (err) => {
-    console.log("Eliminado el archivo :" + file_path);
     return res.status(200).send({ message: message });
   });
 }

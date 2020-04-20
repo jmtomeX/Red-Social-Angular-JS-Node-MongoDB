@@ -170,7 +170,7 @@ export class FollowingComponent implements OnInit, DoCheck {
     )
   }
 
-  unfollowUSer(followed) {
+  unfollowUser(followed) {
     this._followService.deleteFollow(this.token, followed).subscribe(
       response => {
         // buscar en el array
@@ -179,6 +179,7 @@ export class FollowingComponent implements OnInit, DoCheck {
         if (search != -1) {
           this.follows.splice(search, 1)
         }
+        //this._router.navigate(['/siguiendo/', this.user_page_id, this.page]);
       },
       error => {
         var errorMessage = <any>error;

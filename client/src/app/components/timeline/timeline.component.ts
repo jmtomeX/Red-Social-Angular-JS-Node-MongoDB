@@ -9,7 +9,7 @@ import { Publication } from '../../models/publication';
 declare var $: any;
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.css'],
   providers: [UserService, PublicationService]

@@ -1,7 +1,7 @@
 {
   "name": "curso-mean-social",
   "version": "1.0.0",
-  "description": "Backend para el proyecto del curso Desarrollar una red social con Angualr y Node",
+  "description": "Backend para el proyecto del curso Desarrollar una red social con Angular y Node",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",

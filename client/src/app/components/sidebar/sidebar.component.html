@@ -86,15 +86,15 @@
             </span>
 
             <span class="right floated">
-              <i class="user icon"></i>
-              Seguidores {{ stats.followed }}
+              <a class="header" routerLink="/seguidores/{{identity._id}}/1">  <i class="user icon"></i>
+              Seguidores {{ stats.followed }}</a>
             </span>
           </div>
           <div class="extra content">
             <div class="ui large transparent left icon input">
               <span>
                 <i class="comment icon"></i>
-                Publicaciones {{ stats.publications }}
+                <a class="header" routerLink="/perfil/{{identity._id}}"> Publicaciones</a> {{ stats.publications }}
               </span>
             </div>
           </div>

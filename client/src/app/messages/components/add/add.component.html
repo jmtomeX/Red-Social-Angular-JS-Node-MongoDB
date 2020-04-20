@@ -1,0 +1,37 @@
+<div class="left floated aligned fourteen wide column">
+  <div class="container">
+    <h1 class="font-title">{{ title }}</h1>
+    <!-- Formualario -->
+    <form class="ui form" #formAdd="ngForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label>Para</label>
+        <!-- listado de seguidores -->
+        <select class="ui search dropdown" *ngIf="follows" name="receiver" #receiver="ngModel" [(ngModel)]= "message.receiver" required>
+          <option *ngFor="let follow of follows" value="{{follow.user._id}}">{{follow.user.name}}  {{follow.user.surname}}
+          </select>
+      </div>
+      <div class="field">
+        <label>Text</label>
+        <textarea
+          name="text"
+          #text="ngModel"
+          [(ngModel)]="message.text"
+          required
+        ></textarea>
+      </div>
+      <div *ngIf="!text.valid && text.touched" class="ui negative message">
+        <div class="header">
+          <i class="exclamation triangle icon"></i>
+          El mensaje es obligatorio.
+        </div>
+      </div>
+      <input
+      id="button-submit"
+        type="submit"
+        value="{{ title }}"
+        class="ui button fluid large red"
+        [disabled]="!formAdd.form.valid"
+      />
+    </form>
+  </div>
+</div>

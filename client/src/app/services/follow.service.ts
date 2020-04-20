@@ -24,6 +24,7 @@ export class FollowService {
       .set('Authorization', token);
     return this._http.delete(this.url + 'follow/' + id, { headers: headers });
   }
+  // Seguidos
   getFollowing(token, user_id, page): Observable<any> {
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
       .set('Authorization', token);
@@ -32,5 +33,23 @@ export class FollowService {
       url = url = this.url + 'following/' + user_id + '/' + page;
     }
     return this._http.get(url, { headers: headers });
+  }
+  // Seguidores
+  getFollowed(token, user_id, page): Observable<any> {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+      .set('Authorization', token);
+    let url = this.url + 'followed';
+    if (user_id != null) {
+      url = url = this.url + 'followed/' + user_id + '/' + page;
+    }
+    return this._http.get(url, { headers: headers });
+  }
+
+  //
+  getMyFollows(token): Observable<any>{
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+    .set('Authorization', token);
+    // le pasamos true para que nos devuelva los seguidores
+    return this._http.get(this.url + 'get-the-followed/'+ true, { headers: headers })
   }
 }

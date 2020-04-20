@@ -134,11 +134,17 @@ function getFollowedUsers(req, res) {
         return res.status(404).send({
           message: "No te sigue ningún usuario.",
         });
-      return res.status(200).send({
-        total: totalDoc,
-        pages: Math.ceil(totalDoc / ITEMS_PER_PAGE),
-        follows,
-      });
+          // seguimineto del usuario logueado
+          // usuarios que seguimos y dejamos de seguir para poder interactuar con los botones de seguimineto
+          followUsersIds(req.user.sub).then((value) => {
+            return res.status(200).send({
+              total: totalDoc,
+              pages: Math.ceil(totalDoc / ITEMS_PER_PAGE),
+              follows,
+              users_following: value.following,
+              users_followed: value.followed,
+            });
+          });
     });
 }
 // devolver listados de usuarios que me siguen  o usuarios que sigo, sin paginar

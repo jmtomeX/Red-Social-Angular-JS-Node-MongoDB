@@ -5,6 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './services/user.service';
+
+// modulo mensajería
+import { MessagesModule } from './messages/messages.module';
+
+// Componentes
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
@@ -18,6 +23,7 @@ import { fromEventPattern } from 'rxjs';
 import { PublicationsComponent } from './components/publications/publications.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { FollowingComponent } from './components/following/following.component';
+import { FollowedComponent } from './components/followed/followed.component';
 
 @NgModule({
   declarations: [
@@ -33,13 +39,15 @@ import { FollowingComponent } from './components/following/following.component';
     PublicationsComponent,
     ProfileComponent,
     FollowingComponent,
+    FollowedComponent,
   ],
   imports: [
+    MessagesModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    MomentModule
+    MomentModule,
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('identity', JSON.stringify(this.identity));
         //recoger el token
         this.getToken();
-
+        console.log(this.getToken)
         // Recoger contadores o estadisticas del usuario
 
       },

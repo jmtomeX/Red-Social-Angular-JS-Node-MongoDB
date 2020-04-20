@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { FollowService } from '../../services/follow.service';
@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ['./profile.component.css'],
   providers: [UserService, FollowService]
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, DoCheck {
   public title: string;
   public user: User;
   public token;
@@ -48,6 +48,10 @@ export class ProfileComponent implements OnInit {
     console.log('Profile.component cargado correctamente');
     this.loadPage();
   }
+  ngDoCheck():void {
+    this._userService.getStats();
+  }
+
 
   loadPage() {
     // sacar los parámetros que llegan por la url
@@ -107,6 +111,7 @@ export class ProfileComponent implements OnInit {
         console.log(response)
         if (response.follow) {
         this.following = true;
+        this._userService.getStats();
         this._router.navigate(['/perfil/'+ followed]);
         }
       },
@@ -121,7 +126,7 @@ export class ProfileComponent implements OnInit {
       response => {
         if(response){
           this.following = false;
-          console.log('/perfil/'+ followed)
+          this._userService.getStats();
           this._router.navigate(['/perfil/'+ followed]);
         }
       },

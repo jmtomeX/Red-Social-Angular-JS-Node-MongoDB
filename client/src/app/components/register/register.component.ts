@@ -1,10 +1,7 @@
 import { Component, OnInit, DoCheck, NgModule } from '@angular/core';
-//import { Routes, RouterModule, Params } from '@angular/router';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
-import { HttpClient } from '@angular/common/http';
-import { AbstractControl, NG_VALIDATORS, NgControl, Validator } from '@angular/forms';
 declare var $: any;
 
 @Component({

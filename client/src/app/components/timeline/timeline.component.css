@@ -12,6 +12,7 @@ button.circular.ui.red.icon.button{
   float:left;
   line-height:8px;
 }
+
 button.circular.ui.red.icon.button:hover{
   opacity: 0.50;
   -moz-opacity: .50;

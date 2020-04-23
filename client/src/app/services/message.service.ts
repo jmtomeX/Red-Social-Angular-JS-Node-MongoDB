@@ -29,7 +29,7 @@ export class MessageService {
   getEmmitMessages(token, page = 1): Observable<any> {
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
       .set('Authorization', token);
-    return this._http.get(this.url + 'messages/' + page, { headers: headers });
+    return this._http.get(this.url + '/my-send-messages/' + page, { headers: headers });
   }
 
 

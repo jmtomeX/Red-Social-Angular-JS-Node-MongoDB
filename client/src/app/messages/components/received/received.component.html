@@ -1,10 +1,59 @@
 <div class="left floated aligned fourteen wide column">
+  <!-- ***************** Paginación ********************** -->
+  <div class="ui hidden divider"></div>
+  <div class="ui middle aligned center aligned grid"  *ngIf="pages > 1">
+    <div class="ui pagination menu">
+        <a
+          class="active item"
+          [routerLink]="['/mensajes/recibidos/', prev_page]"
+        >
+          Anterior
+        </a>
+
+      <div *ngIf="pages != page">
+        <a
+          class="active item"
+          [routerLink]="['/mensajes/recibidos/', next_page]"
+        >
+          Siguiente
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- ***************** Fin Paginación ********************** -->
+  <div class="ui hidden divider"></div>
   <div class="ui segment">
-    {{title}}
-    <!-- listado de mensajes recibidos -->
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni explicabo
-    doloribus suscipit nihil optio? Inventore, voluptatem magnam officiis,
-    minus vitae perspiciatis nobis possimus amet, voluptas dicta minima non
-    aspernatur quas.
+    <h1 class="font-title">{{ title }}</h1>
+    <div class="ui comments" *ngFor="let message of messages">
+      <h3 class="ui dividing header">Mensaje</h3>
+      <div class="comment">
+        <a class="avatar">
+          <img
+            *ngIf="message.emitter.image"
+            src="{{ url + 'get-image-user/' + message.emitter.image }}"
+          />
+          <img
+            *ngIf="!message.emitter.image"
+            src="../../../../assets/images/coronavirus.png"
+          />
+        </a>
+        <div class="content">
+          <a class="author">De  {{ message.emitter.name }}</a>
+          <div class="metadata">
+            <span class="date">
+              {{
+                message.created_at | amFromUnix | amLocale: "es" | amTimeAgo
+              }}</span
+            >
+          </div>
+          <div class="text">
+            {{ message.text }}
+          </div>
+          <!-- <div class="actions">
+            <a class="reply">Reply</a>
+          </div> -->
+        </div>
+      </div>
+    </div>
   </div>
 </div>

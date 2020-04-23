@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
+// servicios
 import { UserService } from './services/user.service';
+import { UserGuard } from './services/user.guard';
 
 // modulo mensajería
 import { MessagesModule } from './messages/messages.module';
@@ -49,7 +51,7 @@ import { FollowedComponent } from './components/followed/followed.component';
     HttpClientModule,
     MomentModule,
   ],
-  providers: [UserService],
+  providers: [UserService, UserGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

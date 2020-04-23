@@ -7,7 +7,6 @@ import { UserService } from '../../../services/user.service';
 import { GLOBAL } from '../../../services/global';
 import { Follow } from '../../../models/follow';
 import { Message } from '../../../models/message';
-import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
 declare var $: any;
 @Component({
   selector: 'add',
@@ -37,12 +36,7 @@ export class AddComponent implements OnInit, DoCheck {
     this.url = GLOBAL.url;
     this.message = new Message('', '', '', '', this.identity._id, false);
   }
-  // public _id: string,
-  // public emitter:string,
-  // public receiver: string,
-  // public text: string,
-  // public created_at: string,
-  // public viewed: boolean
+
   ngOnInit(): void {
     console.log("add.component cargado...");
     this.follows = this.getMyFollows();
@@ -55,8 +49,20 @@ export class AddComponent implements OnInit, DoCheck {
   ngDoCheck(): void {
   }
 
-  onSubmit() {
-
+  onSubmit(form) {
+    console.log(this.message);
+    this._messageService.addMessage(this.token, this.message).subscribe(
+      response => {
+        if(response.message){
+          this.status = 'succes';
+          form.reset();
+        }
+      },
+      error => {
+        console.log(<any>error);
+        this.status = 'error';
+      }
+    )
   }
   getMyFollows() {
     this._followService.getMyFollows(this.token).subscribe(

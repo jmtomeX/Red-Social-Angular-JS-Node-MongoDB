@@ -25,7 +25,8 @@ export class PublicationsComponent implements OnInit, DoCheck {
   public items_per_page;
   public noMore: boolean;
   public publications: Publication[];
-  private value_id;
+  public value_id;
+  public loading: boolean;
   @Input() user: string;
 
   constructor(
@@ -41,6 +42,7 @@ export class PublicationsComponent implements OnInit, DoCheck {
     this.page = 1;
     this.noMore = false;
     this.stats = this._userService.getStats();
+    this.loading = true;
 
   }
 
@@ -78,6 +80,7 @@ export class PublicationsComponent implements OnInit, DoCheck {
           this.total = response.total_items;
           this.pages = response.pages;
           this.items_per_page = response.items_per_page;
+          this.loading = false;
 
           // añadir más publicacioenes
           if (!adding) {

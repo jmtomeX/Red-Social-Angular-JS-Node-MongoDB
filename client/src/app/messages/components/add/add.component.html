@@ -1,14 +1,40 @@
 <div class="left floated aligned fourteen wide column">
-  <div class="container">
+  <div class="ui segment">
     <h1 class="font-title">{{ title }}</h1>
+
+    <div *ngIf="status == 'succes'" class="ui positive message">
+      <div class="header">
+        <i class="ambulance icon"></i>
+      Has enviado el mensaje correctamente.
+        <a routerLink="/mensajes/enviados">Ir a mensajes.</a>
+      </div>
+    </div>
+    <div *ngIf="status == 'error'" class="ui negative message">
+      <div class="header">
+        <i class="exclamation triangle icon"></i>
+        Intentalo de nuevo, no se ha podido enviar.
+      </div>
+    </div>
     <!-- Formualario -->
-    <form class="ui form" #formAdd="ngForm" (ngSubmit)="onSubmit()">
+    <form class="ui form" #formAdd="ngForm" (ngSubmit)="onSubmit(formAdd)">
       <div class="field">
         <label>Para</label>
         <!-- listado de seguidores -->
-        <select class="ui search dropdown" *ngIf="follows" name="receiver" #receiver="ngModel" [(ngModel)]= "message.receiver" required>
-          <option *ngFor="let follow of follows" value="{{follow.user._id}}">{{follow.user.name}}  {{follow.user.surname}}
-          </select>
+        <select
+          class="ui search dropdown"
+          *ngIf="follows"
+          name="receiver"
+          #receiver="ngModel"
+          [(ngModel)]="message.receiver"
+          required
+        >
+          <option
+            value="seleccionar"
+            *ngFor="let follow of follows"
+            value="{{ follow.user._id }}"
+            >{{ follow.user.name }} {{ follow.user.surname }}
+          </option></select
+        >
       </div>
       <div class="field">
         <label>Text</label>
@@ -26,7 +52,7 @@
         </div>
       </div>
       <input
-      id="button-submit"
+        id="button-submit"
         type="submit"
         value="{{ title }}"
         class="ui button fluid large red"

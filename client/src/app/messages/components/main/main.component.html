@@ -1,14 +1,14 @@
 <div class="container">
   <div class="ui left demo vertical inverted sidebar labeled icon menu">
-    <a class="item" (click)="menu()"  routerLink="/recibidos">
+    <a class="item" (click)="menu()" routerLink="/mensajes/recibidos">
       <i aria-hidden="true" class="envelope outline icon"></i>
       Mensajes recibidos
     </a>
-    <a class="item" (click)="menu()"  routerLink="/enviados">
+    <a class="item" (click)="menu()" routerLink="/mensajes/enviados">
       <i aria-hidden="true" class="envelope open outline icon"></i>
       Mensajes enviados
     </a>
-    <a class="item" (click)="menu()"  routerLink="/enviar">
+    <a class="item" (click)="menu()" routerLink="/mensajes/enviar">
       <i aria-hidden="true" class="paper plane outline icon"></i>
       Enviar mensajes
     </a>
@@ -18,7 +18,7 @@
     </a>
     <div class="pusher"></div>
   </div>
-  </div>
+</div>
 
 <div class="ui right aligned grid">
   <div class="left floated right aligned six wide column">
@@ -29,7 +29,7 @@
   <div class="right floated left aligned two wide column">
     <div class="ui segment">
       <button (click)="menu()" class="ui icon button">
-        <i class="medkit huge circular inverted red icon"></i>
+        <i class="medkit big circular inverted red icon"></i>
       </button>
     </div>
   </div>

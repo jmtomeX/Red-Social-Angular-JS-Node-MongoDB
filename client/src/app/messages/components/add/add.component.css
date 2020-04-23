@@ -1,0 +1,20 @@
+@media all and (max-width: 520px) {
+  div.left.floated.aligned.fourteen.wide.column{
+    width: 100%;
+    padding-left: 1em;
+  }
+}
+
+@media all and (min-width: 840px) {
+  div.left.floated.aligned.fourteen.wide.column{
+    width: 120%;
+    padding-left: 1em;
+  }
+}
+
+@media all and (min-width: 1200px) {
+  div.left.floated.aligned.fourteen.wide.column{
+    width: 185%;
+    padding-left: 10em;
+  }
+}

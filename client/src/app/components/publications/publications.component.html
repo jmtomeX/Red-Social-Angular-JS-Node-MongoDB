@@ -2,6 +2,9 @@
   <h1 class="ui center aligned font-title">
     {{ title }}
   </h1>
+    <div class="loading" *ngIf="loading">
+      <img src="../../../assets/images/loading.gif" alt="" />
+    </div>
   <div class="ui large feed" *ngFor="let publication of publications">
     <div class="event">
       <div class="label">
@@ -96,7 +99,10 @@
                 <div class="ui positive deny button">
                   Cancelar
                 </div>
-                <div class="ui red right labeled icon button" (click)="deletePublication(publication._id)">
+                <div
+                  class="ui red right labeled icon button"
+                  (click)="deletePublication(publication._id)"
+                >
                   Eliminar
                   <i class="checkmark icon"></i>
                 </div>

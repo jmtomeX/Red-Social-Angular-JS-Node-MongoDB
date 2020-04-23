@@ -57,6 +57,7 @@ function getRecivedMessages(req, res) {
   })
     // para seleccionar solo unos campos en el populate hay que añadir como segundo parámetro los campos que se quieren recibir
     .populate("emitter", "name surname nick image _id")
+    .sort('-created_at') // ordenado por la fecha más reciente
     .paginate(page, ITEMS_PER_PAGE, (err, messages, total) => {
       if (err) {
         return res.status(500).send({
@@ -90,6 +91,7 @@ function getEmitterMessages(req, res) {
   })
     // para seleccionar solo unos campos en el populate hay que añadir como segundo parámetro los campos que se quieren recibir
     .populate("emitter receiver", "name surname nick image _id")
+    .sort('-created_at') // ordenado por la fecha más reciente, descendente
     .paginate(page, ITEMS_PER_PAGE, (err, messages, total) => {
       if (err) {
         return res.status(500).send({

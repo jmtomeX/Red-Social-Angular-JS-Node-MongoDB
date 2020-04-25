@@ -9,7 +9,7 @@ import { SendedComponent } from './components/sended/sended.component';
 import { UserGuard } from '../services/user.guard';
 
 const messagesRoutes: Routes = [
-  // Una ruta con rutas hijas
+  // ruta con rutas hijas
   {
     path: 'mensajes',
     component: MainComponent,

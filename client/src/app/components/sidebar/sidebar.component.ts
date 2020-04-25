@@ -60,7 +60,6 @@ export class SidebarComponent implements OnInit {
     this._publicationService.addPublication(this.token, this.publication).subscribe(
       response => {
         if (response.publication) {
-
           // comprobamos que tenga imagen
           if (this.filesToUpload && this.filesToUpload.length) {
             // subimos el archivo
@@ -84,6 +83,8 @@ export class SidebarComponent implements OnInit {
           } else {
             this.status = 'succes';
             newPubForm.reset();
+            // actualizamos las estadísticas del usuario
+            this._userService.getStats();
             // reenvio para actulizar las publicaciones.
             this._router.navigate(['/timeline']);
             // emite el evento

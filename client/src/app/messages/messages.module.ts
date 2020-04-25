@@ -15,7 +15,6 @@ import { AddComponent } from './components/add/add.component';
 import { ReceivedComponent } from './components/received/received.component';
 import { SendedComponent } from './components/sended/sended.component';
 
-
 @NgModule({
   declarations: [MainComponent, AddComponent, ReceivedComponent, SendedComponent],
   imports: [

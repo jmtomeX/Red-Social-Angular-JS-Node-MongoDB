@@ -2,7 +2,7 @@ import { Component, OnInit, DoCheck } from '@angular/core';
 
 declare var $: any;
 @Component({
-  selector: 'main',
+  selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })

@@ -59,15 +59,15 @@
     // recoger la página en la que estamos
     actualPage() {
       this._route.params.subscribe(params => {
-        let user_id = params['id?'];
+        let user_id = params['id'];
         // lo convertimos a entero
-        let page = +params['page?'];
+        let page = +params['page'];
 
         this.page = page;
         console.log(params)
         this.user_page_id = user_id;
 
-        if (!params['page?']) {
+        if (!params['page']) {
           page = 1;
         }
 

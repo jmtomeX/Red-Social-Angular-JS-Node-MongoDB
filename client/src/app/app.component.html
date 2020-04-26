@@ -1,4 +1,4 @@
-<div class="ui attached stackable menu ">
+<div class="ui attached stackable menu">
   <div id="nav-main" class="ui secondary menu" *ngIf="identity">
     <a id="title" class="font-primary spacing item" routerLink="/home">
       <img
@@ -22,26 +22,50 @@
     </a>
     <div class="right floated item">
       <div class="ui icon input">
-        <input type="text" placeholder="Buscar..." />
-        <i class="red circular search link icon"></i>
+        <form id="form-search" #searchForm="ngForm" class="ui large form">
+          <input
+            id="txt-search"
+            type="search"
+            placeholder="Buscar usuario..."
+            name="busqueda"
+            #busqueda="ngModel"
+            [(ngModel)]="word"
+            required
+          />
+          <button
+          class="circular ui icon button mini"
+            id="btn-search"
+            type="submit"
+            [disabled]="!searchForm.form.valid"
+            (click)="onSubmit(searchForm,$event)"
+          >
+            <i class="inverted circular search link icon"></i>
+          </button>
+        </form>
       </div>
     </div>
+    <!--  como un console log -->
+    <!-- <pre>{{ word | json }}</pre> -->
 
     <div class="ui right floated item" *ngIf="identity && identity.image">
-      <img *ngIf="identity.image"
+      <img
+        *ngIf="identity.image"
         class="ui tiny avatar image"
-        src="{{url + 'get-image-user/' + identity.image}}"
+        src="{{ url + 'get-image-user/' + identity.image }}"
       />
     </div>
     <div class="ui right floated item" *ngIf="identity.image == null">
-      <img
-        class="ui tiny avatar image"
-        src="../assets/images/gender.png"
-      />
+      <img class="ui tiny avatar image" src="../assets/images/gender.png" />
     </div>
     <div class="ui text dropdown menu">
-      <div class="ui right item"> <span class="header">{{ identity.name }}</span> <i class="dropdown icon"></i> <div class="menu">
-          <a class="ui right floated item" routerLink="/perfil/{{identity._id}}">
+      <div class="ui right item">
+        <span class="header">{{ identity.name }}</span>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <a
+            class="ui right floated item"
+            routerLink="/perfil/{{ identity._id }}"
+          >
             <i class="user icon"></i>
             Mi perfil
           </a>
@@ -71,11 +95,11 @@
       {{ title1 }} <span class="font-secundary">{{ title2 }}</span>
     </a>
     <div class="spacing"></div>
-    <a class="item " routerLink="/login" [routerLinkActive]="['active']">
+    <a class="item" routerLink="/login" [routerLinkActive]="['active']">
       <i class="user icon"></i>
       Login
     </a>
-    <a class=" item" routerLink="/registro" [routerLinkActive]="['active']">
+    <a class="item" routerLink="/registro" [routerLinkActive]="['active']">
       <i class="user plus icon"></i>
       Registro
     </a>
@@ -84,4 +108,3 @@
 
 <router-outlet></router-outlet>
 <app-footer></app-footer>
-

@@ -4,3 +4,10 @@ div.ui.right.floated.item{
 div.ui.attached.stackable.menu  {
   margin-bottom: 50px;
 }
+
+  #form-search{
+    display: flex;
+  }
+  #form-search > button, #form-search > input{
+   margin-right: 3px;
+  }

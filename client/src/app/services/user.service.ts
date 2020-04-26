@@ -88,7 +88,7 @@ export class UserService {
   getUsers(page = null): Observable<any> {
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
       .set('Authorization', this.getToken());
-    return this._http.get(this.url + 'users/' + page,{ headers: headers });
+    return this._http.get(this.url + 'users/' + page, { headers: headers });
   }
   // recoger un usuario por id
   getUser(id): Observable<any> {
@@ -97,5 +97,11 @@ export class UserService {
     return this._http.get(this.url + 'user/' + id, { headers: headers });
   }
 
+  // buscar usuario
+  searchUser(word): Observable<any> {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json')
+      .set('Authorization', this.getToken());
+    return this._http.get(this.url + 'search/' + word, { headers: headers });
+  }
 
 }

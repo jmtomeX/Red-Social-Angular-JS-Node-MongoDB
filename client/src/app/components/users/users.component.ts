@@ -29,6 +29,8 @@ export class UsersComponent implements OnInit, DoCheck {
   public users: User[];
   public status: string;
   public follows;
+  public word;
+  public show: boolean;
 
 
   constructor(
@@ -42,6 +44,7 @@ export class UsersComponent implements OnInit, DoCheck {
     this.token = this._userService.getToken();
     this.stats = this._userService.getStats();
     this.url = GLOBAL.url;
+    this.show = false;
   }
 
   ngOnInit(): void {
@@ -63,8 +66,16 @@ export class UsersComponent implements OnInit, DoCheck {
       // lo convertimos a entero
       let page = +params['page'];
       this.page = page;
+      // recoger usuarios buscados en el menu search
+      if (params['search']) {
+        let word;
+        word = params['word'];
+        this.title = 'Busqueda de usuarios relacionados con ' + word;
+        let use = this.searchUsers(word);
 
-      if (!params['page']) {
+        // usuarios totales páginados
+      } else {
+            if (!params['page']) {
         page = 1;
       }
 
@@ -77,9 +88,32 @@ export class UsersComponent implements OnInit, DoCheck {
           this.prev_page = 1;
         }
       }
-      // devolver listado de usuarios.
+      // devolver listado de usuarios totales.
       this.getUsers(page);
+      }
     });
+  }
+
+
+  searchUsers(word) {
+    this._userService.searchUser(word).subscribe(
+      response => {
+        if (response.users) {
+          this.users = response.users;
+          console.log("searchUsers " + this.users)
+          this.status = response.status;
+          if(this.status == "succes"){
+            this.show = true;
+          }
+        }
+      }, error => {
+        var errorMessage = <any>error;
+        console.log(errorMessage);
+        if (errorMessage) {
+          this.status = 'error';
+        }
+      }
+    )
   }
 
   getUsers(page) {
@@ -92,7 +126,6 @@ export class UsersComponent implements OnInit, DoCheck {
           this.users = response.users;
           this.pages = response.pages;
           this.follows = response.users_following;
-          console.log(this.follows);
           if (page > this.pages) {
             // carga la página 1 de usuarios
             this._router.navigate(['/gente/', 1]);
@@ -125,7 +158,7 @@ export class UsersComponent implements OnInit, DoCheck {
         if (!response.follow) {
           this.status = 'error';
         } else {
-        this.status = 'succes';
+          this.status = 'succes';
           this.follows.push(followed);
         }
       },

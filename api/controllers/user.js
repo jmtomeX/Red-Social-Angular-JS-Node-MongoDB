@@ -13,13 +13,13 @@ var fs = require("fs");
 // métodos de pruebas
 function home(req, res) {
   res.status(200).send({
-    message: "Hola mundo desde la ráiz de NodeJS"
+    message: "Hola mundo desde la ráiz de NodeJS",
   });
 }
 
 function pruebas(req, res) {
   res.status(200).send({
-    message: "Acción en pruebas en el servidor"
+    message: "Acción en pruebas en el servidor",
   });
 }
 // registro
@@ -49,18 +49,18 @@ function saveUser(req, res) {
     User.find({
       $or: [
         { email: user.email.toLowerCase() },
-        { nick: user.nick.toLowerCase() }
-      ]
+        { nick: user.nick.toLowerCase() },
+      ],
     }).exec((err, users) => {
       if (err)
         return res.status(500).send({
           ok: false,
-          message: "Error en la petición de usuario."
+          message: "Error en la petición de usuario.",
         });
       if (users && users.length >= 1) {
         return res.status(200).send({
           ok: false,
-          message: "El usuario que intentas registrar ya existe."
+          message: "El usuario que intentas registrar ya existe.",
         });
       } else {
         // cifrar password y guardar
@@ -71,18 +71,18 @@ function saveUser(req, res) {
               return res.status(500).send({
                 ok: false,
                 message: "Error al guardar el usuario.",
-                err
+                err,
               });
             }
             // ok
             if (userStored) {
               res.status(200).send({
-                user: userStored
+                user: userStored,
               });
             } else {
               res.status(404).send({
                 ok: false,
-                message: "No se ha registrado el usuario."
+                message: "No se ha registrado el usuario.",
               });
             }
           });
@@ -91,7 +91,7 @@ function saveUser(req, res) {
     });
   } else {
     res.status(200).send({
-      message: "Envia todos los campos necesarios¡¡"
+      message: "Envia todos los campos necesarios¡¡",
     });
   }
 }
@@ -104,7 +104,7 @@ function loginUser(req, res) {
   //  sería como en sql un ...where email = 'email'
   User.findOne(
     {
-      email: email
+      email: email,
     },
     (err, user) => {
       // si ha habido error
@@ -118,7 +118,7 @@ function loginUser(req, res) {
               // devuelve token con los datos del usuario encryptados
               // generar token
               return res.status(200).send({
-                token: jwt.createToken(user)
+                token: jwt.createToken(user),
               });
             } else {
               // devolver datos de usuario
@@ -154,12 +154,12 @@ function getUser(req, res) {
     // Comprobar seguimiento de usuarios si seguimos o nos siguen.
     // comprobamos que el usuario actual sigue al usuario que llega por la url
     // al ser una promesa lo que devuelve usamos then
-    followThisUser(req.user.sub, userId).then(value => {
+    followThisUser(req.user.sub, userId).then((value) => {
       user.password = undefined;
       return res.status(200).send({
         user,
         following: value.following,
-        followed: value.followed
+        followed: value.followed,
       }); // si follow devuleve null no le sigo
     });
   });
@@ -173,30 +173,30 @@ async function followThisUser(identity_user_id, user_id) {
     // si me sigue un  usuario.
     var following = await Follow.findOne({
       user: identity_user_id,
-      followed: user_id
+      followed: user_id,
     })
       .exec()
-      .then(following => {
+      .then((following) => {
         return following;
       })
-      .catch(err => {
+      .catch((err) => {
         return handleerror(err);
       });
     var followed = await Follow.findOne({
       user: user_id,
-      followed: identity_user_id
+      followed: identity_user_id,
     })
       .exec()
-      .then(followed => {
+      .then((followed) => {
         return followed;
       })
-      .catch(err => {
+      .catch((err) => {
         return handleerror(err);
       });
     //devolvemos una promesa al ser async, con un objeto
     return {
       following: following,
-      followed: followed
+      followed: followed,
     };
   } catch (e) {
     console.log(e);
@@ -225,14 +225,14 @@ function getUsers(req, res) {
         return res
           .status(404)
           .send({ message: "No hay usuarios disponibles." });
-      followUsersIds(identity_user_id).then(value => {
+      followUsersIds(identity_user_id).then((value) => {
         return res.status(200).send({
           // esto sería redundante
           users: users,
           users_following: value.following,
           users_followed: value.followed,
           total,
-          pages: Math.ceil(total / ITEMS_PER_PAGE) // número de páginas que va a haber
+          pages: Math.ceil(total / ITEMS_PER_PAGE), // número de páginas que va a haber
         });
       });
     });
@@ -244,36 +244,36 @@ async function followUsersIds(user_id) {
     //quitar campos no requeridos
     .select({ _id: 0, __uv: 0, user: 0 })
     .exec()
-    .then(follows => {
+    .then((follows) => {
       var follows_clean = [];
 
-      follows.forEach(follow => {
+      follows.forEach((follow) => {
         follows_clean.push(follow.followed);
       });
 
       return follows_clean;
     })
-    .catch(err => {
+    .catch((err) => {
       return handleerror(err);
     });
   // a quien seguimos
   var followed = await Follow.find({ followed: user_id })
     .select({ _id: 0, __uv: 0, followed: 0 })
     .exec()
-    .then(follows => {
+    .then((follows) => {
       var follows_clean = [];
-      follows.forEach(follow => {
+      follows.forEach((follow) => {
         follows_clean.push(follow.user);
       });
 
       return follows_clean;
     })
-    .catch(err => {
+    .catch((err) => {
       return handleerror(err);
     });
   return {
     following: following,
-    followed: followed
+    followed: followed,
   };
 }
 
@@ -283,12 +283,12 @@ const getCounters = (req, res) => {
   if (req.params.id) {
     userId = req.params.id;
   }
-  getCountFollow(userId).then(value => {
+  getCountFollow(userId).then((value) => {
     return res.status(200).send(value);
   });
 };
 
-const getCountFollow = async user_id => {
+const getCountFollow = async (user_id) => {
   try {
     let following = await Follow.countDocuments(
       { user: user_id },
@@ -297,13 +297,13 @@ const getCountFollow = async user_id => {
       }
     );
     let followed = await Follow.countDocuments({ followed: user_id }).then(
-      count => count
+      (count) => count
     );
 
     // devolver las publicaciones
     let publications = await Publication.countDocuments({
-      user: user_id
-    }).then(count => count);
+      user: user_id,
+    }).then((count) => count);
 
     return { following, followed, publications };
   } catch (e) {
@@ -330,12 +330,12 @@ function updateUser(req, res) {
   User.find({
     $or: [
       { email: update.email.toLowerCase() },
-      { nick: update.nick.toLowerCase() }
-    ]
+      { nick: update.nick.toLowerCase() },
+    ],
   }).exec((error, users) => {
     // En el caso de que exista una coincidencia
     var user_isset = false;
-    users.forEach(user => {
+    users.forEach((user) => {
       if (user && user._id != userId) user_isset = true;
     });
     // si existe
@@ -362,7 +362,7 @@ function updateUser(req, res) {
         return res.status(200).send({
           // si todo fue bien
           // devolvemos el usuario actualizado
-          user: userUpdated
+          user: userUpdated,
         });
       }
     );
@@ -392,7 +392,7 @@ function upLoadImage(req, res) {
       file_ext == "gif"
     ) {
       // comprobar si existe la imagen
-      fs.exists(file_path, function(exists) {
+      fs.exists(file_path, function (exists) {
         if (exists) {
           // actualizar documento de usuario
           User.findByIdAndUpdate(
@@ -412,7 +412,7 @@ function upLoadImage(req, res) {
               return res.status(200).send({
                 // si todo fue bien
                 // devolvemos el usuario actualizado
-                user: userUpdated
+                user: userUpdated,
               });
             }
           );
@@ -426,7 +426,7 @@ function upLoadImage(req, res) {
     }
   } else {
     return res.status(200).send({
-      message: "No se han subido imagenes"
+      message: "No se han subido imagenes",
     });
   }
 }
@@ -437,21 +437,53 @@ function getImageFile(req, res) {
   var image_file = req.params.imageFile;
   var path_file = "./uploads/users/" + image_file;
 
-  fs.exists(path_file, exists => {
+  fs.exists(path_file, (exists) => {
     if (exists) {
       res.sendFile(path.resolve(path_file));
     } else {
       return res.status(200).send({
-        message: "No existe la imagen..."
+        message: "No existe la imagen...",
       });
     }
   });
 }
 
 function removeFilesOfUploads(res, file_path, message) {
-  fs.unlink(file_path, err => {
+  fs.unlink(file_path, (err) => {
     return res.status(200).send({ message: message });
   });
+}
+
+// buscar usuarios
+function search(req, res) {
+  // Sacar string a buscar de la url
+  var searchString = req.params.search;
+
+  // Find or
+  User.find({
+    $or: [
+      { nick: { $regex: searchString, $options: "i" } },
+      { name: { $regex: searchString, $options: "i" } },
+      { surname: { $regex: searchString, $options: "i" } },
+    ]
+  }).exec((err, users) => {
+    if(err){
+      return res.status(500).send({
+        status:'error',
+        message:'Error en la petición'
+      });
+    }
+    if(!users || users.length < 1){
+      return res.status(404).send({
+        status:'error',
+        message:'No hay usuarios con ese nombre'
+      });
+    }
+    return res.status(200).send({
+      status:'succes',
+      users
+    });
+  })
 }
 
 //exportarla en modo de objeto
@@ -465,5 +497,6 @@ module.exports = {
   getCounters,
   updateUser,
   upLoadImage,
-  getImageFile
+  getImageFile,
+  search,
 };

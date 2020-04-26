@@ -6,7 +6,7 @@
     </h1>
     <!-- ***************** Paginación ********************** -->
     <div class="ui hidden divider"></div>
-    <div class="ui middle aligned center aligned grid">
+    <div class="ui middle aligned center aligned grid" *ngIf="show == false">
       <div class="ui pagination menu">
         <div *ngIf="page > 1">
           <a class="active item" [routerLink]="['/gente/', prev_page]">
